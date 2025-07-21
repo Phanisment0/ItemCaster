@@ -1,0 +1,16 @@
+name: ItemCaster
+version: ${version}
+author: Phanisment
+description: A rewrite version of ItemCaster that has same functionality, Cast skill using item.
+main: ${main_class}
+api-version: 1.19
+load: POSTWORLD
+depend:
+- MythicMobs
+- NBTAPI
+softdepend:
+- ItemsAdder
+- Nexo
+- Oraxen
+#libraries:
+#- org.openjdk.nashorn:nashorn-core:${nashorn_version}

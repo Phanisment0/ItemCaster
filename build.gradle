@@ -1,0 +1,88 @@
+plugins {
+	id 'java-library'
+	id 'application'
+}
+
+group = project.group
+version = project.version
+
+application {
+	mainClass = project.mainClass
+}
+
+base {
+	archivesName = project.archivesName
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+	maven {
+		url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+		content {
+			includeGroup "org.bukkit"
+			includeGroup "org.spigotmc"
+		}
+	}
+	maven {
+		name "CodeMC"
+		url "https://repo.codemc.io/repository/maven-public/"
+	}
+	maven {
+		url "https://mvn.lumine.io/repository/maven-public/"
+	}
+	
+	maven {
+		name "matteodev"
+		url "https://maven.devs.beer/"
+	}
+	
+	maven {
+		url "https://repo.oraxen.com/releases"
+	}
+	maven {
+		name "nexomcReleases"
+		url "https://repo.nexomc.com/releases"
+	}
+}
+
+dependencies {
+	implementation "org.spigotmc:spigot-api:${project.api_version}"
+	implementation "io.lumine:Mythic-Dist:${project.mythicmobs_version}"
+	implementation "de.tr7zw:item-nbt-api-plugin:${project.nbt_api_version}"
+	compileOnly "org.openjdk.nashorn:nashorn-core:${project.nashorn_version}"
+	compileOnly "dev.lone:api-itemsadder:${project.itemsadder_version}"
+	compileOnly "io.th0rgal:oraxen:${project.oraxen_version}"
+	compileOnly("com.nexomc:nexo:1.0.0")
+	
+	compileOnly "net.kyori:adventure-api:${project.adventure_version}"
+	compileOnly "net.kyori:adventure-text-minimessage:${project.adventure_version}"
+	compileOnly "net.kyori:adventure-text-serializer-legacy:${project.adventure_version}"
+}
+
+tasks.processResources {
+	def props = [
+		"version"         : project.version,
+		"main_class"      : mainClass,
+		"nashorn_version" : project.nashorn_version
+	]
+	inputs.properties(props)
+	filesMatching("plugin.yml") {
+		expand(props)
+	}
+}
+
+tasks.jar {
+	from('LICENSE') {
+		into('.')
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 21
+}
+
+java {
+	toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+	withSourcesJar()
+}
