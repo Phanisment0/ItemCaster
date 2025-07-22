@@ -19,6 +19,7 @@ import io.phanisment.itemcaster.listener.CasterRunnable;
 public class ItemCaster extends JavaPlugin {
 	private static ItemCaster inst;
 	private static MythicBukkit core;
+	private final Metrics metrics;
 	
 	public ItemCaster() {
 		inst = this;

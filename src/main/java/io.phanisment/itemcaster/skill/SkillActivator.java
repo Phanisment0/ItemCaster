@@ -44,6 +44,7 @@ public class SkillActivator {
 	private final Activator activator;
 	private NBTCompound inst;
 	private String signal;
+	private boolean cancel_event;
 	
 	public SkillActivator(Player player, ItemStack item, Activator activator) {
 		this.item = item;
@@ -94,11 +95,12 @@ public class SkillActivator {
 			if (!ms.isPresent()) return;
 			MetaSkill sk = (MetaSkill)ms.get();
 			
+			if (ability.hasTag("cancel_event")) cancel_event = ability.getBoolean("cancel_event");
 			if (sk.onCooldown(sc)) return;
 			if (this.isSneak(ability, player)) return;
 			if (event.equals("SIGNAL") && !this.isSignalEquals(ability)) return;
 			if (event.equals("TICK") && !this.canTriggerTick(pc, ability)) return;
-		
+			
 			this.meta = new AbilityMeta(sk, player)
 				.setPower(this.getNbtPower(ability))
 				.setCooldown(this.getNbtCooldown(ability))
@@ -145,6 +147,10 @@ public class SkillActivator {
 		this.signal = signal;
 	}
 	
+	public boolean getCancelEvent() {
+		return this.cancel_event;
+	}
+	
 	public static record CasterPlayerData(UUID uuid, String skill) {
 		public Optional<Skill> getSkill() {
 			return ItemCaster.getSkillManager().getSkill(skill);
@@ -154,6 +160,30 @@ public class SkillActivator {
 	public static enum Activator {
 		LEFT_CLICK,
 		RIGHT_CLICK,
+		INTERACT_ENTITY,
+		DROP,
+		PICKUP,
+		DAMAGED,
+		ATTACK,
+		TOGGLE_SNEAK,
+		SNEAK,
+		UNSNEAK,
+		CONSUME,
+		BOW_SHOOT,
+		DEATH,
+		LOGIN,
+		QUIT,
+		CHANGE_SLOT,
+		ITEM_BREAK,
+		FISHING,
+		TOGGLE_SPRINT,
+		SPRINT,
+		UNSPRINT,
+		BLOCK_PLACE,
+		BLOCK_BREAK,
+		BLOCK_DAMAGED,
+		BLOCK_STOP_DAMAGED,
+		TELEPORT,
 		TICK,
 		SIGNAL;
 		

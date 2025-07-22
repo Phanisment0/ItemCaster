@@ -28,19 +28,30 @@ public class CasterItem {
 	private final MythicItem mi;
 	private final MythicConfig config;
 	
+	private ModelData model_data;
 	private List<Map<String, Object>> abilities = new ArrayList<>();
 	
 	public CasterItem(MythicItem mi) {
 		this.mi = mi;
 		this.config = mi.getConfig();
 		
+		this.model_data = new ModelData(config.getString("Model"), mi);
 		this.abilities = (List<Map<String, Object>>)(Object)config.getMapList("Abilities");
 	}
 	
 	public void applyData(MythicMobItemGenerateEvent e) {
 		ItemStack item = e.getItemStack();
-		item.setType(Material.STICK);
-		System.out.println("Type: " + item.getType());
+		ItemMeta meta = item.getItemMeta();
+		
+		if (!model_data.isEmpty()) {
+			item.setType(model_data.getType());
+			meta.setCustomModelData(model_data.getModel());
+			
+			System.out.println("Type: " + model_data.getType());
+			System.out.println("Model: " + model_data.getModel());
+		}
+		
+		item.setItemMeta(meta);
 		
 		NBTItem nbt_item = new NBTItem(item);
 		NBTCompound nbt = nbt_item.getOrCreateCompound("ItemCaster");

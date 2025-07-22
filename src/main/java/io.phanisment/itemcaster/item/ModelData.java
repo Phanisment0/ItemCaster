@@ -18,21 +18,17 @@ public class ModelData {
 	private Material type = Material.AIR;
 	private int model_index = 0;
 	
-	private ItemStack item = new ItemStack(Material.AIR);
-	private ItemMeta meta = null;
 	private final MythicItem mi;
 	private final MythicConfig config;
 	
 	public ModelData(String raw_item, MythicItem mi) {
-		this.config = mi.getConfig();
 		this.mi = mi;
+		this.config = mi.getConfig();
 		
-		ItemStack nitem = getItem(raw_item);
-		if (nitem != null) {
-			this.item = nitem;
+		ItemStack item = this.getItem(raw_item);
+		if (item != null) {
 			this.type = item.getType();
-			this.meta = item.hasItemMeta() ? item.getItemMeta() : null;
-			if (this.meta != null && this.meta.hasCustomModelData()) this.model_index = this.meta.getCustomModelData();
+			this.model_index = item.getItemMeta().getCustomModelData();
 		}
 	}
 	
@@ -86,7 +82,7 @@ public class ModelData {
 	}
 	
 	public boolean isEmpty() {
-		return model_index <= 0 && item.getType() == Material.AIR;
+		return model_index <= 0 && type == Material.AIR;
 	}
 	
 	public Material getType() {
@@ -95,9 +91,5 @@ public class ModelData {
 	
 	public int getModel() {
 		return this.model_index;
-	}
-	
-	public ItemStack getItem() {
-		return this.item;
 	}
 }
