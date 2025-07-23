@@ -12,6 +12,8 @@ import io.th0rgal.oraxen.api.OraxenItems;
 import com.nexomc.nexo.api.NexoItems;
 
 import io.phanisment.itemcaster.Constants;
+import io.phanisment.itemcaster.api.ApiHelper;
+import io.phanisment.itemcaster.api.ExternalItemProvider;
 
 public class ModelData {
 	private Material type = Material.AIR;
@@ -31,6 +33,24 @@ public class ModelData {
 		}
 	}
 	
+	
+	public Optional<ItemStack> getItem(String id) {
+		if (id == null && id.isEmpty()) return null;
+		
+		ItemStack item = new ItemStack(Material.STONE);
+		if (id.contains(":")) {
+			String[] parts = id.split(":");
+			ExternalItemProvider eip = ApiHelper.registeredItems().get(parts[0]);
+			if (eip != null) {
+				
+			}
+		} 
+		
+		Material material = Material.valueOf(id.toUpperCase());
+		item = new ItemStack(material);
+		return item;
+	}
+	/*
 	public ItemStack getItem(String id) {
 		if (id == null) return null;
 		
@@ -79,7 +99,7 @@ public class ModelData {
 		}
 		return i;
 	}
-	
+	*/
 	public boolean isEmpty() {
 		return model_index <= 0 && type == Material.AIR;
 	}

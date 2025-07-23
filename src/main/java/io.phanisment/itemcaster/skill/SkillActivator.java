@@ -22,6 +22,7 @@ import de.tr7zw.nbtapi.NBTCompoundList;
 import de.tr7zw.nbtapi.iface.ReadableNBT;
 
 import io.phanisment.itemcaster.util.NbtUtil;
+import io.phanisment.itemcaster.util.ItemUtil;
 import io.phanisment.itemcaster.ItemCaster;
 
 import java.util.Map;
@@ -45,20 +46,13 @@ public class SkillActivator {
 		this.item = item;
 		this.player = player;
 		this.activator = activator;
-		if (!validateItem(this.item)) return;
+		if (!ItemUtil.validateItem(this.item)) return;
 		this.inst = new NBTItem(item).getCompound("ItemCaster");
 		
 		if (this.inst == null) return;
 		
 		NBTCompoundList abilities = inst.getCompoundList("abilities");
 		abilities.forEach(this::readAbilityAttributes);
-	}
-	
-	/** 
-	 * Check if item is not empty.
-	 */
-	public static boolean validateItem(ItemStack item) {
-		return item != null && item.getType() != Material.AIR;
 	}
 	
 	public static SkillCaster toCaster(Entity entity) {
@@ -82,8 +76,7 @@ public class SkillActivator {
 		String skill = ability.getString("skill");
 		String event = ability.getString("activator").toUpperCase();
 		
-		if (skill.isEmpty()) return;
-		if (event.equals(activator.toString())) {
+		if (!skill.isEmpty() && event.equals(activator.toString())) {
 			SkillCaster sc = toCaster(player);
 			CasterPlayerData pc = new CasterPlayerData(player.getUniqueId(), skill);
 			Optional<Skill> ms = pc.getSkill();

@@ -44,66 +44,70 @@ public class ItemUtil {
 		return item;
 	}
 	
+	public static boolean validateItem(ItemStack item) {
+		return item != null && item.getType() != Material.AIR;
+	}
+	
 	public static void runSkill(Player player, Activator type) {
 		ItemStack mainHand = player.getInventory().getItemInMainHand();
-		if (SkillActivator.validateItem(mainHand)) {
+		if (validateItem(mainHand)) {
 			new SkillActivator(player, mainHand, type);
 		}
 		
 		ItemStack offHand = player.getInventory().getItemInOffHand();
-		if (SkillActivator.validateItem(offHand)) {
+		if (validateItem(offHand)) {
 			new SkillActivator(player, offHand, type);
 		}
 		
 		ItemStack helmet = player.getInventory().getHelmet();
-		if (SkillActivator.validateItem(helmet)) {
+		if (validateItem(helmet)) {
 			new SkillActivator(player, helmet, type);
 		}
 		
 		ItemStack chestplate = player.getInventory().getChestplate();
-		if (SkillActivator.validateItem(chestplate)) {
+		if (validateItem(chestplate)) {
 			new SkillActivator(player, chestplate, type);
 		}
 		
 		ItemStack leggings = player.getInventory().getLeggings();
-		if (SkillActivator.validateItem(leggings)) {
+		if (validateItem(leggings)) {
 			new SkillActivator(player, leggings, type);
 		}
 		
 		ItemStack boots = player.getInventory().getBoots();
-		if (SkillActivator.validateItem(boots)) {
+		if (validateItem(boots)) {
 			new SkillActivator(player, boots, type);
 		}
 	}
 
 	public static void runSkill(Player player, Activator type, String signal) {
 		ItemStack mainHand = player.getInventory().getItemInMainHand();
-		if (SkillActivator.validateItem(mainHand)) {
+		if (validateItem(mainHand)) {
 			new SkillActivator(player, mainHand, type).setSignal(signal);
 		}
 		
 		ItemStack offHand = player.getInventory().getItemInOffHand();
-		if (SkillActivator.validateItem(offHand)) {
+		if (validateItem(offHand)) {
 			new SkillActivator(player, offHand, type).setSignal(signal);
 		}
 		
 		ItemStack helmet = player.getInventory().getHelmet();
-		if (SkillActivator.validateItem(helmet)) {
+		if (validateItem(helmet)) {
 			new SkillActivator(player, helmet, type).setSignal(signal);
 		}
 		
 		ItemStack chestplate = player.getInventory().getChestplate();
-		if (SkillActivator.validateItem(chestplate)) {
+		if (validateItem(chestplate)) {
 			new SkillActivator(player, chestplate, type).setSignal(signal);
 		}
 		
 		ItemStack leggings = player.getInventory().getLeggings();
-		if (SkillActivator.validateItem(leggings)) {
+		if (validateItem(leggings)) {
 			new SkillActivator(player, leggings, type).setSignal(signal);
 		}
 		
 		ItemStack boots = player.getInventory().getBoots();
-		if (SkillActivator.validateItem(boots)) {
+		if (validateItem(boots)) {
 			new SkillActivator(player, boots, type).setSignal(signal);
 		}
 	}

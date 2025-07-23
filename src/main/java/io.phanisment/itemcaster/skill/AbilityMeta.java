@@ -52,8 +52,10 @@ public class AbilityMeta {
 		List<AbstractLocation> aLocation = new ArrayList<>();
 		
 		LivingEntity target = MythicUtil.getTargetedEntity(player);
-		aEntity.add(BukkitAdapter.adapt(target));
-		if (target != null) aLocation.add(BukkitAdapter.adapt(target.getLocation()));
+		if (target != null) {
+			aEntity.add(BukkitAdapter.adapt(target));
+			aLocation.add(BukkitAdapter.adapt(target.getLocation()));
+		}
 		
 		SkillMetadataImpl meta = new SkillMetadataImpl(SkillTriggers.API, caster, BukkitAdapter.adapt(player), BukkitAdapter.adapt(player.getLocation()), aEntity, aLocation, this.power);
 		
