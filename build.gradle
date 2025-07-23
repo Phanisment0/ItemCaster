@@ -1,4 +1,5 @@
 plugins {
+	id "com.github.johnrengelman.shadow" version "8.1.1"
 	id 'java-library'
 	id 'application'
 }
@@ -47,6 +48,7 @@ repositories {
 }
 
 dependencies {
+	implementation "com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1"
 	implementation "org.spigotmc:spigot-api:${project.api_version}"
 	implementation "io.lumine:Mythic-Dist:${project.mythicmobs_version}"
 	implementation "de.tr7zw:item-nbt-api-plugin:${project.nbt_api_version}"
@@ -58,6 +60,13 @@ dependencies {
 	compileOnly "net.kyori:adventure-api:${project.adventure_version}"
 	compileOnly "net.kyori:adventure-text-minimessage:${project.adventure_version}"
 	compileOnly "net.kyori:adventure-text-serializer-legacy:${project.adventure_version}"
+  
+	shadow "org.bstats:bstats-bukkit:3.0.2"
+}
+
+tasks.shadowJar {
+  archiveVersion = ""
+	relocate "org.bstats", "io.phanisment.bstats"
 }
 
 tasks.processResources {

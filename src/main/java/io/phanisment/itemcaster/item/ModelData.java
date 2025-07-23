@@ -3,17 +3,13 @@ package io.phanisment.itemcaster.item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
 
-import io.lumine.mythic.core.logging.MythicLogger;
 import io.lumine.mythic.core.items.MythicItem;
 import io.lumine.mythic.api.config.MythicConfig;
 
-import dev.lone.itemsadder.api.CustomStack;
-import io.th0rgal.oraxen.api.OraxenItems;
-import com.nexomc.nexo.api.NexoItems;
-
-import io.phanisment.itemcaster.Constants;
 import io.phanisment.itemcaster.api.ApiHelper;
 import io.phanisment.itemcaster.api.ExternalItemProvider;
+
+import java.util.Optional;
 
 public class ModelData {
 	private Material type = Material.AIR;
@@ -26,7 +22,7 @@ public class ModelData {
 		this.mi = mi;
 		this.config = mi.getConfig();
 		
-		ItemStack item = this.getItem(raw_item);
+		ItemStack item = this.getItem(raw_item).get();
 		if (item != null) {
 			this.type = item.getType();
 			this.model_index = item.getItemMeta().getCustomModelData();
@@ -35,20 +31,18 @@ public class ModelData {
 	
 	
 	public Optional<ItemStack> getItem(String id) {
-		if (id == null && id.isEmpty()) return null;
+		if (id.isEmpty()) return Optional.empty();
 		
 		ItemStack item = new ItemStack(Material.STONE);
 		if (id.contains(":")) {
 			String[] parts = id.split(":");
 			ExternalItemProvider eip = ApiHelper.registeredItems().get(parts[0]);
-			if (eip != null) {
-				
-			}
+			if (eip != null) return eip.resolve(parts, mi, config);
 		} 
 		
 		Material material = Material.valueOf(id.toUpperCase());
 		item = new ItemStack(material);
-		return item;
+		return Optional.of(item);
 	}
 	/*
 	public ItemStack getItem(String id) {

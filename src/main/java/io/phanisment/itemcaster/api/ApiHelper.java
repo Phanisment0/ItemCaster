@@ -10,11 +10,11 @@ public class ApiHelper {
 		
 	}
 	
-	public void registerItem(ExternalItemProvider instance) {
-		external_item.add(instance.getPlugin(), instance);
+	public static void registerItem(ExternalItemProvider instance) {
+		external_item.put(instance.getPlugin(), instance);
 	}
 	
-	public Map<String, ExternalItemProvider> registeredItems() {
-		return external_item.clone();
+	public static Map<String, ExternalItemProvider> registeredItems() {
+		return new HashMap<>(external_item);
 	}
 }

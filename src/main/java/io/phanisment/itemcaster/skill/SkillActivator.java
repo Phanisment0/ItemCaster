@@ -1,6 +1,5 @@
 package io.phanisment.itemcaster.skill;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

@@ -2,7 +2,6 @@ package io.phanisment.itemcaster.listener;
 
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
 
 import io.lumine.mythic.bukkit.events.MythicReloadedEvent;
@@ -14,7 +13,6 @@ import io.lumine.mythic.bukkit.BukkitAdapter;
 
 import io.phanisment.itemcaster.item.CasterItem;
 import io.phanisment.itemcaster.ItemCaster;
-import io.phanisment.itemcaster.skill.SkillActivator;
 import io.phanisment.itemcaster.skill.SkillActivator.Activator;
 import io.phanisment.itemcaster.skill.condition.*;
 //import io.phanisment.itemcaster.skill.mechanic.*;
