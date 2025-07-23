@@ -1,11 +1,9 @@
 package io.phanisment.itemcaster.skill;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import io.lumine.mythic.api.skills.SkillCaster;
-import io.lumine.mythic.api.skills.Skill;
 import io.lumine.mythic.core.utils.MythicUtil;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.api.adapters.AbstractEntity;
@@ -13,12 +11,8 @@ import io.lumine.mythic.api.adapters.AbstractLocation;
 import io.lumine.mythic.core.skills.SkillMetadataImpl;
 import io.lumine.mythic.core.skills.SkillTriggers;
 import io.lumine.mythic.core.skills.MetaSkill;
-import io.lumine.mythic.core.players.PlayerData;
 
 import de.tr7zw.nbtapi.iface.ReadableNBT;
-import de.tr7zw.nbtapi.NBTType;
-
-import io.phanisment.itemcaster.ItemCaster;
 
 import java.util.ArrayList;
 import java.util.List;

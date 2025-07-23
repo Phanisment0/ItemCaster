@@ -53,7 +53,7 @@ dependencies {
 	compileOnly "org.openjdk.nashorn:nashorn-core:${project.nashorn_version}"
 	compileOnly "dev.lone:api-itemsadder:${project.itemsadder_version}"
 	compileOnly "io.th0rgal:oraxen:${project.oraxen_version}"
-	compileOnly("com.nexomc:nexo:1.0.0")
+	compileOnly "com.nexomc:nexo:${project.nexo_version}"
 	
 	compileOnly "net.kyori:adventure-api:${project.adventure_version}"
 	compileOnly "net.kyori:adventure-text-minimessage:${project.adventure_version}"

@@ -1,7 +1,6 @@
 package io.phanisment.itemcaster.item;
 
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.Material;
 
 import io.lumine.mythic.core.logging.MythicLogger;

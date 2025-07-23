@@ -2,12 +2,10 @@ package io.phanisment.itemcaster.skill;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import io.lumine.mythic.bukkit.MythicBukkit;
-import io.lumine.mythic.api.skills.SkillMetadata;
+import io.lumine.mythic.api.adapters.AbstractLocation;
 import io.lumine.mythic.api.mobs.GenericCaster;
 import io.lumine.mythic.api.skills.SkillCaster;
 import io.lumine.mythic.api.skills.Skill;
@@ -22,14 +20,10 @@ import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTCompoundList;
 import de.tr7zw.nbtapi.iface.ReadableNBT;
-import de.tr7zw.nbtapi.iface.NBTHandler;
 
-import io.phanisment.itemcaster.util.DebugUtil;
 import io.phanisment.itemcaster.util.NbtUtil;
 import io.phanisment.itemcaster.ItemCaster;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Optional;
@@ -46,6 +40,7 @@ public class SkillActivator {
 	private String signal;
 	private boolean cancel_event;
 	
+	@SuppressWarnings("deprecation")
 	public SkillActivator(Player player, ItemStack item, Activator activator) {
 		this.item = item;
 		this.player = player;
@@ -68,7 +63,7 @@ public class SkillActivator {
 	
 	public static SkillCaster toCaster(Entity entity) {
 		if (entity == null) {
-			VirtualEntity virtual = new VirtualEntity(BukkitAdapter.adapt(entity.getLocation()));
+			VirtualEntity virtual = new VirtualEntity(new AbstractLocation());
 			return new GenericCaster(virtual);
 		}
 		

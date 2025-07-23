@@ -2,27 +2,19 @@ package io.phanisment.itemcaster.item;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.Material;
 
 import io.lumine.mythic.api.config.MythicConfig;
 import io.lumine.mythic.core.items.MythicItem;
 import io.lumine.mythic.bukkit.events.MythicMobItemGenerateEvent;
 import io.lumine.mythic.core.logging.MythicLogger;
-import io.lumine.mythic.bukkit.BukkitAdapter;
 
-import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTCompoundList;
-import de.tr7zw.nbtapi.iface.ReadWriteNBT;
-
-import io.phanisment.itemcaster.ItemCaster;
-import io.phanisment.itemcaster.util.ItemUtil;
 
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CasterItem {
 	private final MythicItem mi;
@@ -31,6 +23,7 @@ public class CasterItem {
 	private ModelData model_data;
 	private List<Map<String, Object>> abilities = new ArrayList<>();
 	
+	@SuppressWarnings("unchecked")
 	public CasterItem(MythicItem mi) {
 		this.mi = mi;
 		this.config = mi.getConfig();
@@ -39,6 +32,7 @@ public class CasterItem {
 		this.abilities = (List<Map<String, Object>>)(Object)config.getMapList("Abilities");
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void applyData(MythicMobItemGenerateEvent e) {
 		ItemStack item = e.getItemStack();
 		ItemMeta meta = item.getItemMeta();
@@ -46,9 +40,6 @@ public class CasterItem {
 		if (!model_data.isEmpty()) {
 			item.setType(model_data.getType());
 			meta.setCustomModelData(model_data.getModel());
-			
-			System.out.println("Type: " + model_data.getType());
-			System.out.println("Model: " + model_data.getModel());
 		}
 		
 		item.setItemMeta(meta);
@@ -62,6 +53,7 @@ public class CasterItem {
 		e.setItemStack(item);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void parseAbilities(List<Map<String, Object>> data, NBTCompound nbt) {
 		NBTCompoundList abilitiesList = nbt.getCompoundList("abilities");
 		for (Map<String, Object> ability : abilities) {

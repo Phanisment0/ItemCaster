@@ -1,12 +1,10 @@
 package io.phanisment.itemcaster.listener;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
 
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
@@ -37,9 +35,6 @@ import io.phanisment.itemcaster.skill.SkillActivator;
 import io.phanisment.itemcaster.skill.SkillActivator.Activator;
 import io.phanisment.itemcaster.util.ItemUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class ActivatorListener implements Listener {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
@@ -61,13 +56,13 @@ public class ActivatorListener implements Listener {
 		switch (e.getAnimationType()) {
 			case ARM_SWING:
 				ItemStack hand = player.getInventory().getItemInMainHand();
-				if (SkillActivator.validateItem(item)) {
+				if (SkillActivator.validateItem(hand)) {
 					new SkillActivator(player, hand, Activator.LEFT_CLICK);
 				}
 				break;
 			case OFF_ARM_SWING:
 				ItemStack offHand = player.getInventory().getItemInOffHand();
-				if (SkillActivator.validateItem(item)) {
+				if (SkillActivator.validateItem(offHand)) {
 					new SkillActivator(player, offHand, Activator.LEFT_CLICK);
 				}
 				break;
@@ -83,6 +78,7 @@ public class ActivatorListener implements Listener {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerPickUp(PlayerPickupItemEvent event) {
 		Player player = event.getPlayer();
@@ -126,10 +122,9 @@ public class ActivatorListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerShoot(EntityShootBowEvent event) {
-		if(event.getEntity() instanceof Player) {
-			Player player = (Player)event.getEntity();
-			ItemStack item = event.getBow();
+	public void onPlayerShoot(EntityShootBowEvent e) {
+		if(e.getEntity() instanceof Player player) {
+			ItemStack item = e.getBow();
 			if (SkillActivator.validateItem(item)) {
 				SkillActivator skill = new SkillActivator(player, item, Activator.BOW_SHOOT);
 				if (skill.getCancelEvent()) e.setCancelled(true);
