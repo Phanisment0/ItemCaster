@@ -40,6 +40,9 @@ public class CasterItem {
 		if (!model_data.isEmpty()) {
 			item.setType(model_data.getType());
 			meta.setCustomModelData(model_data.getModel());
+			
+			System.out.println("Type:" + model_data.getType());
+			System.out.println("Model: " + model_data.getModel());
 		}
 		
 		item.setItemMeta(meta);

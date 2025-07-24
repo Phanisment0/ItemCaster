@@ -15,6 +15,6 @@ public class ApiHelper {
 	}
 	
 	public static Map<String, ExternalItemProvider> registeredItems() {
-		return new HashMap<>(external_item);
+		return external_item;
 	}
 }

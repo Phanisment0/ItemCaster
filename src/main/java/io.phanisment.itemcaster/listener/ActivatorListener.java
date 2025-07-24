@@ -72,7 +72,7 @@ public class ActivatorListener implements Listener {
 	@EventHandler
 	public void onPlayerDrop(PlayerDropItemEvent e) {
 		Player player = e.getPlayer();
-		ItemStack item = event.getItemDrop().getItemStack();
+		ItemStack item = e.getItemDrop().getItemStack();
 		if (ItemUtil.validateItem(item)) {
 			new SkillActivator(player, item, Activator.DROP);
 		}
@@ -133,7 +133,7 @@ public class ActivatorListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onPlayerDeath(PlayerDeathEvent event) {
+	public void onPlayerDeath(PlayerDeathEvent e) {
 		Player player = e.getEntity();
 		ItemUtil.runSkill(player, Activator.DEATH);
 	}
