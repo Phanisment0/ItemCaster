@@ -1,27 +1,30 @@
 package io.phanisment.itemcaster.support;
 
 import org.bukkit.inventory.ItemStack;
+
+import io.phanisment.itemcaster.api.ExternalItemProvider;
 import io.lumine.mythic.api.config.MythicConfig;
 import io.lumine.mythic.core.items.MythicItem;
 import io.lumine.mythic.core.logging.MythicLogger;
-import dev.lone.itemsadder.api.CustomStack;
-import io.phanisment.itemcaster.api.ExternalItemProvider;
+
+import io.th0rgal.oraxen.api.OraxenItems;
+import io.th0rgal.oraxen.items.ItemBuilder;
+
 import java.util.Optional;
 
-public class ItemsAdderItemProvider implements ExternalItemProvider {
+public class OraxenItemProvider implements ExternalItemProvider {
 	@Override
 	public String getPlugin() {
-		return "itemsadder";
+		return "oraxen";
 	}
 	
 	@Override
 	public Optional<ItemStack> resolve(String[] parts, MythicItem item, MythicConfig config) {
-		String raw_id = parts[1] + ":" + parts[2];
-		CustomStack cs = CustomStack.getInstance(raw_id);
-		if (cs != null) {
-			return Optional.of(cs.getItemStack());
+		ItemBuilder ib = OraxenItems.getItemById(parts[1]);
+		if (ib != null) {
+			return Optional.of(ib.build());
 		} else {
-			MythicLogger.errorItemConfig(item, config, "ItemsAdder item not found: " + raw_id);
+			MythicLogger.errorItemConfig(item, config, "Nexo item not found: " + parts[1]);
 		}
 		return Optional.empty();
 	}

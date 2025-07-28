@@ -2,6 +2,11 @@ package io.phanisment.itemcaster.listener;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import io.phanisment.itemcaster.skill.SkillActivator;
+import io.phanisment.itemcaster.skill.SkillActivator.Activator;
+import io.phanisment.itemcaster.util.ItemUtil;
+
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -30,10 +35,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-
-import io.phanisment.itemcaster.skill.SkillActivator;
-import io.phanisment.itemcaster.skill.SkillActivator.Activator;
-import io.phanisment.itemcaster.util.ItemUtil;
 
 public class ActivatorListener implements Listener {
 	@EventHandler

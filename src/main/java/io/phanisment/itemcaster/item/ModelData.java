@@ -5,11 +5,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.Material;
 
 import io.lumine.mythic.core.items.MythicItem;
-import io.lumine.mythic.api.config.MythicConfig;
-import io.lumine.mythic.core.logging.MythicLogger;
-
 import io.phanisment.itemcaster.api.ApiHelper;
 import io.phanisment.itemcaster.api.ExternalItemProvider;
+import io.lumine.mythic.api.config.MythicConfig;
+import io.lumine.mythic.core.logging.MythicLogger;
 
 import java.util.Optional;
 

@@ -4,6 +4,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import io.phanisment.itemcaster.ItemCaster;
+import io.phanisment.itemcaster.util.ItemUtil;
+import io.phanisment.itemcaster.util.NbtUtil;
 import io.lumine.mythic.api.adapters.AbstractLocation;
 import io.lumine.mythic.api.mobs.GenericCaster;
 import io.lumine.mythic.api.skills.SkillCaster;
@@ -19,10 +22,6 @@ import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTCompoundList;
 import de.tr7zw.nbtapi.iface.ReadableNBT;
-
-import io.phanisment.itemcaster.util.NbtUtil;
-import io.phanisment.itemcaster.util.ItemUtil;
-import io.phanisment.itemcaster.ItemCaster;
 
 import java.util.Map;
 import java.util.HashMap;

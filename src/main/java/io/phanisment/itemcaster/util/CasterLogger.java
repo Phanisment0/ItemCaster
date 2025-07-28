@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.Constants;
+import io.phanisment.itemcaster.ItemCaster;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
