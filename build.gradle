@@ -47,9 +47,9 @@ repositories {
 }
 
 dependencies {
-	implementation "org.spigotmc:spigot-api:${project.api_version}"
-	implementation "io.lumine:Mythic-Dist:${project.mythicmobs_version}"
-	implementation "de.tr7zw:item-nbt-api-plugin:${project.nbt_api_version}"
+	compileOnly "org.spigotmc:spigot-api:${project.api_version}"
+	compileOnly "io.lumine:Mythic-Dist:${project.mythicmobs_version}"
+	compileOnly "de.tr7zw:item-nbt-api-plugin:${project.nbt_api_version}"
 	compileOnly "org.openjdk.nashorn:nashorn-core:${project.nashorn_version}"
 	compileOnly "dev.lone:api-itemsadder:${project.itemsadder_version}"
 	compileOnly "io.th0rgal:oraxen:${project.oraxen_version}"
@@ -58,6 +58,7 @@ dependencies {
 	compileOnly "net.kyori:adventure-api:${project.adventure_version}"
 	compileOnly "net.kyori:adventure-text-minimessage:${project.adventure_version}"
 	compileOnly "net.kyori:adventure-text-serializer-legacy:${project.adventure_version}"
+	compileOnly "com.google.code.gson:gson:${project.gson_version}"
 }
 
 tasks.processResources {
