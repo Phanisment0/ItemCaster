@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.core.players.PlayerManager;
 import io.lumine.mythic.core.items.ItemExecutor;
-import io.lumine.mythic.api.skills.SkillManager;
+import io.lumine.mythic.core.skills.SkillExecutor;
 import io.lumine.mythic.api.packs.PackManager;
 import io.lumine.mythic.api.mobs.MobManager;
 
@@ -16,21 +16,16 @@ import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.listener.ActivatorListener;
 import io.phanisment.itemcaster.listener.MythicListener;
 import io.phanisment.itemcaster.listener.CasterRunnable;
+import io.phanisment.itemcaster.support.ItemsAdderItemProvider;
 import io.phanisment.itemcaster.support.NexoItemProvider;
+import io.phanisment.itemcaster.support.OraxenItemProvider;
 
 public class ItemCaster extends JavaPlugin {
 	private static ItemCaster inst;
 	private static MythicBukkit core;
 	
-	private static ApiHelper api;
-	
 	public ItemCaster() {
 		inst = this;
-	}
-	
-	@Override
-	public void onLoad() {
-		api = new ApiHelper();
 	}
 	
 	@Override
@@ -38,17 +33,17 @@ public class ItemCaster extends JavaPlugin {
 		if (hasPlugin("ItemsAdder")) {
 			Constants.hasItemsAdder = true;
 			CasterLogger.send("ItemsAdder detected, Enabling the ItemsAdder features.");
-			getApi().registerItem(new ItemsAdderItemProvider());
+			ApiHelper.registerExternalItem(new ItemsAdderItemProvider());
 		}
 		if (hasPlugin("Nexo")) {
 			Constants.hasNexo = true;
 			CasterLogger.send("Nexo detected, Enabling the Nexo features.");
-			getApi().registerItem(new NexoItemProvider());
+			ApiHelper.registerExternalItem(new NexoItemProvider());
 		}
 		if (hasPlugin("Oraxen")) {
 			Constants.hasOraxen = true;
 			CasterLogger.send("Oraxen detected, Enabling the Oraxen features.");
-			getApi().registerItem(new OraxenItemProvider());
+			ApiHelper.registerExternalItem(new OraxenItemProvider());
 		}
 		
 		core = MythicBukkit.inst();
@@ -79,7 +74,7 @@ public class ItemCaster extends JavaPlugin {
 		return core.getPackManager();
 	}
 	
-	public static SkillManager getSkillManager() {
+	public static SkillExecutor getSkillManager() {
 		return core.getSkillManager();
 	}
 	
@@ -89,10 +84,6 @@ public class ItemCaster extends JavaPlugin {
 	
 	public static MobManager getMobManager() {
 		return core.getMobManager();
-	}
-	
-	public static ApiHelper getApi() {
-		return api;
 	}
 	
 	public static ItemCaster inst() {

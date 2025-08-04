@@ -98,8 +98,7 @@ public class ActivatorListener implements Listener {
 	
 	@EventHandler
 	public void onEntityDamaged(EntityDamageByEntityEvent e) {
-		if (e.getDamager() instanceof Player) {
-			Player player = (Player)e.getDamager();
+		if (e.getDamager() instanceof Player player) {
 			ItemUtil.runSkill(player, Activator.ATTACK);
 		}
 	}
@@ -187,7 +186,8 @@ public class ActivatorListener implements Listener {
 		Player player = e.getPlayer();
 		ItemStack item = e.getItemInHand();
 		if (ItemUtil.validateItem(item)) {
-			new SkillActivator(player, item, Activator.BLOCK_PLACE);
+			SkillActivator skill = new SkillActivator(player, item, Activator.BLOCK_PLACE);
+			if (skill.getCancelEvent()) e.setCancelled(true);
 		}
 	}
 	

@@ -17,6 +17,8 @@ base {
 repositories {
 	mavenLocal()
 	mavenCentral()
+	maven { url "https://mvn.lumine.io/repository/maven-public/" }
+	maven { url "https://repo.oraxen.com/releases" }
 	maven {
 		url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
 		content {
@@ -29,16 +31,8 @@ repositories {
 		url "https://repo.codemc.io/repository/maven-public/"
 	}
 	maven {
-		url "https://mvn.lumine.io/repository/maven-public/"
-	}
-	
-	maven {
 		name "matteodev"
 		url "https://maven.devs.beer/"
-	}
-	
-	maven {
-		url "https://repo.oraxen.com/releases"
 	}
 	maven {
 		name "nexomcReleases"
@@ -47,9 +41,9 @@ repositories {
 }
 
 dependencies {
-	implementation "org.spigotmc:spigot-api:${project.api_version}"
-	implementation "io.lumine:Mythic-Dist:${project.mythicmobs_version}"
-	implementation "de.tr7zw:item-nbt-api-plugin:${project.nbt_api_version}"
+		compileOnly "org.spigotmc:spigot-api:${project.api_version}"
+	compileOnly "io.lumine:Mythic-Dist:${project.mythicmobs_version}"
+	compileOnly "de.tr7zw:item-nbt-api-plugin:${project.nbt_api_version}"
 	compileOnly "org.openjdk.nashorn:nashorn-core:${project.nashorn_version}"
 	compileOnly "dev.lone:api-itemsadder:${project.itemsadder_version}"
 	compileOnly "io.th0rgal:oraxen:${project.oraxen_version}"

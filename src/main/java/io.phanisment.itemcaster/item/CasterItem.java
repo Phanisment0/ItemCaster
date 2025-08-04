@@ -7,6 +7,9 @@ import io.lumine.mythic.api.config.MythicConfig;
 import io.lumine.mythic.core.items.MythicItem;
 import io.lumine.mythic.bukkit.events.MythicMobItemGenerateEvent;
 import io.lumine.mythic.core.logging.MythicLogger;
+import io.lumine.mythic.bukkit.utils.version.MinecraftVersion;
+import io.lumine.mythic.bukkit.utils.version.MinecraftVersions;
+import io.lumine.mythic.bukkit.utils.version.ServerVersion;
 
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTCompound;
@@ -20,6 +23,7 @@ public class CasterItem {
 	private final MythicItem mi;
 	private final MythicConfig config;
 	
+	private boolean hide_tooltip = false;
 	private ModelData model_data;
 	private List<Map<String, Object>> abilities = new ArrayList<>();
 	
@@ -28,6 +32,7 @@ public class CasterItem {
 		this.mi = mi;
 		this.config = mi.getConfig();
 		
+		this.hide_tooltip = config.getBoolean("Options.HideTooltip");
 		this.model_data = new ModelData(config.getString("Model"), mi);
 		this.abilities = (List<Map<String, Object>>)(Object)config.getMapList("Abilities");
 	}
@@ -40,9 +45,10 @@ public class CasterItem {
 		if (!model_data.isEmpty()) {
 			item.setType(model_data.getType());
 			meta.setCustomModelData(model_data.getModel());
-			
-			System.out.println("Type:" + model_data.getType());
-			System.out.println("Model: " + model_data.getModel());
+		}
+		
+		if (ServerVersion.isAfter(MinecraftVersion.parse("1.21"))) {
+			if (hide_tooltip) meta.setHideTooltip(true);
 		}
 		
 		item.setItemMeta(meta);
@@ -75,6 +81,7 @@ public class CasterItem {
 			if (ability.containsKey("signal")) skillCompound.setString("signal", getSafeString(ability, "signal"));
 			if (ability.containsKey("interval")) skillCompound.setInteger("interval", getSafeInteger(ability, "interval"));
 			if (ability.containsKey("sneaking")) skillCompound.setBoolean("sneaking", getSafeBoolean(ability, "sneaking"));
+			if (ability.containsKey("cancel_event")) skillCompound.setBoolean("cancel_event", getSafeBoolean(ability, "cancel_event"));
 			
 			if (ability.containsKey("variables")) {
 				Map<String, Object> variables = (Map<String, Object>)ability.get("variables");

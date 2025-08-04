@@ -11,6 +11,8 @@ import io.lumine.mythic.core.logging.MythicLogger;
 
 import io.phanisment.itemcaster.skill.SkillActivator;
 import io.phanisment.itemcaster.skill.SkillActivator.Activator;
+import io.phanisment.itemcaster.api.ApiHelper;
+import io.phanisment.itemcaster.api.ExternalItemProvider;
 
 import java.util.Optional;
 
@@ -19,22 +21,24 @@ public class ItemUtil {
 		ItemStack item = new ItemStack(Material.STONE);
 		if (type.contains(":")) {
 			String[] parts = type.split(":");
-			String plugin = parts[0];
-			String name = parts[1];
-			switch(plugin.toLowerCase()) {
+			String id = parts[0].toLowerCase();
+			switch(id) {
 				case "mythicmobs":
-					Optional<MythicItem> mythicItem = MythicBukkit.inst().getItemManager().getItem(name);
+					Optional<MythicItem> mythicItem = MythicBukkit.inst().getItemManager().getItem(parts[1]);
 					if (mythicItem.isPresent()) {
 						MythicItem mi = mythicItem.get();
 						item = BukkitAdapter.adapt(mi.generateItemStack(1));
 					} else {
-						MythicLogger.error("MythicMobs item not found: " + name);
+						MythicLogger.error("MythicMobs item not found: " + parts[1]);
 					}
 					break;
 				default:
-					Material material = Material.valueOf(type.toUpperCase());
-					MythicLogger.error("Unknown external type: " + plugin);
-					item = new ItemStack(material);
+					ExternalItemProvider eip = ApiHelper.registeredExternalItems().get(id);
+					if (ApiHelper.registeredExternalItems().containsKey(id)) {
+						if (eip != null) item = eip.resolve(parts, null, null).get();
+					} else {
+						MythicLogger.error("Unknown external type: " + id);
+					}
 					break;
 				}
 		} else {
