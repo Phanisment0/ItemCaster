@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Legacy {
 	/**
 	 * A {@link LegacyComponentSerializer} instance that supports hex colors
-	 * and unusual repeated character hex formatting (e.g., &#xabcdef).
+	 * and unusual repeated character hex formatting.
 	 */
 	public static final LegacyComponentSerializer serializer = LegacyComponentSerializer.builder().hexColors().useUnusualXRepeatedCharacterHexFormat().build();
 	

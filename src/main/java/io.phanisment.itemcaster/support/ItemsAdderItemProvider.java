@@ -5,10 +5,10 @@ import io.lumine.mythic.api.config.MythicConfig;
 import io.lumine.mythic.core.items.MythicItem;
 import io.lumine.mythic.core.logging.MythicLogger;
 import dev.lone.itemsadder.api.CustomStack;
-import io.phanisment.itemcaster.api.ExternalItemProvider;
+import io.phanisment.itemcaster.api.IExternalItem;
 import java.util.Optional;
 
-public class ItemsAdderItemProvider implements ExternalItemProvider {
+public class ItemsAdderItemProvider implements IExternalItem {
 	@Override
 	public String getPlugin() {
 		return "itemsadder";

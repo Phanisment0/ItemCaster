@@ -8,10 +8,10 @@ import io.lumine.mythic.core.logging.MythicLogger;
 
 import io.th0rgal.oraxen.api.OraxenItems;
 import io.th0rgal.oraxen.items.ItemBuilder;
-import io.phanisment.itemcaster.api.ExternalItemProvider;
+import io.phanisment.itemcaster.api.IExternalItem;
 import java.util.Optional;
 
-public class OraxenItemProvider implements ExternalItemProvider {
+public class OraxenItemProvider implements IExternalItem {
 	@Override
 	public String getPlugin() {
 		return "oraxen";

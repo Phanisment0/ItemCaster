@@ -4,8 +4,10 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+import io.lumine.mythic.core.logging.MythicLogger;
+import io.lumine.mythic.core.skills.SkillMechanic;
+import io.lumine.mythic.core.skills.SkillExecutor;
 import io.lumine.mythic.api.config.MythicLineConfig;
-import io.lumine.mythic.api.skills.placeholders.PlaceholderString;
 import io.lumine.mythic.api.skills.ITargetedEntitySkill;
 import io.lumine.mythic.api.skills.INoTargetSkill;
 import io.lumine.mythic.api.skills.SkillMetadata;
@@ -13,17 +15,19 @@ import io.lumine.mythic.api.skills.SkillResult;
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 
+import java.io.File;
 import java.util.Optional;
 
-public abstract class ItemMechanic implements ITargetedEntitySkill, INoTargetSkill {
+public abstract class ItemMechanic extends SkillMechanic implements ITargetedEntitySkill, INoTargetSkill {
 	private EquipmentSlot slot;
 	
-	public ItemMechanic(MythicLineConfig config) {
-		String raw_slot = config.getString(new String[]{"slot", "s"}, "HAND");
+	public ItemMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
+		super(manager, file, line, mlc);
+		String slot_string = mlc.getString(new String[]{"slot", "s"}, "HAND").toUpperCase();
 		try {
-			this.slot = EquipmentSlot.valueOf(raw_slot.toUpperCase());
-		} catch (EnumConstantNotPresentException e) {
-			
+			this.slot = EquipmentSlot.valueOf(slot_string);
+		} catch (IllegalArgumentException e) {
+			MythicLogger.errorMechanic(this, "Invalid equipment slot value: " + slot_string, e);
 		}
 	}
 	
@@ -36,7 +40,7 @@ public abstract class ItemMechanic implements ITargetedEntitySkill, INoTargetSki
 	public SkillResult castAtEntity(SkillMetadata meta, AbstractEntity entity) {
 		LivingEntity target = (LivingEntity)BukkitAdapter.adapt(entity);
 		ItemStack item = target.getEquipment().getItem(slot);
-		Optional<ItemStack> result = this.resolve(target, item);
+		Optional<ItemStack> result = this.resolve(entity, item);
 		if (result.isPresent()) {
 			target.getEquipment().setItem(slot, result.get());
 			return SkillResult.SUCCESS;
@@ -48,5 +52,5 @@ public abstract class ItemMechanic implements ITargetedEntitySkill, INoTargetSki
 		return this.slot;
 	}
 	
-	abstract Optional<ItemStack> resolve(LivingEntity target, ItemStack item);
+	abstract Optional<ItemStack> resolve(AbstractEntity target, ItemStack item);
 }

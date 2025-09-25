@@ -12,40 +12,28 @@ import io.lumine.mythic.core.logging.MythicLogger;
 import io.phanisment.itemcaster.skill.SkillActivator;
 import io.phanisment.itemcaster.skill.SkillActivator.Activator;
 import io.phanisment.itemcaster.api.ApiHelper;
-import io.phanisment.itemcaster.api.ExternalItemProvider;
+import io.phanisment.itemcaster.api.IExternalItem;
 
 import java.util.Optional;
 
 public class ItemUtil {
 	public static ItemStack getItem(String type) {
-		ItemStack item = new ItemStack(Material.STONE);
+		if (type == null && type.isBlank()) return new ItemStack(Material.STONE);
 		if (type.contains(":")) {
 			String[] parts = type.split(":");
-			String id = parts[0].toLowerCase();
-			switch(id) {
-				case "mythicmobs":
-					Optional<MythicItem> mythicItem = MythicBukkit.inst().getItemManager().getItem(parts[1]);
-					if (mythicItem.isPresent()) {
-						MythicItem mi = mythicItem.get();
-						item = BukkitAdapter.adapt(mi.generateItemStack(1));
-					} else {
-						MythicLogger.error("MythicMobs item not found: " + parts[1]);
-					}
-					break;
-				default:
-					ExternalItemProvider eip = ApiHelper.registeredExternalItems().get(id);
-					if (ApiHelper.registeredExternalItems().containsKey(id)) {
-						if (eip != null) item = eip.resolve(parts, null, null).get();
-					} else {
-						MythicLogger.error("Unknown external type: " + id);
-					}
-					break;
-				}
-		} else {
-			Material material = Material.valueOf(type.toUpperCase());
-			item = new ItemStack(material);
+			if (parts[0].toLowerCase().equalsIgnoreCase("mythicmobs")) {
+				Optional<MythicItem> mi = MythicBukkit.inst().getItemManager().getItem(parts[1]);
+				if (mi.isPresent()) return BukkitAdapter.adapt(mi.get().generateItemStack(1));
+			}
+			IExternalItem eip = ApiHelper.registeredExternalItems().get(type);
+			if (eip != null) return eip.resolve(parts, null, null).orElse(new ItemStack(Material.STONE));
 		}
-		return item;
+		
+		try {
+			return new ItemStack(Material.valueOf(type.toUpperCase()));
+		} catch(IllegalArgumentException e) {
+			return new ItemStack(Material.STONE);
+		}
 	}
 	
 	public static boolean validateItem(ItemStack item) {
@@ -54,65 +42,25 @@ public class ItemUtil {
 	
 	public static void runSkill(Player player, Activator type) {
 		ItemStack mainHand = player.getInventory().getItemInMainHand();
-		if (validateItem(mainHand)) {
-			new SkillActivator(player, mainHand, type);
-		}
+		if (validateItem(mainHand)) new SkillActivator(player, mainHand, type);
 		
 		ItemStack offHand = player.getInventory().getItemInOffHand();
-		if (validateItem(offHand)) {
-			new SkillActivator(player, offHand, type);
-		}
+		if (validateItem(offHand)) new SkillActivator(player, offHand, type);
 		
-		ItemStack helmet = player.getInventory().getHelmet();
-		if (validateItem(helmet)) {
-			new SkillActivator(player, helmet, type);
-		}
-		
-		ItemStack chestplate = player.getInventory().getChestplate();
-		if (validateItem(chestplate)) {
-			new SkillActivator(player, chestplate, type);
-		}
-		
-		ItemStack leggings = player.getInventory().getLeggings();
-		if (validateItem(leggings)) {
-			new SkillActivator(player, leggings, type);
-		}
-		
-		ItemStack boots = player.getInventory().getBoots();
-		if (validateItem(boots)) {
-			new SkillActivator(player, boots, type);
+		for (ItemStack item : player.getInventory().getArmorContents()) {
+			if (validateItem(item)) new SkillActivator(player, item, type);
 		}
 	}
-
+	
 	public static void runSkill(Player player, Activator type, String signal) {
 		ItemStack mainHand = player.getInventory().getItemInMainHand();
-		if (validateItem(mainHand)) {
-			new SkillActivator(player, mainHand, type).setSignal(signal);
-		}
+		if (validateItem(mainHand)) new SkillActivator(player, mainHand, type).setSignal(signal);
 		
 		ItemStack offHand = player.getInventory().getItemInOffHand();
-		if (validateItem(offHand)) {
-			new SkillActivator(player, offHand, type).setSignal(signal);
-		}
+		if (validateItem(offHand)) new SkillActivator(player, offHand, type).setSignal(signal);
 		
-		ItemStack helmet = player.getInventory().getHelmet();
-		if (validateItem(helmet)) {
-			new SkillActivator(player, helmet, type).setSignal(signal);
-		}
-		
-		ItemStack chestplate = player.getInventory().getChestplate();
-		if (validateItem(chestplate)) {
-			new SkillActivator(player, chestplate, type).setSignal(signal);
-		}
-		
-		ItemStack leggings = player.getInventory().getLeggings();
-		if (validateItem(leggings)) {
-			new SkillActivator(player, leggings, type).setSignal(signal);
-		}
-		
-		ItemStack boots = player.getInventory().getBoots();
-		if (validateItem(boots)) {
-			new SkillActivator(player, boots, type).setSignal(signal);
+		for (ItemStack item : player.getInventory().getArmorContents()) {
+			if (validateItem(item)) new SkillActivator(player, item, type).setSignal(signal);
 		}
 	}
 }

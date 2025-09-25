@@ -19,6 +19,7 @@ import io.phanisment.itemcaster.listener.CasterRunnable;
 import io.phanisment.itemcaster.support.ItemsAdderItemProvider;
 import io.phanisment.itemcaster.support.NexoItemProvider;
 import io.phanisment.itemcaster.support.OraxenItemProvider;
+import io.phanisment.itemcaster.skill.SkillManager;
 
 public class ItemCaster extends JavaPlugin {
 	private static ItemCaster inst;
@@ -26,6 +27,11 @@ public class ItemCaster extends JavaPlugin {
 	
 	public ItemCaster() {
 		inst = this;
+	}
+	
+	@Override
+	public void onLoad() {
+		SkillManager.register();
 	}
 	
 	@Override
@@ -50,8 +56,6 @@ public class ItemCaster extends JavaPlugin {
 		this.listen(new ActivatorListener());
 		this.listen(new MythicListener());
 		new CasterRunnable().runTaskTimer(this, 1L, 1L);
-		
-		//getItemManager().load(core);
 	}
 	
 	private boolean hasPlugin(String plugin) {
@@ -63,7 +67,6 @@ public class ItemCaster extends JavaPlugin {
 	}
 	
 	public void reload() {
-		
 	}
 	
 	public static ItemExecutor getItemManager() {

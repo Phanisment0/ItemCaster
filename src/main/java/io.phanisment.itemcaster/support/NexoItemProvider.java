@@ -8,10 +8,10 @@ import io.lumine.mythic.core.logging.MythicLogger;
 
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
-import io.phanisment.itemcaster.api.ExternalItemProvider;
+import io.phanisment.itemcaster.api.IExternalItem;
 import java.util.Optional;
 
-public class NexoItemProvider implements ExternalItemProvider {
+public class NexoItemProvider implements IExternalItem {
 	@Override
 	public String getPlugin() {
 		return "nexo";

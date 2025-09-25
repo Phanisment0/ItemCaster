@@ -9,7 +9,7 @@ import io.lumine.mythic.api.config.MythicConfig;
 import io.lumine.mythic.core.logging.MythicLogger;
 
 import io.phanisment.itemcaster.api.ApiHelper;
-import io.phanisment.itemcaster.api.ExternalItemProvider;
+import io.phanisment.itemcaster.api.IExternalItem;
 
 import java.util.Optional;
 import java.util.Arrays;
@@ -49,7 +49,7 @@ public class ModelData {
 			
 			String[] parts = type.split(":");
 			String id = parts[0].toLowerCase();
-			ExternalItemProvider eip = ApiHelper.registeredExternalItems().get(id);
+			IExternalItem eip = ApiHelper.registeredExternalItems().get(id);
 			if (ApiHelper.registeredExternalItems().containsKey(id)) {
 				if (eip != null) return eip.resolve(parts, mi, config);
 			} else {

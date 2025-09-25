@@ -11,5 +11,3 @@ softdepend:
 - ItemsAdder
 - Nexo
 - Oraxen
-#libraries:
-#- org.openjdk.nashorn:nashorn-core:${nashorn_version}

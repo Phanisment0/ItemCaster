@@ -33,7 +33,7 @@ public class CasterItem {
 		this.config = mi.getConfig();
 		
 		this.hide_tooltip = config.getBoolean("Options.HideTooltip");
-		this.model_data = new ModelData(config.getString("Model"), mi);
+		this.model_data = new ModelData(config.getString("ModelItem"), mi);
 		this.abilities = (List<Map<String, Object>>)(Object)config.getMapList("Abilities");
 	}
 	
