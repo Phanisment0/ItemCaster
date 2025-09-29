@@ -32,8 +32,6 @@ public class SkillManager {
 			}
 		}
 		
-		System.out.println("Data: " + getConditions());
-		
 		// Mechanic Registry
 		Collection<Class<?>> class_mechanics = AnnotationUtil.getAnnotatedClasses(ItemCaster.inst(), "io.phanisment.itemcaster.skill.mechanic", MythicMechanic.class);
 		for (Class<?> mechanic : class_mechanics) {

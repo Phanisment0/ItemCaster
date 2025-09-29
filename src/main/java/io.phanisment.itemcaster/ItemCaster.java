@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
 import io.lumine.mythic.bukkit.MythicBukkit;
+import io.lumine.mythic.bukkit.utils.version.ServerVersion;
 import io.lumine.mythic.core.players.PlayerManager;
 import io.lumine.mythic.core.items.ItemExecutor;
 import io.lumine.mythic.core.skills.SkillExecutor;
@@ -12,16 +13,21 @@ import io.lumine.mythic.api.packs.PackManager;
 import io.lumine.mythic.api.mobs.MobManager;
 
 import io.phanisment.itemcaster.api.ApiHelper;
+import io.phanisment.itemcaster.config.ConfigManager;
 import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.listener.ActivatorListener;
 import io.phanisment.itemcaster.listener.MythicListener;
+import io.phanisment.itemcaster.listener.PaperListener;
 import io.phanisment.itemcaster.listener.CasterRunnable;
 import io.phanisment.itemcaster.support.ItemsAdderItemProvider;
 import io.phanisment.itemcaster.support.NexoItemProvider;
 import io.phanisment.itemcaster.support.OraxenItemProvider;
 import io.phanisment.itemcaster.skill.SkillManager;
 
-public class ItemCaster extends JavaPlugin {
+/**
+ * Main Instance of the plugin.
+ */
+public final class ItemCaster extends JavaPlugin {
 	private static ItemCaster inst;
 	private static MythicBukkit core;
 	
@@ -29,6 +35,9 @@ public class ItemCaster extends JavaPlugin {
 		inst = this;
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void onLoad() {
 		SkillManager.register();
@@ -52,10 +61,22 @@ public class ItemCaster extends JavaPlugin {
 			ApiHelper.registerExternalItem(new OraxenItemProvider());
 		}
 		
+		if (ServerVersion.isPaper()) {
+			this.listen(new PaperListener());
+		}
+		
 		core = MythicBukkit.inst();
+		ConfigManager.load();
 		this.listen(new ActivatorListener());
 		this.listen(new MythicListener());
 		new CasterRunnable().runTaskTimer(this, 1L, 1L);
+		
+		CasterLogger.send("Enable Crafting: " + ConfigManager.getConfig());
+	}
+	
+	@Override
+	public void onDisable() {
+		ConfigManager.save();
 	}
 	
 	private boolean hasPlugin(String plugin) {
@@ -67,6 +88,7 @@ public class ItemCaster extends JavaPlugin {
 	}
 	
 	public void reload() {
+		ConfigManager.load();
 	}
 	
 	public static ItemExecutor getItemManager() {

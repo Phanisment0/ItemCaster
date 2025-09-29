@@ -1,12 +1,17 @@
 package io.phanisment.itemcaster.item;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.bukkit.Material;
 
 import io.lumine.mythic.core.items.MythicItem;
 import io.lumine.mythic.api.config.MythicConfig;
 import io.lumine.mythic.core.logging.MythicLogger;
+import io.lumine.mythic.bukkit.utils.version.MinecraftVersion;
+import io.lumine.mythic.bukkit.utils.version.MinecraftVersions;
+import io.lumine.mythic.bukkit.utils.version.ServerVersion;
 
 import io.phanisment.itemcaster.api.ApiHelper;
 import io.phanisment.itemcaster.api.IExternalItem;
@@ -17,60 +22,90 @@ import java.util.Arrays;
 public class ModelData {
 	private Material type = Material.AIR;
 	private int model_index = 0;
+	private NamespacedKey item_model;
+	private NamespacedKey tooltip_style;
+	private CustomModelDataComponent model_data_component;
 	
 	private final MythicItem mi;
 	private final MythicConfig config;
-	private boolean has_id;
-	private boolean has_material;
 	
 	public ModelData(String raw_item, MythicItem mi) {
 		this.mi = mi;
 		this.config = mi.getConfig();
-		this.has_id = config.isSet("Id");
-		this.has_material = config.isSet("Material");
 		
 		Optional<ItemStack> item = this.getItem(raw_item);
-		if (item.isPresent()) {
-			this.type = item.get().getType();
-			ItemMeta meta = item.get().getItemMeta();
-			if (meta.hasCustomModelData() && meta != null) this.model_index = meta.getCustomModelData();
+		if (!item.isPresent()) return;
+		
+		if (ServerVersion.isBefore(MinecraftVersion.parse("1.21.3"))) this.type = item.get().getType();
+		
+		ItemMeta meta = item.get().getItemMeta();
+		if (meta != null) {
+			if (meta.hasCustomModelData()) this.model_index = meta.getCustomModelData();
+			if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.20.5")) && meta.hasTooltipStyle()) this.tooltip_style = meta.getTooltipStyle();
+			if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.21.3")) && meta.hasItemModel()) this.item_model = meta.getItemModel();
+			if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.21.4")) && meta.getCustomModelDataComponent() != null) this.model_data_component = meta.getCustomModelDataComponent();
 		}
 	}
 	
 	public Optional<ItemStack> getItem(String type) {
-		if (type == null) return Optional.empty();
+		if (type == null || type.isBlank()) return Optional.empty();
 		
-		ItemStack item = new ItemStack(Material.AIR);
 		if (type.contains(":")) {
-			if (has_id || has_material) {
-				MythicLogger.errorItemConfig(mi, config, "You can not use Id/Material item when use the External Model Item, To fix try delete the Id/Material item."); 
+			String[] parts = type.split(":");
+			
+			IExternalItem eip = ApiHelper.registeredExternalItems().get(parts[0].toLowerCase());
+			if (eip == null) {
+				MythicLogger.errorItemConfig(mi, config, "Unknown External Item: " + parts[0].toLowerCase());
 				return Optional.empty();
 			}
-			
-			String[] parts = type.split(":");
-			String id = parts[0].toLowerCase();
-			IExternalItem eip = ApiHelper.registeredExternalItems().get(id);
-			if (ApiHelper.registeredExternalItems().containsKey(id)) {
-				if (eip != null) return eip.resolve(parts, mi, config);
-			} else {
-				MythicLogger.errorItemConfig(mi, config, "Unknown External Item: " + id); 
-			}
-		} else {
-			Material material = Material.valueOf(type.toUpperCase());
-			item = new ItemStack(material);
+			return eip.resolve(parts, mi, config);
 		}
-		return Optional.of(item);
+		
+		try {
+			return Optional.of(new ItemStack(Material.valueOf(type.toUpperCase())));
+		} catch (IllegalArgumentException e) {
+			MythicLogger.errorItemConfig(mi, config, "Unknown Material: " + type.toUpperCase());
+			return Optional.empty();
+		}
 	}
 	
-	public boolean isEmpty() {
-		return model_index <= 0 && type == Material.AIR;
+	public boolean hasType() {
+		return this.type != null && this.type != Material.AIR;
+	}
+	
+	public boolean hasModelData() {
+		return this.model_index > 0 ? true : false;
+	}
+	
+	public boolean hasItemModel() {
+		return this.item_model != null;
+	}
+	
+	public boolean hasTooltipStyle() {
+		return this.tooltip_style != null;
+	}
+	
+	public boolean hasModelDataComponent() {
+		return this.model_data_component != null;
 	}
 	
 	public Material getType() {
 		return this.type;
 	}
 	
-	public int getModel() {
+	public int getModelData() {
 		return this.model_index;
+	}
+	
+	public NamespacedKey getItemModel() {
+		return this.item_model;
+	}
+	
+	public NamespacedKey getTooltipStyle() {
+		return this.tooltip_style;
+	}
+	
+	public CustomModelDataComponent getModelDataComponent() {
+		return this.model_data_component;
 	}
 }

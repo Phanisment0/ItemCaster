@@ -17,7 +17,7 @@ import de.tr7zw.nbtapi.iface.ReadableNBT;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbilityMeta {
+public class SkillExecutor {
 	private final Player player;
 	private final SkillCaster caster;
 	private final MetaSkill skill;
@@ -26,23 +26,23 @@ public class AbilityMeta {
 	private double cooldown;
 	private ReadableNBT variables;
 	
-	public AbilityMeta(MetaSkill skill, Player player) {
+	public SkillExecutor(MetaSkill skill, Player player) {
 		this.player = player;
 		this.caster = SkillActivator.toCaster(player);
 		this.skill = skill;
 	}
 	
-	public AbilityMeta setPower(float power) {
+	public SkillExecutor setPower(float power) {
 		this.power = power;
 		return this;
 	}
 	
-	public AbilityMeta setCooldown(double cooldown) {
+	public SkillExecutor setCooldown(double cooldown) {
 		this.cooldown = cooldown;
 		return this;
 	}
 	
-	public AbilityMeta setVariables(ReadableNBT variables) {
+	public SkillExecutor setVariables(ReadableNBT variables) {
 		this.variables = variables;
 		return this;
 	}

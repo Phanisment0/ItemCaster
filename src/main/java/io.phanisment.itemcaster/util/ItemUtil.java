@@ -2,6 +2,7 @@ package io.phanisment.itemcaster.util;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.entity.Player;
 
 import io.lumine.mythic.bukkit.BukkitAdapter;
@@ -18,7 +19,7 @@ import java.util.Optional;
 
 public class ItemUtil {
 	public static ItemStack getItem(String type) {
-		if (type == null && type.isBlank()) return new ItemStack(Material.STONE);
+		if (type == null || type.isBlank()) return new ItemStack(Material.STONE);
 		if (type.contains(":")) {
 			String[] parts = type.split(":");
 			if (parts[0].toLowerCase().equalsIgnoreCase("mythicmobs")) {
@@ -41,26 +42,30 @@ public class ItemUtil {
 	}
 	
 	public static void runSkill(Player player, Activator type) {
-		ItemStack mainHand = player.getInventory().getItemInMainHand();
+		PlayerInventory inv = player.getInventory();
+		
+		ItemStack mainHand = inv.getItemInMainHand();
 		if (validateItem(mainHand)) new SkillActivator(player, mainHand, type);
 		
-		ItemStack offHand = player.getInventory().getItemInOffHand();
+		ItemStack offHand = inv.getItemInOffHand();
 		if (validateItem(offHand)) new SkillActivator(player, offHand, type);
 		
-		for (ItemStack item : player.getInventory().getArmorContents()) {
-			if (validateItem(item)) new SkillActivator(player, item, type);
+		for (ItemStack armor : inv.getArmorContents()) {
+			if (validateItem(armor)) new SkillActivator(player, armor, type);
 		}
 	}
 	
 	public static void runSkill(Player player, Activator type, String signal) {
-		ItemStack mainHand = player.getInventory().getItemInMainHand();
+		PlayerInventory inv = player.getInventory();
+		
+		ItemStack mainHand = inv.getItemInMainHand();
 		if (validateItem(mainHand)) new SkillActivator(player, mainHand, type).setSignal(signal);
 		
-		ItemStack offHand = player.getInventory().getItemInOffHand();
+		ItemStack offHand = inv.getItemInOffHand();
 		if (validateItem(offHand)) new SkillActivator(player, offHand, type).setSignal(signal);
 		
-		for (ItemStack item : player.getInventory().getArmorContents()) {
-			if (validateItem(item)) new SkillActivator(player, item, type).setSignal(signal);
+		for (ItemStack armor : inv.getArmorContents()) {
+			if (validateItem(armor)) new SkillActivator(player, armor, type).setSignal(signal);
 		}
 	}
 }

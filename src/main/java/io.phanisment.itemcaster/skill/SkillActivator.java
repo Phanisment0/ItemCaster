@@ -31,7 +31,7 @@ import java.util.UUID;
 
 public class SkillActivator {
 	private static final Map<CasterPlayerData, Integer> skill_interval = new HashMap<>();
-	private AbilityMeta meta;
+	private SkillExecutor meta;
 	
 	private final ItemStack item;
 	private final Player player;
@@ -88,7 +88,7 @@ public class SkillActivator {
 			if (event.equals("SIGNAL") && !this.isSignalEquals(ability)) return;
 			if (event.equals("TICK") && !this.canTriggerTick(pc, ability)) return;
 			
-			this.meta = new AbilityMeta(sk, player)
+			this.meta = new SkillExecutor(sk, player)
 				.setPower(this.getNbtPower(ability))
 				.setCooldown(this.getNbtCooldown(ability))
 				.setVariables(ability.getCompound("variables"));
@@ -148,29 +148,102 @@ public class SkillActivator {
 		LEFT_CLICK,
 		RIGHT_CLICK,
 		INTERACT_ENTITY,
+		
 		DROP,
 		PICKUP,
-		DAMAGED,
+		PICKUP_EXP,
+		
 		ATTACK,
+		DAMAGED,
+		DAMAGED_BY_BLOCK_EXPLOSION,
+		DAMAGED_BY_CAMPFIRE,
+		DAMAGED_BY_CONTACT,
+		DAMAGED_BY_CRAMMING,
+		DAMAGED_BY_CUSTOM,
+		DAMAGED_BY_DRAGON_BREATH,
+		DAMAGED_BY_DROWNING,
+		DAMAGED_BY_ENTITY_ATTACK,
+		DAMAGED_BY_ENTITY_EXPLOSION,
+		DAMAGED_BY_ENTITY_SWEEP_ATTACK,
+		DAMAGED_BY_FALL,
+		DAMAGED_BY_FALLING_BLOCK,
+		DAMAGED_BY_FIRE,
+		DAMAGED_BY_FIRE_TICK,
+		DAMAGED_BY_FLY_INTO_WALL,
+		DAMAGED_BY_FREEZE,
+		DAMAGED_BY_HOT_FLOOR,
+		DAMAGED_BY_KILL,
+		DAMAGED_BY_LAVA,
+		DAMAGED_BY_LIGHTNING,
+		DAMAGED_BY_MAGIC,
+		DAMAGED_BY_POISON,
+		DAMAGED_BY_PROJECTILE,
+		DAMAGED_BY_SONIC_BOOM,
+		DAMAGED_BY_STARVATION,
+		DAMAGED_BY_SUFFOCATION,
+		DAMAGED_BY_SUICIDE,
+		DAMAGED_BY_THORNS,
+		DAMAGED_BY_VOID,
+		DAMAGED_BY_WITHER,
+		DAMAGED_BY_WORLD_BORDER,
+		
 		TOGGLE_SNEAK,
 		SNEAK,
 		UNSNEAK,
+		
+		SHIELD_DISABLED,
+		STOP_USE_ITEM,
 		CONSUME,
+		
 		BOW_SHOOT,
+		PROJECTILE_HIT,
+		
 		DEATH,
+		
 		LOGIN,
 		QUIT,
+		
 		CHANGE_SLOT,
+		SWAP_HAND,
+		
 		ITEM_BREAK,
+		
 		FISHING,
+		FISH_BITE,
+		FISH_CAUGHT_ENTITY,
+		FISH_CAUGHT_FISH,
+		FISH_FAILED_ATTEMPT,
+		FISH_FISHING,
+		FISH_IN_GROUND,
+		FISH_REEL_IN,
+		
 		TOGGLE_SPRINT,
 		SPRINT,
 		UNSPRINT,
+		
 		BLOCK_PLACE,
 		BLOCK_BREAK,
 		BLOCK_DAMAGED,
 		BLOCK_STOP_DAMAGED,
+		
+		ARMOR_CHANGE,
+		ELYRA_BOOST,
+		
 		TELEPORT,
+		TELEPORTED_BY_CHORUS_FRUIT,
+		TELEPORTED_BY_COMMAND,
+		TELEPORTED_BY_DISMOUNT,
+		TELEPORTED_BY_END_GATEWAY,
+		TELEPORTED_BY_END_PORTAL,
+		TELEPORTED_BY_ENDER_PEARL,
+		TELEPORTED_BY_EXIT_BED,
+		TELEPORTED_BY_NETHER_PORTAL,
+		TELEPORTED_BY_PLUGIN,
+		TELEPORTED_BY_SPECTATE,
+		TELEPORTED_BY_UNKNOWN,
+		
+		CHANGE_WORLD,
+		
 		TICK,
 		SIGNAL;
 		
