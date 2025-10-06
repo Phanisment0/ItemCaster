@@ -1,14 +1,10 @@
 package io.phanisment.itemcaster.skill.mechanic;
 
-import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.config.MythicLineConfig;
-import io.lumine.mythic.core.logging.MythicLogger;
 import io.lumine.mythic.core.utils.annotations.MythicMechanic;
 import io.lumine.mythic.core.skills.SkillExecutor;
 
@@ -27,6 +23,7 @@ import java.util.Optional;
 public class RemoveEnchantmentItemMechanic extends ItemMechanic {
 	private Enchantment enchantment;
 	
+	@SuppressWarnings("deprecation")
 	public RemoveEnchantmentItemMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
 		super(manager, file, line, mlc);
 		String string_enc = mlc.getString(new String[]{"enchantment", "en"}, "UNBREAKING").toUpperCase();

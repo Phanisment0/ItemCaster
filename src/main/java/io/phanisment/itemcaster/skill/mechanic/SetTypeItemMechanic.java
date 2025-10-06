@@ -28,6 +28,7 @@ public class SetTypeItemMechanic extends ItemMechanic {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public Optional<ItemStack> resolve(AbstractEntity target, ItemStack item) {
 		if (!validateItem(item)) return Optional.empty();

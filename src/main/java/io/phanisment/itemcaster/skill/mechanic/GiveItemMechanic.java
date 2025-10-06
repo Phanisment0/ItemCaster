@@ -1,14 +1,10 @@
 package io.phanisment.itemcaster.skill.mechanic;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.entity.Player;
 
 import io.lumine.mythic.api.adapters.AbstractEntity;
-import io.lumine.mythic.api.adapters.AbstractPlayer;
 import io.lumine.mythic.api.config.MythicLineConfig;
-import io.lumine.mythic.core.logging.MythicLogger;
 import io.lumine.mythic.core.utils.annotations.MythicMechanic;
 import io.lumine.mythic.api.skills.ITargetedEntitySkill;
 import io.lumine.mythic.api.skills.SkillMetadata;
@@ -19,7 +15,6 @@ import io.lumine.mythic.core.skills.SkillExecutor;
 import io.phanisment.itemcaster.util.ItemUtil;
 
 import java.io.File;
-import java.util.Optional;
 
 @MythicMechanic(author="Phanisment", name="itemcaster:giveitem", aliases={"itemcaster:give", "itemcaster:itemgive"}, description="Give target external item that support in ItemCaster")
 public class GiveItemMechanic extends SkillMechanic implements ITargetedEntitySkill {

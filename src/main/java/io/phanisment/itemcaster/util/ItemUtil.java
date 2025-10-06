@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.core.items.MythicItem;
-import io.lumine.mythic.core.logging.MythicLogger;
 
 import io.phanisment.itemcaster.skill.SkillActivator;
 import io.phanisment.itemcaster.skill.SkillActivator.Activator;

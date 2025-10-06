@@ -8,12 +8,7 @@ import io.lumine.mythic.core.items.MythicItem;
 import io.lumine.mythic.bukkit.events.MythicMobItemGenerateEvent;
 import io.lumine.mythic.core.logging.MythicLogger;
 import io.lumine.mythic.bukkit.utils.version.MinecraftVersion;
-import io.lumine.mythic.bukkit.utils.version.MinecraftVersions;
 import io.lumine.mythic.bukkit.utils.version.ServerVersion;
-
-import de.tr7zw.nbtapi.NBTItem;
-import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTCompoundList;
 
 import io.phanisment.itemcaster.Constants;
 import io.phanisment.itemcaster.util.MapSafe;

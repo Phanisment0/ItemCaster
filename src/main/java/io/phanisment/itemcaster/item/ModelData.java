@@ -10,14 +10,12 @@ import io.lumine.mythic.core.items.MythicItem;
 import io.lumine.mythic.api.config.MythicConfig;
 import io.lumine.mythic.core.logging.MythicLogger;
 import io.lumine.mythic.bukkit.utils.version.MinecraftVersion;
-import io.lumine.mythic.bukkit.utils.version.MinecraftVersions;
 import io.lumine.mythic.bukkit.utils.version.ServerVersion;
 
 import io.phanisment.itemcaster.registry.ExternalItemRegistry;
 import io.phanisment.itemcaster.item.external.IExternalItem;
 
 import java.util.Optional;
-import java.util.Arrays;
 
 public class ModelData {
 	private Material type = Material.AIR;

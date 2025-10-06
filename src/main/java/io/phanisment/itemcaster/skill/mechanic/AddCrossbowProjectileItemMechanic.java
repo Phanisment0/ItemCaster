@@ -7,7 +7,6 @@ import org.bukkit.inventory.meta.CrossbowMeta;
 
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.config.MythicLineConfig;
-import io.lumine.mythic.core.logging.MythicLogger;
 import io.lumine.mythic.core.utils.annotations.MythicMechanic;
 import io.lumine.mythic.core.skills.SkillExecutor;
 

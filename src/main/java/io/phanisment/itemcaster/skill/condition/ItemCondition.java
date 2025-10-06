@@ -1,6 +1,5 @@
 package io.phanisment.itemcaster.skill.condition;
 
-import org.bukkit.entity.Player;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;

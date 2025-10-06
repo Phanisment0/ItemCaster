@@ -7,7 +7,6 @@ import io.phanisment.itemcaster.ItemCaster;
 
 import java.lang.reflect.Field;
 
-@SuppressWarnings("unchecked")
 public class MenuInjector {
 	public static void register() {
 		try {
