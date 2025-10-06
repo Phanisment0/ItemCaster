@@ -37,7 +37,6 @@ public class CasterItem {
 		this.abilities = (List<Map<String, Object>>)(Object)config.getMapList("Abilities");
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void applyData(MythicMobItemGenerateEvent e) {
 		ItemStack item = e.getItemStack();
 		ItemMeta meta = item.getItemMeta();
@@ -52,7 +51,6 @@ public class CasterItem {
 		e.setItemStack(item);
 	}
 	
-	@SuppressWarnings("unchecked")
 	private ItemStack parseAbilities(ItemStack item) {
 		for (Map<String, Object> ability : abilities) {
 			var safe = new MapSafe(ability);
@@ -73,6 +71,7 @@ public class CasterItem {
 		return item;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void applyModel(ModelData model_data, ItemStack item) {
 		if (model_data.hasModelData()) item.getItemMeta().setCustomModelData(model_data.getModelData());
 		if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.20.5")) && model_data.hasTooltipStyle()) item.getItemMeta().setTooltipStyle(model_data.getTooltipStyle());

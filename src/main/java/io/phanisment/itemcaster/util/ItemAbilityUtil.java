@@ -1,7 +1,7 @@
 package io.phanisment.itemcaster.util;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTCompound;
@@ -17,7 +17,8 @@ import java.util.function.Consumer;
 
 @SuppressWarnings("deprecation")
 public final class ItemAbilityUtil {
-	private ItemStack item = new ItemStack(Material.STONE);
+	@Nullable
+	private ItemStack item;
 	private NBTItem nbt_item;
 	
 	private ItemAbilityUtil(ItemStack item) {

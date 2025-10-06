@@ -1,6 +1,7 @@
 package io.phanisment.itemcaster.item.external;
 
 import org.bukkit.inventory.ItemStack;
+
 import io.lumine.mythic.core.items.MythicItem;
 import io.lumine.mythic.core.logging.MythicLogger;
 import io.th0rgal.oraxen.api.OraxenItems;
@@ -12,6 +13,7 @@ public class OraxenExternalItem implements IExternalItem {
 	public String getPlugin() {
 		return "oraxen";
 	}
+	
 	
 	@Override
 	public Optional<ItemStack> resolve(String[] parts, MythicItem item) {

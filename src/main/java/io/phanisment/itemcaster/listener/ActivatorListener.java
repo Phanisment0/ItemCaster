@@ -180,6 +180,8 @@ public class ActivatorListener implements Listener {
 				case WORLD_BORDER:
 					ItemUtil.runSkill(player, Activator.DAMAGED_BY_WORLD_BORDER);
 					break;
+				default:
+					break;
 			}
 		}
 	}
@@ -275,6 +277,8 @@ public class ActivatorListener implements Listener {
 				break;
 			case REEL_IN:
 				ItemUtil.runSkill(player, Activator.FISH_REEL_IN);
+				break;
+			default:
 				break;
 		}
 	}
