@@ -1,6 +1,6 @@
 plugins {
-	id 'java-library'
-	id 'application'
+	id "java-library"
+	id "application"
 }
 
 group = project.group
@@ -60,10 +60,25 @@ processResources {
 	}
 }
 
+tasks.javadoc {
+	title = "ItemCaster"
+	destinationDir = file("docs")
+	options.memberLevel = JavadocMemberLevel.PRIVATE
+	options.author = true
+	options.version = true
+	
+	options.links("https://docs.oracle.com/en/java/javase/21/docs/api/")
+	options.links("https://jd.papermc.io/paper/1.21.4/")
+	options.linksOffline(
+		"https://www.mythiccraft.io/javadocs/mythic/",
+		"https://www.mythiccraft.io/javadocs/mythic/"
+	)
+}
+
 jar {
 	inputs.property "archivesName", project.base.archivesName
-	from('LICENSE') {
-		into('.')
+	from("LICENSE") {
+		into(".")
 	}
 }
 
