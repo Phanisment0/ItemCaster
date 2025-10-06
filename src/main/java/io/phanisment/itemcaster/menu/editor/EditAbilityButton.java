@@ -15,7 +15,6 @@ public class EditAbilityButton extends ItemEditorButton {
 	@Override
 	public Icon<ItemEditorMenuContext> getIcon() {
 		return IconBuilder.<ItemEditorMenuContext>create().material(Material.BLAZE_POWDER).click((context, player) -> {
-			
 		}).build();
 	}
 }

@@ -17,6 +17,7 @@ import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.listener.ActivatorListener;
 import io.phanisment.itemcaster.listener.MythicListener;
 import io.phanisment.itemcaster.listener.PaperListener;
+import io.phanisment.itemcaster.menu.MenuInjector;
 import io.phanisment.itemcaster.listener.CasterRunnable;
 import io.phanisment.itemcaster.registry.ExternalItemRegistry;
 import io.phanisment.itemcaster.item.external.ItemsAdderExternalItem;
@@ -35,6 +36,7 @@ public final class ItemCaster extends JavaPlugin {
 	@Override
 	public void onLoad() {
 		SkillInjector.register();
+		MenuInjector.register();
 	}
 	
 	@Override
