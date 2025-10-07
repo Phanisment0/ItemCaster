@@ -4,7 +4,7 @@ import io.lumine.mythic.core.menus.items.ItemEditorMenu;
 import io.lumine.mythic.core.menus.items.ItemEditorButtons;
 
 import io.phanisment.itemcaster.ItemCaster;
-import io.phanisment.itemcaster.menu.editor.EditAbilityButton;
+import io.phanisment.itemcaster.menu.editor.AbilitiesButton;
 
 import java.lang.reflect.Field;
 
@@ -21,6 +21,6 @@ public class MenuInjector {
 	}
 	
 	private static void add(ItemEditorButtons buttons) {
-		new EditAbilityButton(buttons, 41);
+		new AbilitiesButton(buttons, 40);
 	}
 }

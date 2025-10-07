@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * Util for edit item Ability.
+ */
 @SuppressWarnings("deprecation")
 public final class ItemAbilityUtil {
 	@Nullable
@@ -26,12 +29,18 @@ public final class ItemAbilityUtil {
 		this.nbt_item = new NBTItem(item);
 	}
 	
+	/**
+	 * Create instance of ItemAbilityUtil.
+	 * 
+	 * @param item Item that want to edit.
+	 * @return     Instance of ItemAbilityUtil. if item is not valid, will return null.
+	 */
 	public static ItemAbilityUtil of(ItemStack item) {
 		if (!ItemUtil.validateItem(item)) return null;
 		return new ItemAbilityUtil(item);
 	}
 	
-	public Optional<ItemStack> addAbility(AbilityData data) {
+	public Optional<ItemStack> addAbility(AbilityAttribute data) {
 		NBTCompoundList list = nbt_item.getOrCreateCompound("ItemCaster").getCompoundList("abilities");
 		NBTCompound nbt = list.addCompound();
 		data.setNBT(nbt);
@@ -74,18 +83,18 @@ public final class ItemAbilityUtil {
 		return this.editAbility(index, nbt -> nbt.setString("signal", value));
 	}
 	
-	public Optional<ItemStack> setAbilities(List<AbilityData> data_list) {
+	public Optional<ItemStack> setAbilities(List<AbilityAttribute> data_list) {
 		NBTCompoundList nbt = nbt_item.getOrCreateCompound("ItemCaster").getCompoundList("abilities");
 		nbt.clear();
 		
-		for (AbilityData data : data_list) {
+		for (AbilityAttribute data : data_list) {
 			NBTCompound ability = nbt.addCompound();
 			data.setNBT(ability);
 		}
 		return Optional.of(nbt_item.getItem());
 	}
 	
-	public Optional<ItemStack> setAbility(int index, AbilityData data) {
+	public Optional<ItemStack> setAbility(int index, AbilityAttribute data) {
 		NBTCompoundList list = nbt_item.getOrCreateCompound("ItemCaster").getCompoundList("abilities");
 		NBTCompound nbt = list.get(index);
 		nbt.clearNBT();
@@ -107,23 +116,23 @@ public final class ItemAbilityUtil {
 		return Optional.of(nbt_item.getItem());
 	}
 	
-	public List<AbilityData> getAbilities() {
-		List<AbilityData> list = new ArrayList<>();
+	public List<AbilityAttribute> getAbilities() {
+		List<AbilityAttribute> list = new ArrayList<>();
 		NBTCompoundList abilities = nbt_item.getCompound("ItemCaster").getCompoundList("abilities");
 		if (abilities == null) return null;
 		for (var comp : abilities) {
-			list.add(AbilityData.fromNBT(comp));
+			list.add(AbilityAttribute.fromNBT(comp));
 		}
 		return list;
 	}
 	
-	public AbilityData getAbility(int index) {
+	public AbilityAttribute getAbility(int index) {
 		NBTCompoundList abilities = nbt_item.getCompound("ItemCaster").getCompoundList("abilities");
 		if (abilities == null) return null;
-		return AbilityData.fromNBT(abilities.get(index));
+		return AbilityAttribute.fromNBT(abilities.get(index));
 	}
 	
-	public static class AbilityData {
+	public static class AbilityAttribute {
 		private String skill;
 		private String activator;
 		private Float power;
@@ -133,7 +142,7 @@ public final class ItemAbilityUtil {
 		private String signal;
 		private Map<String, Object> variables = new HashMap<>();
 
-		public AbilityData(String skill, String activator) {
+		public AbilityAttribute(String skill, String activator) {
 			this.skill = skill;
 			this.activator = activator;
 		}
@@ -205,14 +214,14 @@ public final class ItemAbilityUtil {
 			}
 		}
 		
-		public static AbilityData fromNBT(ReadWriteNBT compound) {
+		public static AbilityAttribute fromNBT(ReadWriteNBT compound) {
 			return fromNBT(compound);
 		}
 		
-		public static AbilityData fromNBT(NBTCompound compound) {
+		public static AbilityAttribute fromNBT(NBTCompound compound) {
 			String skill = compound.getString("skill");
 			String activator = compound.getString("activator");
-			AbilityData data = new AbilityData(skill, activator);
+			AbilityAttribute data = new AbilityAttribute(skill, activator);
 			
 			if (compound.hasTag("power")) data.setPower(compound.getFloat("power"));
 			if (compound.hasTag("cooldown")) data.setCooldown(compound.getDouble("cooldown"));

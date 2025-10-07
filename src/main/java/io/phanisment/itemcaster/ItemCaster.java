@@ -4,6 +4,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
+import fr.mrmicky.fastinv.FastInvManager;
+
 import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.bukkit.utils.version.ServerVersion;
 import io.lumine.mythic.core.players.PlayerManager;
@@ -36,11 +38,18 @@ public final class ItemCaster extends JavaPlugin {
 	@Override
 	public void onLoad() {
 		SkillInjector.register();
-		MenuInjector.register();
 	}
 	
 	@Override
 	public void onEnable() {
+		core = MythicBukkit.inst();
+		MenuInjector.register();
+		
+		if (hasPlugin("PlaceholderAPI")) {
+			Constants.hasPAPI = true;
+			CasterLogger.send("Found PlaceholderAPI, Register the ItemCaster placeholder");
+			new ItemCasterPlaceholderExpansion().register();
+		}
 		if (hasPlugin("ItemsAdder")) {
 			Constants.hasItemsAdder = true;
 			CasterLogger.send("ItemsAdder detected, Enabling the ItemsAdder features.");
@@ -56,15 +65,16 @@ public final class ItemCaster extends JavaPlugin {
 			CasterLogger.send("Oraxen detected, Enabling the Oraxen features.");
 			ExternalItemRegistry.register(new OraxenExternalItem());
 		}
-		
 		if (ServerVersion.isPaper()) {
 			this.listen(new PaperListener());
 		}
 		
-		core = MythicBukkit.inst();
 		ConfigManager.load();
+		
 		this.listen(new ActivatorListener());
 		this.listen(new MythicListener());
+		FastInvManager.register(this);
+		
 		new CasterRunnable().runTaskTimer(this, 1L, 1L);
 	}
 	
@@ -73,10 +83,21 @@ public final class ItemCaster extends JavaPlugin {
 		ConfigManager.save();
 	}
 	
+	/**
+	 * Check if plugin is enable or null.
+	 * 
+	 * @param plugin plugin name/id
+	 * @return       true if plugin is enable
+	 */
 	private boolean hasPlugin(String plugin) {
 		return Bukkit.getPluginManager().getPlugin(plugin) != null || Bukkit.getPluginManager().isPluginEnabled(plugin);
 	}
 	
+	/**
+	 * Make register the listener/event more efficient.
+	 * 
+	 * @param event Class that implements Listener
+	 */
 	private void listen(Listener event) {
 		this.getServer().getPluginManager().registerEvents(event, this);
 	}
@@ -108,10 +129,16 @@ public final class ItemCaster extends JavaPlugin {
 		return core.getMobManager();
 	}
 	
+	/**
+	 * This instance
+	 */
 	public static ItemCaster inst() {
 		return inst;
 	}
 	
+	/**
+	 * MythicMobs Instance
+	 */
 	public static MythicBukkit core() {
 		return core;
 	}

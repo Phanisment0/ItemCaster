@@ -13,7 +13,6 @@ import java.io.IOException;
 public class ConfigManager {
 	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	private static final File file_location = new File(ItemCaster.inst().getDataFolder(), "configs.json");
-	private static ConfigData config = new ConfigData();
 	
 	public static void load() {
 		if (!ItemCaster.inst().getDataFolder().exists()) ItemCaster.inst().getDataFolder().mkdirs();
@@ -24,7 +23,7 @@ public class ConfigManager {
 		
 		try (var reader = new FileReader(file_location)) {
 			var load = gson.fromJson(reader, ConfigData.class);
-			if (load != null) config = load;
+			if (load != null) ConfigData.handler = load;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -32,13 +31,9 @@ public class ConfigManager {
 	
 	public static void save() {
 		try (var writer = new FileWriter(file_location)) {
-			gson.toJson(config, writer);
+			gson.toJson(ConfigData.handler, writer);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public static ConfigData getConfig() {
-		return config;
 	}
 }

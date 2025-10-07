@@ -3,9 +3,9 @@ package io.phanisment.itemcaster.util;
 import de.tr7zw.nbtapi.NBTType;
 import de.tr7zw.nbtapi.iface.ReadableNBT;
 
-public class NbtUtil {
+public class NbtSafe {
 	
-	private NbtUtil() {
+	private NbtSafe() {
 	}
 	
 	public static int getIntSafe(ReadableNBT nbt, String key, int def) {

@@ -20,7 +20,7 @@ import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTCompoundList;
 import de.tr7zw.nbtapi.iface.ReadableNBT;
 
-import io.phanisment.itemcaster.util.NbtUtil;
+import io.phanisment.itemcaster.util.NbtSafe;
 import io.phanisment.itemcaster.util.ItemUtil;
 import io.phanisment.itemcaster.ItemCaster;
 
@@ -97,15 +97,15 @@ public class SkillActivator {
 	}
 	
 	private float getNbtPower(ReadableNBT nbt) {
-		return NbtUtil.getFloatSafe(nbt, "power", 1.0F);
+		return NbtSafe.getFloatSafe(nbt, "power", 1.0F);
 	}
 	
 	private double getNbtCooldown(ReadableNBT nbt) {
-		return NbtUtil.getDoubleSafe(nbt, "cooldown", 0D);
+		return NbtSafe.getDoubleSafe(nbt, "cooldown", 0D);
 	}
 	
 	private int getNbtInterval(ReadableNBT nbt) {
-		return NbtUtil.getIntSafe(nbt, "interval", 0);
+		return NbtSafe.getIntSafe(nbt, "interval", 0);
 	}
 	
 	private boolean isSneak(ReadableNBT nbt, Player player) {

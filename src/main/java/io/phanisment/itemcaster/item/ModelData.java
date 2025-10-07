@@ -46,6 +46,7 @@ public class ModelData {
 	}
 	
 	public Optional<ItemStack> getItem(String type) {
+		if (type == null || type.isBlank()) return Optional.empty();
 		if (type.contains(":")) {
 			String[] parts = type.split(":");
 			IExternalItem ei = ExternalItemRegistry.getRegistered(parts[0].toLowerCase());
