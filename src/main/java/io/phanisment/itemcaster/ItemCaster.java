@@ -1,5 +1,6 @@
 package io.phanisment.itemcaster;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -30,6 +31,7 @@ import io.phanisment.itemcaster.skill.SkillInjector;
 public final class ItemCaster extends JavaPlugin {
 	private static ItemCaster inst;
 	private static MythicBukkit core;
+	private static Metrics metrics;
 	
 	public ItemCaster() {
 		inst = this;
@@ -43,6 +45,7 @@ public final class ItemCaster extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		core = MythicBukkit.inst();
+		metrics = new Metrics(this, Constants.id_bstats);
 		MenuInjector.register();
 		
 		if (hasPlugin("PlaceholderAPI")) {
@@ -109,22 +112,47 @@ public final class ItemCaster extends JavaPlugin {
 		ConfigManager.load();
 	}
 	
+	/**
+	 * Shortcut for MythicBukkit.
+	 * 
+	 * @return the instance
+	 */
 	public static ItemExecutor getItemManager() {
 		return (ItemExecutor)core.getItemManager();
 	}
 	
+	/**
+	 * Shortcut for MythicBukkit.
+	 * 
+	 * @return the instance
+	 */
 	public static PackManager getPackManager() {
 		return core.getPackManager();
 	}
 	
+	/**
+	 * Shortcut for MythicBukkit.
+	 * 
+	 * @return the instance
+	 */
 	public static SkillExecutor getSkillManager() {
 		return core.getSkillManager();
 	}
 	
+	/**
+	 * Shortcut for MythicBukkit.
+	 * 
+	 * @return the instance
+	 */
 	public static PlayerManager getPlayerManager() {
 		return core.getPlayerManager();
 	}
 	
+	/**
+	 * Shortcut for MythicBukkit.
+	 * 
+	 * @return the instance
+	 */
 	public static MobManager getMobManager() {
 		return core.getMobManager();
 	}
@@ -137,7 +165,7 @@ public final class ItemCaster extends JavaPlugin {
 	}
 	
 	/**
-	 * MythicMobs Instance
+	 * MythicMobs instance
 	 */
 	public static MythicBukkit core() {
 		return core;

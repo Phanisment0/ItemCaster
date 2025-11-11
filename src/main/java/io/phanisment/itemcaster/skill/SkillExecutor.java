@@ -11,6 +11,7 @@ import io.lumine.mythic.api.adapters.AbstractLocation;
 import io.lumine.mythic.core.skills.SkillMetadataImpl;
 import io.lumine.mythic.core.skills.SkillTriggers;
 import io.lumine.mythic.core.skills.MetaSkill;
+import io.lumine.mythic.core.skills.variables.VariableRegistry;
 
 import de.tr7zw.nbtapi.iface.ReadableNBT;
 
@@ -32,19 +33,16 @@ public class SkillExecutor {
 		this.skill = skill;
 	}
 	
-	public SkillExecutor setPower(float power) {
+	public void setPower(float power) {
 		this.power = power;
-		return this;
 	}
 	
-	public SkillExecutor setCooldown(double cooldown) {
+	public void setCooldown(double cooldown) {
 		this.cooldown = cooldown;
-		return this;
 	}
 	
-	public SkillExecutor setVariables(ReadableNBT variables) {
+	public void setVariables(ReadableNBT variables) {
 		this.variables = variables;
-		return this;
 	}
 	
 	public void execute() {
@@ -61,22 +59,16 @@ public class SkillExecutor {
 		
 		if (variables != null) {
 			for (String key : variables.getKeys()) {
+				VariableRegistry skill_var = meta.getVariables();
 				switch(variables.getType(key)) {
-					case NBTTagFloat:
-						meta.getVariables().putFloat(key, variables.getFloat(key));
-						break;
-					case NBTTagInt:
-						meta.getVariables().putInt(key, variables.getInteger(key));
-						break;
-					case NBTTagString:
-						meta.getVariables().putString(key, variables.getString(key));
-						break;
-					default:
-						meta.getVariables().putFloat(key, variables.getFloat(key));
-						break;
+					case NBTTagFloat -> skill_var.putFloat(key, variables.getFloat(key));
+					case NBTTagInt -> skill_var.putInt(key, variables.getInteger(key));
+					case NBTTagString -> skill_var.putString(key, variables.getString(key));
+					default -> skill_var.putFloat(key, variables.getFloat(key));
 				}
 			}
 		}
+		
 		if (skill.isUsable(meta, SkillTriggers.API)) {
 			skill.execute(meta);
 			skill.setCooldown(caster, cooldown);

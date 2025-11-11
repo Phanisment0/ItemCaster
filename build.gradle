@@ -1,5 +1,5 @@
 plugins {
-	id "com.gradleup.shadow" version "8.3.0"
+	id "com.gradleup.shadow" version "9.1.0"
 	id "java-library"
 	id "java"
 }
@@ -14,6 +14,7 @@ base {
 repositories {
 	mavenLocal()
 	mavenCentral()
+	maven { url "https://hub.spigotmc.org/nexus/content/groups/public/" }
 	maven { url "https://repo.papermc.io/repository/maven-public/" }
 	maven { url "https://repo.codemc.io/repository/maven-public/" }
 	maven { url "https://mvn.lumine.io/repository/maven-public/" }
@@ -34,6 +35,7 @@ repositories {
 }
 
 dependencies {
+	implementation "org.bstats:bstats-bukkit:${project.bstats_version}"
 	implementation "fr.mrmicky:fastinv:${project.fastinv_version}"
 	compileOnly "io.papermc.paper:paper-api:${project.api_version}"
 //compileOnly "org.spigotmc:spigot-api:${project.api_version}"
@@ -52,7 +54,11 @@ dependencies {
 
 tasks.shadowJar {
 	archiveClassifier = ""
-	relocate "fr.mrmicky.fastinv", "io.phanisment.itemcaster.lib"
+	relocate "fr.mrmicky.fastinv", "io.phanisment.itemcaster.lib.fastinv"
+	relocate "org.bstats", "io.phanisment.itemcaster.lib.bstats"
+	from("LICENSE") {
+		into(".")
+	}
 }
 
 tasks.processResources {
@@ -75,16 +81,11 @@ tasks.javadoc {
 	
 	options.links("https://docs.oracle.com/en/java/javase/21/docs/api/")
 	options.links("https://jd.papermc.io/paper/1.21.4/")
+	options.links("https://javadoc.io/doc/net.kyori/adventure-text-minimessage/latest/")
 	options.linksOffline(
 		"https://www.mythiccraft.io/javadocs/mythic/",
 		"https://www.mythiccraft.io/javadocs/mythic/"
 	)
-}
-
-tasks.jar {
-	from("LICENSE") {
-		into(".")
-	}
 }
 
 tasks.withType(JavaCompile).configureEach {

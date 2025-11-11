@@ -31,7 +31,6 @@ import java.util.UUID;
 
 public class SkillActivator {
 	private static final Map<CasterPlayerData, Integer> skill_interval = new HashMap<>();
-	private SkillExecutor meta;
 	
 	private final ItemStack item;
 	private final Player player;
@@ -88,11 +87,11 @@ public class SkillActivator {
 			if (event.equals("SIGNAL") && !this.isSignalEquals(ability)) return;
 			if (event.equals("TICK") && !this.canTriggerTick(pc, ability)) return;
 			
-			this.meta = new SkillExecutor(sk, player)
-				.setPower(this.getNbtPower(ability))
-				.setCooldown(this.getNbtCooldown(ability))
-				.setVariables(ability.getCompound("variables"));
-			this.meta.execute();
+			var exc = new SkillExecutor(sk, player);
+			exc.setPower(this.getNbtPower(ability));
+			exc.setCooldown(this.getNbtCooldown(ability));
+			exc.setVariables(ability.getCompound("variables"));
+			exc.execute();
 		}
 	}
 	

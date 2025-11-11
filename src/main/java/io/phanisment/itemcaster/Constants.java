@@ -1,5 +1,8 @@
 package io.phanisment.itemcaster;
 
+/**
+ * Configuration base on code for ItemCaster.
+ */
 public final class Constants {
 	public static final boolean debugging = true;
 	public static final int id_bstats = 25172;

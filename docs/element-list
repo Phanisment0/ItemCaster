@@ -1,0 +1,13 @@
+io.phanisment.itemcaster
+io.phanisment.itemcaster.config
+io.phanisment.itemcaster.item
+io.phanisment.itemcaster.item.external
+io.phanisment.itemcaster.listener
+io.phanisment.itemcaster.menu
+io.phanisment.itemcaster.menu.editor
+io.phanisment.itemcaster.menu.editor.button
+io.phanisment.itemcaster.registry
+io.phanisment.itemcaster.skill
+io.phanisment.itemcaster.skill.condition
+io.phanisment.itemcaster.skill.mechanic
+io.phanisment.itemcaster.util

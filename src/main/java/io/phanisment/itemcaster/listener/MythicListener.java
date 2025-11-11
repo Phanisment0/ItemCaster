@@ -19,6 +19,7 @@ public class MythicListener implements Listener {
 	
 	@EventHandler 
 	public void onReload(MythicPostReloadedEvent e) {
+		CasterItem.clear();
 		ItemCaster.inst().reload();
 	}
 	

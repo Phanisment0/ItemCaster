@@ -1,0 +1,11 @@
+import:
+  skill: ./skill
+
+example:
+  run:
+  - if: |
+      caster.level >= 10 || caster.level <= 30
+    then:
+    - send
+    else:
+    - send 

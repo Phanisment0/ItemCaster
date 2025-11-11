@@ -17,7 +17,7 @@ import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.Constants;
 import io.phanisment.itemcaster.util.MapSafe;
 import io.phanisment.itemcaster.util.ItemAbilityUtil;
-import io.phanisment.itemcaster.util.ItemAbilityUtil.AbilityAttribute;
+import io.phanisment.itemcaster.skill.SkillAttribute;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class CasterItem {
 	private final MythicItem mi;
 	private final MythicConfig config;
 	
-	private boolean hide_tooltip = false;
+	private boolean hide_tooltips = false;
 	private ModelData model_data;
 	private List<Map<String, Object>> abilities = new ArrayList<>();
 	
@@ -45,7 +45,7 @@ public class CasterItem {
 		this.mi = mi;
 		this.config = mi.getConfig();
 		
-		this.hide_tooltip = config.getBoolean("Options.HideTooltip");
+		this.hide_tooltips = config.getBoolean("Options.HideTooltips");
 		this.model_data = new ModelData(config.getString("ModelItem"), mi);
 		this.abilities = (List<Map<String, Object>>)(Object)config.getMapList("Abilities");
 		
@@ -54,7 +54,7 @@ public class CasterItem {
 	
 	
 	/**
-	 * Apply configuration data to ItemStack.
+	 * Apply configuration data to MythicItem ItemStack.
 	 * 
 	 * @param e Mythicmobs item generation event.
 	 */
@@ -62,8 +62,8 @@ public class CasterItem {
 		ItemStack item = e.getItemStack();
 		ItemMeta meta = item.getItemMeta();
 		
-		if (Constants.hasResourcePack()) applyModel(model_data, item);
-		if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.20.5")) && hide_tooltip) meta.setHideTooltip(true);
+		if (Constants.hasResourcePack() && model_data != null) model_data.applyModel(item);
+		if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.20.5")) && hide_tooltips) meta.setHideTooltip(true);
 		
 		item.setItemMeta(meta);
 		
@@ -80,7 +80,7 @@ public class CasterItem {
 				continue;
 			}
 			
-			var data = new AbilityAttribute(safe.getString("skill"), safe.getString("activator"));
+			var data = new SkillAttribute(safe.getString("skill"), safe.getString("activator"));
 			if (ability.containsKey("power")) data.setPower(safe.getFloat("power"));
 			if (ability.containsKey("cooldown")) data.setCooldown(safe.getDouble("cooldown"));
 			if (ability.containsKey("interval")) data.setInterval(safe.getInteger("interval"));
@@ -92,13 +92,47 @@ public class CasterItem {
 		return item;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public static void applyModel(ModelData model_data, ItemStack item) {
-		if (model_data.hasModelData()) item.getItemMeta().setCustomModelData(model_data.getModelData());
-		if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.20.5")) && model_data.hasTooltipStyle()) item.getItemMeta().setTooltipStyle(model_data.getTooltipStyle());
-		if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.21.3")) && model_data.hasItemModel()) item.getItemMeta().setItemModel(model_data.getItemModel());
-		if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.21.4")) && model_data.hasModelDataComponent()) item.getItemMeta().setCustomModelDataComponent(model_data.getModelDataComponent());
-		if (ServerVersion.isBefore(MinecraftVersion.parse("1.21.4")) && model_data.hasType()) item.setType(model_data.getType());
+	public boolean hasModelData() {
+		return model_data != null;
+	}
+	
+	public boolean hasAbilities() {
+		return abilities != null;
+	}
+	
+	public void addAbility(SkillAttribute attribute) {
+		abilities.add(attribute.toMap());
+		config.setSave("Abilities", abilities);
+		mi.loadItem();
+		mi.buildItemCache();
+	}
+	
+	public void setHideTooltips(boolean hide) {
+		hide_tooltips = hide;
+		config.setSave("Options.HideTooltips", hide_tooltips);
+		mi.loadItem();
+		mi.buildItemCache();
+	}
+	
+	public void setModelData(String model) {
+		model_data = new ModelData(model, mi);
+		config.setSave("ModelItem", model_data);
+		mi.loadItem();
+		mi.buildItemCache();
+	}
+	
+	public void setAbility(int index, SkillAttribute attribute) {
+		abilities.set(index, attribute.toMap());
+		config.setSave("Abilities", abilities);
+		mi.loadItem();
+		mi.buildItemCache();
+	}
+	
+	public void removeAbility(int index) {
+		abilities.remove(index);
+		config.setSave("Abilities", abilities);
+		mi.loadItem();
+		mi.buildItemCache();
 	}
 	
 	public String getName() {
@@ -110,11 +144,15 @@ public class CasterItem {
 	}
 	
 	public boolean getHideTooltips() {
-		return this.hide_tooltip;
+		return this.hide_tooltips;
 	}
 	
 	public ModelData getModelData() {
 		return this.model_data;
+	}
+	
+	public SkillAttribute getAbility(int index) {
+		return SkillAttribute.fromMap(this.abilities.get(index));
 	}
 	
 	public List<Map<String, Object>> getAbilities() {
@@ -123,6 +161,10 @@ public class CasterItem {
 	
 	public MythicItem getItem() {
 		return this.mi;
+	}
+	
+	public ItemStack getItemCached() {
+		return this.mi.getCachedBaseItem();
 	}
 	
 	public ItemStack getItemStack() {
@@ -154,5 +196,9 @@ public class CasterItem {
 		String name = meta.getPersistentDataContainer().get(TYPE, PersistentDataType.STRING);
 		if (name == null || name.isBlank()) return Optional.empty();
 		return getCasterItem(name);
+	}
+	
+	public static void clear() {
+		items.clear();
 	}
 }

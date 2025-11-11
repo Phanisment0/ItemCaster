@@ -3,7 +3,7 @@ package io.phanisment.itemcaster;
 import org.bukkit.entity.Player;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
-public class ItemCasterPlaceholderExpansion extends PlaceholderExpansion {
+public final class ItemCasterPlaceholderExpansion extends PlaceholderExpansion {
 	@Override
 	public String getAuthor() {
 		return "Phanisment";

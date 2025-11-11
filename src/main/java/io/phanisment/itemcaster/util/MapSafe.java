@@ -21,7 +21,7 @@ public final class MapSafe {
 		return map.isEmpty();
 	}
 	
-	public Object getRaw(String key) {
+	public Object get(String key) {
 		return map.get(key);
 	}
 	

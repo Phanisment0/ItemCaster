@@ -6,10 +6,10 @@ import org.jetbrains.annotations.Nullable;
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTCompoundList;
-import de.tr7zw.nbtapi.iface.ReadWriteNBT;
+
+import io.phanisment.itemcaster.skill.SkillAttribute;
 
 import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -40,7 +40,7 @@ public final class ItemAbilityUtil {
 		return new ItemAbilityUtil(item);
 	}
 	
-	public Optional<ItemStack> addAbility(AbilityAttribute data) {
+	public Optional<ItemStack> addAbility(SkillAttribute data) {
 		NBTCompoundList list = nbt_item.getOrCreateCompound("ItemCaster").getCompoundList("abilities");
 		NBTCompound nbt = list.addCompound();
 		data.setNBT(nbt);
@@ -83,18 +83,18 @@ public final class ItemAbilityUtil {
 		return this.editAbility(index, nbt -> nbt.setString("signal", value));
 	}
 	
-	public Optional<ItemStack> setAbilities(List<AbilityAttribute> data_list) {
+	public Optional<ItemStack> setAbilities(List<SkillAttribute> data_list) {
 		NBTCompoundList nbt = nbt_item.getOrCreateCompound("ItemCaster").getCompoundList("abilities");
 		nbt.clear();
 		
-		for (AbilityAttribute data : data_list) {
+		for (SkillAttribute data : data_list) {
 			NBTCompound ability = nbt.addCompound();
 			data.setNBT(ability);
 		}
 		return Optional.of(nbt_item.getItem());
 	}
 	
-	public Optional<ItemStack> setAbility(int index, AbilityAttribute data) {
+	public Optional<ItemStack> setAbility(int index, SkillAttribute data) {
 		NBTCompoundList list = nbt_item.getOrCreateCompound("ItemCaster").getCompoundList("abilities");
 		NBTCompound nbt = list.get(index);
 		nbt.clearNBT();
@@ -116,132 +116,19 @@ public final class ItemAbilityUtil {
 		return Optional.of(nbt_item.getItem());
 	}
 	
-	public List<AbilityAttribute> getAbilities() {
-		List<AbilityAttribute> list = new ArrayList<>();
+	public List<SkillAttribute> getAbilities() {
+		List<SkillAttribute> list = new ArrayList<>();
 		NBTCompoundList abilities = nbt_item.getCompound("ItemCaster").getCompoundList("abilities");
 		if (abilities == null) return null;
 		for (var comp : abilities) {
-			list.add(AbilityAttribute.fromNBT(comp));
+			list.add(SkillAttribute.fromNBT(comp));
 		}
 		return list;
 	}
 	
-	public AbilityAttribute getAbility(int index) {
+	public SkillAttribute getAbility(int index) {
 		NBTCompoundList abilities = nbt_item.getCompound("ItemCaster").getCompoundList("abilities");
 		if (abilities == null) return null;
-		return AbilityAttribute.fromNBT(abilities.get(index));
-	}
-	
-	public static class AbilityAttribute {
-		private String skill;
-		private String activator;
-		private Float power;
-		private Double cooldown;
-		private Integer interval;
-		private Boolean sneaking;
-		private String signal;
-		private Map<String, Object> variables = new HashMap<>();
-
-		public AbilityAttribute(String skill, String activator) {
-			this.skill = skill;
-			this.activator = activator;
-		}
-
-		public void setSkill(String value) {
-			this.skill = value;
-		}
-
-		public void setActivator(String value) {
-			this.activator = value;
-		}
-
-		public void setPower(float value) {
-			this.power = value;
-		}
-
-		public void setCooldown(double value) {
-			this.cooldown = value;
-		}
-
-		public void setInterval(int value) {
-			this.interval = value;
-		}
-
-		public void setSneaking(boolean value) {
-			this.sneaking = value;
-		}
-
-		public void setSignal(String value) {
-			this.signal = value;
-		}
-
-		public void setVariables(Map<String, Object> value) {
-			this.variables = value;
-		}
-
-		public void putVariable(String key, Object value) {
-			this.variables.put(key, value);
-		}
-		
-		public void setNBT(NBTCompound compound) {
-			compound.setString("skill", skill);
-			compound.setString("activator", activator);
-			
-			if (power != null) compound.setFloat("power", power);
-			if (cooldown != null) compound.setDouble("cooldown", cooldown);
-			if (interval != null) compound.setInteger("interval", interval);
-			if (sneaking != null) compound.setBoolean("sneaking", sneaking);
-			if (signal != null) compound.setString("signal", signal);
-			
-			if (!variables.isEmpty()) {
-				NBTCompound variable_compound = compound.getOrCreateCompound("variables");
-				for (Map.Entry<String, Object> entry : variables.entrySet()) {
-					Object value = entry.getValue();
-					String key = entry.getKey();
-					
-					if (value instanceof Number) {
-						if (value instanceof Float || value instanceof Double) {
-							variable_compound.setFloat(key, ((Number)value).floatValue());
-						} else {
-							variable_compound.setInteger(key, ((Number)value).intValue());
-						}
-					} else if (value instanceof Boolean) {
-						variable_compound.setBoolean(key, (Boolean)value);
-					} else {
-						variable_compound.setString(key, String.valueOf(value));
-					}
-				}
-			}
-		}
-		
-		public static AbilityAttribute fromNBT(ReadWriteNBT compound) {
-			return fromNBT(compound);
-		}
-		
-		public static AbilityAttribute fromNBT(NBTCompound compound) {
-			String skill = compound.getString("skill");
-			String activator = compound.getString("activator");
-			AbilityAttribute data = new AbilityAttribute(skill, activator);
-			
-			if (compound.hasTag("power")) data.setPower(compound.getFloat("power"));
-			if (compound.hasTag("cooldown")) data.setCooldown(compound.getDouble("cooldown"));
-			if (compound.hasTag("interval")) data.setInterval(compound.getInteger("interval"));
-			if (compound.hasTag("sneaking")) data.setSneaking(compound.getBoolean("sneaking"));
-			if (compound.hasTag("signal")) data.setSignal(compound.getString("signal"));
-			
-			if (compound.hasTag("variables")) {
-				NBTCompound vars = compound.getCompound("variables");
-				for (String key : vars.getKeys()) {
-					switch (vars.getType(key)) {
-						case NBTTagFloat -> data.putVariable(key, vars.getFloat(key));
-						case NBTTagInt -> data.putVariable(key, vars.getInteger(key));
-						case NBTTagString -> data.putVariable(key, vars.getString(key));
-						case NBTTagByte -> data.putVariable(key, vars.getBoolean(key));
-						default -> data.putVariable(key, vars.getString(key));
-					}
-				}
-			}
-			return data;
-		}
+		return SkillAttribute.fromNBT(abilities.get(index));
 	}
 }

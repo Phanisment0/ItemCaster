@@ -9,7 +9,6 @@ import io.lumine.mythic.core.utils.annotations.MythicMechanic;
 import io.lumine.mythic.core.skills.SkillExecutor;
 
 import io.phanisment.itemcaster.util.ItemUtil;
-import io.phanisment.itemcaster.item.CasterItem;
 import io.phanisment.itemcaster.item.ModelData;
 
 import java.io.File;
@@ -39,8 +38,8 @@ public class SetCustomModelDataItemMechanic extends ItemMechanic {
 		if (!ItemUtil.validateItem(item)) return Optional.empty();
 		ItemMeta meta = item.getItemMeta();
 		if (external) {
-			var model_data = new ModelData(this.type, null);
-			CasterItem.applyModel(model_data, item);
+			var model_data = new ModelData(this.type);
+			model_data.applyModel(item);
 			item.setItemMeta(meta);
 			return Optional.of(item);
 		}
