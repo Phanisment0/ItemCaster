@@ -22,6 +22,6 @@ public class OraxenExternalItem implements IExternalItem {
 			MythicLogger.errorItemConfig(item, item.getConfig(), "Nexo item not found: " + parts[1]);
 			return Optional.empty();
 		}
-		return Optional.of(ib.build());
+		return Optional.empty();
 	}
 }

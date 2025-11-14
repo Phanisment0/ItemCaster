@@ -1,8 +1,6 @@
 package io.phanisment.itemcaster.skill;
 
-import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTCompoundList;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 
 import io.phanisment.itemcaster.util.MapSafe;

@@ -3,7 +3,6 @@ package io.phanisment.itemcaster.item;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 import org.bukkit.inventory.meta.components.EquippableComponent;
 import org.bukkit.Material;
@@ -12,7 +11,6 @@ import io.lumine.mythic.core.items.MythicItem;
 import io.lumine.mythic.api.config.MythicConfig;
 import io.lumine.mythic.core.logging.MythicLogger;
 import io.lumine.mythic.bukkit.utils.version.MinecraftVersion;
-import io.lumine.mythic.bukkit.utils.version.MinecraftVersions;
 import io.lumine.mythic.bukkit.utils.version.ServerVersion;
 
 import io.phanisment.itemcaster.registry.ExternalItemRegistry;

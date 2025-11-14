@@ -163,6 +163,7 @@ public class CasterItem {
 		return this.mi;
 	}
 	
+	@Deprecated
 	public ItemStack getItemCached() {
 		return this.mi.getCachedBaseItem();
 	}

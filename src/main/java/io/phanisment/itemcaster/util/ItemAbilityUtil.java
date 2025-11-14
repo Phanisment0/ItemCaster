@@ -9,7 +9,6 @@ import de.tr7zw.nbtapi.NBTCompoundList;
 
 import io.phanisment.itemcaster.skill.SkillAttribute;
 
-import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;

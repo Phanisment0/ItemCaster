@@ -7,13 +7,11 @@ import fr.mrmicky.fastinv.PaginatedFastInv;
 import fr.mrmicky.fastinv.InventoryScheme;
 import fr.mrmicky.fastinv.ItemBuilder;
 
-import io.phanisment.itemcaster.util.Legacy;
 import io.phanisment.itemcaster.item.CasterItem;
 import io.phanisment.itemcaster.skill.SkillAttribute;
 
 import java.util.Map;
 import java.util.List;
-import java.util.ArrayList;
 
 public class AbilitiesMenu extends PaginatedFastInv {
 	private InventoryScheme scheme = new InventoryScheme()

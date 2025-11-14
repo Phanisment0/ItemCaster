@@ -3,10 +3,7 @@ package io.phanisment.itemcaster.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import io.lumine.mythic.api.packs.Pack;
-
 import io.phanisment.itemcaster.ItemCaster;
-import io.phanisment.itemcaster.util.CasterLogger;
 
 import java.io.File;
 import java.io.FileReader;
