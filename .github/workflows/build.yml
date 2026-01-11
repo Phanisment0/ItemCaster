@@ -20,20 +20,25 @@ jobs:
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582
     - name: Build with Gradle Wrapper
       run: gradle build
+    - name: Find correct JAR
+      id: findjar
+      run: |
+        output="$(find build/libs/ ! -name "*-dev.jar" ! -name "*-sources.jar" -type f -printf "%f\n")"
+        echo "jarname=$output" >> $GITHUB_OUTPUTS
     - name: Upload to the GitHub release
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: build/libs/*.jar
+        asset_path: build/libs/${{ steps.findjar.outputs.jarname }}
         asset_name: ItemCaster-${{ github.event.release.tag_name }}.jar
         asset_content_type: application/java-archive
     - name: Upload to Modrinth
       uses: RubixDev/modrinth-upload@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        file_path: build/libs/*.jar
+        file_path: build/libs/${{ steps.findjar.outputs.jarname }}
         name: ${{ github.event.release.name }}
         version: ${{ github.event.release.tag_name }}
         changelog: ${{ github.event.release.body }}
