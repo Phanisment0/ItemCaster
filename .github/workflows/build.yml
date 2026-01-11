@@ -46,7 +46,7 @@ jobs:
         loaders: |-
           paper
           spigot
-          purpr
+          purpur
         game-versions: |-
           1.20.x
           1.21.x
