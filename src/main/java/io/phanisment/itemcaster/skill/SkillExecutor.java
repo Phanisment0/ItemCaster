@@ -18,49 +18,53 @@ import de.tr7zw.nbtapi.iface.ReadableNBT;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * I need to refactor this shit later...
+ */
 public class SkillExecutor {
 	private final Player player;
 	private final SkillCaster caster;
 	private final MetaSkill skill;
-	
+
 	private float power;
 	private double cooldown;
 	private ReadableNBT variables;
-	
+
 	public SkillExecutor(MetaSkill skill, Player player) {
 		this.player = player;
 		this.caster = SkillActivator.toCaster(player);
 		this.skill = skill;
 	}
-	
+
 	public void setPower(float power) {
 		this.power = power;
 	}
-	
+
 	public void setCooldown(double cooldown) {
 		this.cooldown = cooldown;
 	}
-	
+
 	public void setVariables(ReadableNBT variables) {
 		this.variables = variables;
 	}
-	
+
 	public void execute() {
 		List<AbstractEntity> aEntity = new ArrayList<>();
 		List<AbstractLocation> aLocation = new ArrayList<>();
-		
+
 		LivingEntity target = MythicUtil.getTargetedEntity(player);
 		if (target != null) {
 			aEntity.add(BukkitAdapter.adapt(target));
 			aLocation.add(BukkitAdapter.adapt(target.getLocation()));
 		}
-		
-		SkillMetadataImpl meta = new SkillMetadataImpl(SkillTriggers.API, caster, BukkitAdapter.adapt(player), BukkitAdapter.adapt(player.getLocation()), aEntity, aLocation, this.power);
-		
+
+		SkillMetadataImpl meta = new SkillMetadataImpl(SkillTriggers.API, caster, BukkitAdapter.adapt(player),
+				BukkitAdapter.adapt(player.getLocation()), aEntity, aLocation, this.power);
+
 		if (variables != null) {
 			for (String key : variables.getKeys()) {
 				VariableRegistry skill_var = meta.getVariables();
-				switch(variables.getType(key)) {
+				switch (variables.getType(key)) {
 					case NBTTagFloat -> skill_var.putFloat(key, variables.getFloat(key));
 					case NBTTagInt -> skill_var.putInt(key, variables.getInteger(key));
 					case NBTTagString -> skill_var.putString(key, variables.getString(key));
@@ -68,10 +72,10 @@ public class SkillExecutor {
 				}
 			}
 		}
-		
-		if (skill.isUsable(meta, SkillTriggers.API)) {
+
+		if (skill.isUsable(meta, SkillTriggers.API) && !skill.onCooldown(caster)) {
 			skill.execute(meta);
-			skill.setCooldown(caster, cooldown);
+			if (cooldown > 0) skill.setCooldown(caster, cooldown);
 		}
 	}
-}
+}	

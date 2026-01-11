@@ -20,11 +20,25 @@ jobs:
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582
     - name: Build with Gradle Wrapper
       run: ./gradlew build
-    - name: Deploy JavaDoc
-      uses: MathieuSoysal/Javadoc-publisher.yml@v3.0.2
-      with:
+    - name: Upload to the GitHub release
+      uses: actions/upload-release-asset@v1
+      env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        javadoc-branch: javadoc
-        java-version: 21
-        target-folder: javadoc
-        project: gradle
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: build/libs/*.jar
+        asset_content_type: application/java-archive
+    - name: Upload to Modrinth
+      uses: RubixDev/modrinth-upload@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        file_path: build/libs/*.jar
+        name: ${{ github.event.release.name }}
+        version: ${{ github.event.release.tag_name }}
+        changelog: ${{ github.event.release.body }}
+        relations: nfGCP9fk:required,NLuc7Jjh:required
+        game_versions: 1.20,1.20.1,1.20.2,1.20.3,1.20.4,1.20.5,1.20.6,1.21,1.21.1
+        release_type: ${{ github.event.release.prerelease && 'beta' || 'release' }}
+        loaders: paper,spigot,pupur
+        featured: true
+        project_id: EkjBKVnH

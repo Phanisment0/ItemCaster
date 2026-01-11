@@ -21,27 +21,27 @@ public class PaperListener implements Listener {
 		Player player = e.getPlayer();
 		ItemUtil.runSkill(player, Activator.SHIELD_DISABLED);
 	}
-	
+
 	@EventHandler
 	public void onStopUseItem(PlayerStopUsingItemEvent e) {
 		Player player = e.getPlayer();
 		ItemStack item = e.getItem();
-		if (ItemUtil.validateItem(item)) new SkillActivator(player,item, Activator.STOP_USE_ITEM);
+		if (ItemUtil.validateItem(item)) new SkillActivator(player, item, Activator.STOP_USE_ITEM);
 	}
-	
+
 	@EventHandler
 	public void onArmorChange(PlayerArmorChangeEvent e) {
 		Player player = e.getPlayer();
 		ItemStack item = e.getNewItem();
 		if (ItemUtil.validateItem(item)) new SkillActivator(player, item, Activator.ARMOR_CHANGE);
 	}
-	
+
 	@EventHandler
 	public void onElytraBoost(PlayerElytraBoostEvent e) {
 		Player player = e.getPlayer();
 		ItemUtil.runSkill(player, Activator.ELYRA_BOOST);
 	}
-	
+
 	@EventHandler
 	public void onPickupExp(PlayerPickupExperienceEvent e) {
 		Player player = e.getPlayer();

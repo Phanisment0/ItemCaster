@@ -13,8 +13,7 @@ public class OraxenExternalItem implements IExternalItem {
 	public String getPlugin() {
 		return "oraxen";
 	}
-	
-	
+
 	@Override
 	public Optional<ItemStack> resolve(String[] parts, MythicItem item) {
 		ItemBuilder ib = OraxenItems.getItemById(parts[1]);

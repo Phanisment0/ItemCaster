@@ -44,13 +44,13 @@ public class ActivatorListener implements Listener {
 		Player player = e.getPlayer();
 		if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) ItemUtil.runSkill(player, Activator.RIGHT_CLICK);
 	}
-	
+
 	@EventHandler
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 		Player player = event.getPlayer();
 		ItemUtil.runSkill(player, Activator.INTERACT_ENTITY);
 	}
-	
+
 	@EventHandler
 	public void onPlayerSwing(PlayerAnimationEvent e) {
 		Player player = e.getPlayer();
@@ -65,14 +65,14 @@ public class ActivatorListener implements Listener {
 				break;
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerDrop(PlayerDropItemEvent e) {
 		Player player = e.getPlayer();
 		ItemStack item = e.getItemDrop().getItemStack();
 		if (ItemUtil.validateItem(item)) new SkillActivator(player, item, Activator.DROP);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerPickUp(PlayerPickupItemEvent e) {
@@ -80,12 +80,12 @@ public class ActivatorListener implements Listener {
 		ItemStack item = e.getItem().getItemStack();
 		if (ItemUtil.validateItem(item)) new SkillActivator(player, item, Activator.PICKUP);
 	}
-	
+
 	@EventHandler
 	public void onPlayerDamaged(EntityDamageEvent e) {
 		if (e.getEntity() instanceof Player player) {
 			ItemUtil.runSkill(player, Activator.DAMAGED);
-			
+
 			switch (e.getCause()) {
 				case BLOCK_EXPLOSION:
 					ItemUtil.runSkill(player, Activator.DAMAGED_BY_BLOCK_EXPLOSION);
@@ -185,12 +185,12 @@ public class ActivatorListener implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onEntityDamaged(EntityDamageByEntityEvent e) {
 		if (e.getDamager() instanceof Player player) ItemUtil.runSkill(player, Activator.ATTACK);
 	}
-	
+
 	@EventHandler
 	public void onPlayerToggleSneak(PlayerToggleSneakEvent e) {
 		Player player = e.getPlayer();
@@ -201,16 +201,16 @@ public class ActivatorListener implements Listener {
 			ItemUtil.runSkill(player, Activator.UNSNEAK);
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerConsume(PlayerItemConsumeEvent e) {
 		Player player = e.getPlayer();
 		ItemUtil.runSkill(player, Activator.CONSUME);
 	}
-	
+
 	@EventHandler
 	public void onPlayerShoot(EntityShootBowEvent e) {
-		if(e.getEntity() instanceof Player player) {
+		if (e.getEntity() instanceof Player player) {
 			ItemStack item = e.getBow();
 			if (ItemUtil.validateItem(item)) {
 				SkillActivator skill = new SkillActivator(player, item, Activator.BOW_SHOOT);
@@ -218,44 +218,44 @@ public class ActivatorListener implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e) {
 		Player player = e.getEntity();
 		ItemUtil.runSkill(player, Activator.DEATH);
 	}
-	
+
 	@EventHandler
 	public void onLogin(PlayerLoginEvent e) {
 		Player player = e.getPlayer();
 		ItemUtil.runSkill(player, Activator.LOGIN);
 	}
-	
+
 	@EventHandler
 	public void onQuit(PlayerQuitEvent e) {
 		Player player = e.getPlayer();
 		ItemUtil.runSkill(player, Activator.QUIT);
 	}
-	
+
 	@EventHandler
 	public void onChangeSlot(PlayerItemHeldEvent e) {
 		Player player = e.getPlayer();
 		ItemUtil.runSkill(player, Activator.CHANGE_SLOT);
 	}
-	
+
 	@EventHandler
 	public void onItemBreak(PlayerItemBreakEvent e) {
 		Player player = e.getPlayer();
 		ItemStack item = e.getBrokenItem();
 		if (ItemUtil.validateItem(item)) new SkillActivator(player, item, Activator.ITEM_BREAK);
 	}
-	
+
 	@EventHandler
 	public void onFish(PlayerFishEvent e) {
 		Player player = e.getPlayer();
-		
+
 		ItemUtil.runSkill(player, Activator.FISHING);
-		
+
 		switch (e.getState()) {
 			case BITE:
 				ItemUtil.runSkill(player, Activator.FISH_BITE);
@@ -282,7 +282,7 @@ public class ActivatorListener implements Listener {
 				break;
 		}
 	}
-	
+
 	@EventHandler
 	public void onSprint(PlayerToggleSprintEvent e) {
 		Player player = e.getPlayer();
@@ -293,7 +293,7 @@ public class ActivatorListener implements Listener {
 			ItemUtil.runSkill(player, Activator.UNSPRINT);
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlace(BlockPlaceEvent e) {
 		Player player = e.getPlayer();
@@ -303,32 +303,32 @@ public class ActivatorListener implements Listener {
 			if (skill.getCancelEvent()) e.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler
 	public void onBreak(BlockBreakEvent e) {
 		Player player = e.getPlayer();
 		ItemUtil.runSkill(player, Activator.BLOCK_BREAK);
 	}
-	
+
 	@EventHandler
 	public void onBlockDamaged(BlockDamageEvent e) {
 		Player player = e.getPlayer();
 		ItemStack item = e.getItemInHand();
 		if (ItemUtil.validateItem(item)) new SkillActivator(player, item, Activator.BLOCK_DAMAGED);
 	}
-	
+
 	@EventHandler
 	public void onBlockStopDamaged(BlockDamageAbortEvent e) {
 		Player player = e.getPlayer();
 		ItemStack item = e.getItemInHand();
 		if (ItemUtil.validateItem(item)) new SkillActivator(player, item, Activator.BLOCK_STOP_DAMAGED);
 	}
-	
+
 	@EventHandler
 	public void onTeleport(PlayerTeleportEvent e) {
 		Player player = e.getPlayer();
 		ItemUtil.runSkill(player, Activator.TELEPORT);
-		
+
 		switch (e.getCause()) {
 			case CHORUS_FRUIT:
 				ItemUtil.runSkill(player, Activator.TELEPORTED_BY_CHORUS_FRUIT);
@@ -365,12 +365,12 @@ public class ActivatorListener implements Listener {
 				break;
 		}
 	}
-	
+
 	@EventHandler
 	public void onProjectileHit(ProjectileHitEvent e) {
 		if (e.getEntity() instanceof Player player) ItemUtil.runSkill(player, Activator.PROJECTILE_HIT);
 	}
-	
+
 	@EventHandler
 	public void onSwapHand(PlayerSwapHandItemsEvent e) {
 		Player player = e.getPlayer();
@@ -379,7 +379,7 @@ public class ActivatorListener implements Listener {
 		if (ItemUtil.validateItem(main)) new SkillActivator(player, main, Activator.BLOCK_STOP_DAMAGED);
 		if (ItemUtil.validateItem(off)) new SkillActivator(player, off, Activator.BLOCK_STOP_DAMAGED);
 	}
-	
+
 	@EventHandler
 	public void onChangeWorld(PlayerChangedWorldEvent e) {
 		Player player = e.getPlayer();

@@ -13,28 +13,20 @@ import java.io.IOException;
 public final class ConfigManager {
 	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	private static final File file_location = new File(ItemCaster.inst().getDataFolder(), "configs.json");
-	//private static final RecipeManager recipe_manager = new RecipeManager();
-	
+
 	public static void load() {
 		if (!ItemCaster.inst().getDataFolder().exists()) ItemCaster.inst().getDataFolder().mkdirs();
-		if(!file_location.exists()) {
+		if (!file_location.exists()) {
 			save();
 			return;
 		}
-		
+
 		try (var reader = new FileReader(file_location)) {
 			var load = gson.fromJson(reader, ConfigData.class);
 			if (load != null) ConfigData.handler = load;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		/*
-		CasterLogger.send("Loading Recipes...");
-		for (Pack pack : ItemCaster.getPackManager().getPacks()) {
-			File file = pack.getPackFolder("Recipes");
-			if (!file.exists()) file.mkdirs();
-			RecipeManager.load(file);
-		}*/
 	}
 	
 	public static void save() {

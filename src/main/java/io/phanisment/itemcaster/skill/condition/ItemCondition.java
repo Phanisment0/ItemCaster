@@ -14,23 +14,24 @@ import static io.phanisment.itemcaster.util.ItemUtil.validateItem;
 
 public abstract class ItemCondition extends SkillCondition implements IEntityCondition {
 	private EquipmentSlot slot;
-	
+
 	public ItemCondition(String line, MythicLineConfig mlc) {
 		super(line);
-		String slot_string = mlc.getString(new String[]{"equipment", "e"}, "HAND").toUpperCase();
+		String slot_string = mlc.getString(new String[] { "equipment", "e" }, "HAND").toUpperCase();
 		try {
 			this.slot = EquipmentSlot.valueOf(slot_string);
 		} catch (IllegalArgumentException e) {
 			MythicLogger.errorCondition(this, "Invalid equipment slot value: " + slot_string, e);
 		}
 	}
-	
+
 	@Override
 	public boolean check(AbstractEntity e) {
-		ItemStack item = ((LivingEntity)e.getBukkitEntity()).getEquipment().getItem(slot);
-		if (!validateItem(item)) return false;
+		ItemStack item = ((LivingEntity) e.getBukkitEntity()).getEquipment().getItem(slot);
+		if (!validateItem(item))
+			return false;
 		return this.resolve(e, item);
 	}
-	
+
 	abstract boolean resolve(AbstractEntity target, ItemStack item);
 }

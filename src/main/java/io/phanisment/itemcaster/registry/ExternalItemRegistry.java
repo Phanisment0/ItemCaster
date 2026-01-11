@@ -11,7 +11,7 @@ import java.util.HashMap;
  */
 public final class ExternalItemRegistry {
 	private static final Map<String, IExternalItem> external_item = new HashMap<>();
-	
+
 	/**
 	 * Register your implemented class IExternalItem in here.
 	 * 
@@ -20,7 +20,7 @@ public final class ExternalItemRegistry {
 	public static void register(IExternalItem instance) {
 		external_item.put(instance.getPlugin().toLowerCase(), instance);
 	}
-	
+
 	/**
 	 * Get all list of registered IExternalItem.
 	 * 
@@ -29,7 +29,7 @@ public final class ExternalItemRegistry {
 	public static Map<String, IExternalItem> registered() {
 		return new HashMap<>(external_item);
 	}
-	
+
 	/**
 	 * Get single instance of registered IExternalItem.
 	 * 

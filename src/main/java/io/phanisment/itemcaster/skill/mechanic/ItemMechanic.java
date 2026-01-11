@@ -19,25 +19,25 @@ import java.util.Optional;
 
 public abstract class ItemMechanic extends SkillMechanic implements ITargetedEntitySkill, INoTargetSkill {
 	private EquipmentSlot slot;
-	
+
 	public ItemMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
 		super(manager, file, line, mlc);
-		String slot_string = mlc.getString(new String[]{"equipment", "e"}, "HAND").toUpperCase();
+		String slot_string = mlc.getString(new String[] { "equipment", "e" }, "HAND").toUpperCase();
 		try {
 			this.slot = EquipmentSlot.valueOf(slot_string);
 		} catch (IllegalArgumentException e) {
 			MythicLogger.errorMechanic(this, "Invalid equipment slot value: " + slot_string, e);
 		}
 	}
-	
+
 	@Override
 	public SkillResult cast(SkillMetadata meta) {
 		return this.castAtEntity(meta, meta.getCaster().getEntity());
 	}
-	
+
 	@Override
 	public SkillResult castAtEntity(SkillMetadata meta, AbstractEntity entity) {
-		LivingEntity target = (LivingEntity)entity.getBukkitEntity();
+		LivingEntity target = (LivingEntity) entity.getBukkitEntity();
 		ItemStack item = target.getEquipment().getItem(slot);
 		Optional<ItemStack> result = this.resolve(entity, item);
 		if (result.isPresent()) {
@@ -46,10 +46,10 @@ public abstract class ItemMechanic extends SkillMechanic implements ITargetedEnt
 		}
 		return SkillResult.CONDITION_FAILED;
 	}
-	
+
 	protected EquipmentSlot getSlot() {
 		return this.slot;
 	}
-	
+
 	abstract Optional<ItemStack> resolve(AbstractEntity target, ItemStack item);
 }

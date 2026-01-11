@@ -29,16 +29,19 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * I need to refactor this shit later...
+ */
 public class SkillActivator {
 	private static final Map<CasterPlayerData, Integer> skill_interval = new HashMap<>();
-	
+
 	private final ItemStack item;
 	private final Player player;
 	private final Activator activator;
 	private NBTCompound inst;
 	private String signal;
 	private boolean cancel_event;
-	
+
 	@SuppressWarnings("deprecation")
 	public SkillActivator(Player player, ItemStack item, Activator activator) {
 		this.item = item;
@@ -46,47 +49,43 @@ public class SkillActivator {
 		this.activator = activator;
 		if (!ItemUtil.validateItem(this.item)) return;
 		this.inst = new NBTItem(item).getCompound("ItemCaster");
-		
+
 		if (this.inst == null) return;
-		
+
 		NBTCompoundList abilities = inst.getCompoundList("abilities");
 		abilities.forEach(this::readAbilityAttributes);
 	}
-	
+
 	public static SkillCaster toCaster(Entity entity) {
 		if (entity == null) {
 			VirtualEntity virtual = new VirtualEntity(new AbstractLocation());
 			return new GenericCaster(virtual);
 		}
-		
-		if (((MobExecutor)ItemCaster.getMobManager()).isActiveMob(entity.getUniqueId())) {
-			return ((MobExecutor)ItemCaster.getMobManager()).getMythicMobInstance(entity);
-		}
-		
+
+		if (((MobExecutor) ItemCaster.getMobManager()).isActiveMob(entity.getUniqueId())) return ((MobExecutor) ItemCaster.getMobManager()).getMythicMobInstance(entity);
+
 		Optional<PlayerData> profile = ItemCaster.getPlayerManager().getProfile(entity.getUniqueId());
-		if (profile.isPresent()) {
-			return (SkillCaster)profile.get();
-		}
+		if (profile.isPresent()) return (SkillCaster) profile.get();
 		return new GenericCaster(BukkitAdapter.adapt(entity));
 	}
-	
+
 	private void readAbilityAttributes(ReadableNBT ability) {
 		String skill = ability.getString("skill");
 		String event = ability.getString("activator").toUpperCase();
-		
+
 		if (!skill.isEmpty() && event.equals(activator.toString())) {
 			SkillCaster sc = toCaster(player);
 			CasterPlayerData pc = new CasterPlayerData(player.getUniqueId(), skill);
 			Optional<Skill> ms = pc.getSkill();
 			if (!ms.isPresent()) return;
-			MetaSkill sk = (MetaSkill)ms.get();
-			
+			MetaSkill sk = (MetaSkill) ms.get();
+
 			if (ability.hasTag("cancel_event")) cancel_event = ability.getBoolean("cancel_event");
 			if (sk.onCooldown(sc)) return;
 			if (this.isSneak(ability, player)) return;
 			if (event.equals("SIGNAL") && !this.isSignalEquals(ability)) return;
 			if (event.equals("TICK") && !this.canTriggerTick(pc, ability)) return;
-			
+
 			var exc = new SkillExecutor(sk, player);
 			exc.setPower(this.getNbtPower(ability));
 			exc.setCooldown(this.getNbtCooldown(ability));
@@ -94,30 +93,30 @@ public class SkillActivator {
 			exc.execute();
 		}
 	}
-	
+
 	private float getNbtPower(ReadableNBT nbt) {
 		return NbtSafe.getFloatSafe(nbt, "power", 1.0F);
 	}
-	
+
 	private double getNbtCooldown(ReadableNBT nbt) {
 		return NbtSafe.getDoubleSafe(nbt, "cooldown", 0D);
 	}
-	
+
 	private int getNbtInterval(ReadableNBT nbt) {
 		return NbtSafe.getIntSafe(nbt, "interval", 0);
 	}
-	
+
 	private boolean isSneak(ReadableNBT nbt, Player player) {
 		if (!nbt.hasTag("sneaking")) return false;
 		return nbt.getBoolean("sneaking") != player.isSneaking();
 	}
-	
+
 	private boolean isSignalEquals(ReadableNBT nbt) {
 		if (!nbt.hasTag("signal", NBTType.NBTTagString)) return false;
 		String i_signal = nbt.getString("signal");
 		return i_signal.equals(this.signal);
 	}
-	
+
 	private boolean canTriggerTick(CasterPlayerData caster, ReadableNBT nbt) {
 		int interval = this.getNbtInterval(nbt);
 		int count = skill_interval.getOrDefault(caster, 0);
@@ -128,30 +127,30 @@ public class SkillActivator {
 		skill_interval.put(caster, interval);
 		return true;
 	}
-	
+
 	public void setSignal(String signal) {
 		this.signal = signal;
 	}
-	
+
 	public boolean getCancelEvent() {
 		return this.cancel_event;
 	}
-	
+
 	public static record CasterPlayerData(UUID uuid, String skill) {
 		public Optional<Skill> getSkill() {
 			return ItemCaster.getSkillManager().getSkill(skill);
 		}
 	}
-	
+
 	public static enum Activator {
 		LEFT_CLICK,
 		RIGHT_CLICK,
 		INTERACT_ENTITY,
-		
+
 		DROP,
 		PICKUP,
 		PICKUP_EXP,
-		
+
 		ATTACK,
 		DAMAGED,
 		DAMAGED_BY_BLOCK_EXPLOSION,
@@ -185,28 +184,28 @@ public class SkillActivator {
 		DAMAGED_BY_VOID,
 		DAMAGED_BY_WITHER,
 		DAMAGED_BY_WORLD_BORDER,
-		
+
 		TOGGLE_SNEAK,
 		SNEAK,
 		UNSNEAK,
-		
+
 		SHIELD_DISABLED,
 		STOP_USE_ITEM,
 		CONSUME,
-		
+
 		BOW_SHOOT,
 		PROJECTILE_HIT,
-		
+
 		DEATH,
-		
+
 		LOGIN,
 		QUIT,
-		
+
 		CHANGE_SLOT,
 		SWAP_HAND,
-		
+
 		ITEM_BREAK,
-		
+
 		FISHING,
 		FISH_BITE,
 		FISH_CAUGHT_ENTITY,
@@ -215,19 +214,19 @@ public class SkillActivator {
 		FISH_FISHING,
 		FISH_IN_GROUND,
 		FISH_REEL_IN,
-		
+
 		TOGGLE_SPRINT,
 		SPRINT,
 		UNSPRINT,
-		
+
 		BLOCK_PLACE,
 		BLOCK_BREAK,
 		BLOCK_DAMAGED,
 		BLOCK_STOP_DAMAGED,
-		
+
 		ARMOR_CHANGE,
 		ELYRA_BOOST,
-		
+
 		TELEPORT,
 		TELEPORTED_BY_CHORUS_FRUIT,
 		TELEPORTED_BY_COMMAND,
@@ -240,9 +239,9 @@ public class SkillActivator {
 		TELEPORTED_BY_PLUGIN,
 		TELEPORTED_BY_SPECTATE,
 		TELEPORTED_BY_UNKNOWN,
-		
+
 		CHANGE_WORLD,
-		
+
 		TICK,
 		SIGNAL;
 	}

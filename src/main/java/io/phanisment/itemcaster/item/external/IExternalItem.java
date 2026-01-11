@@ -6,5 +6,6 @@ import java.util.Optional;
 
 public interface IExternalItem {
 	String getPlugin();
+
 	Optional<ItemStack> resolve(String[] parts, MythicItem item);
 }

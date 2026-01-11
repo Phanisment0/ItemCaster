@@ -9,16 +9,18 @@ import io.lumine.mythic.api.skills.conditions.IEntityCondition;
 import io.lumine.mythic.core.skills.SkillCondition;
 import io.lumine.mythic.core.utils.annotations.MythicCondition;
 
-@MythicCondition(author="Phanisment", name="isattackcooldown", aliases={"attackcooldown", "atkcd"}, description="If target attack is cooldown")
+@MythicCondition(author = "Phanisment", name = "isattackcooldown", aliases = { "attackcooldown",
+		"atkcd" }, description = "If target attack is cooldown")
 public class AttackCooldownCondition extends SkillCondition implements IEntityCondition {
 	public AttackCooldownCondition(String line, MythicLineConfig mlc) {
 		super(line);
 	}
-	
+
 	@Override
 	public boolean check(AbstractEntity e) {
 		Entity entity = e.getBukkitEntity();
-		if (entity instanceof Player player) return player.getAttackCooldown() < 1.0;
+		if (entity instanceof Player player)
+			return player.getAttackCooldown() < 1.0;
 		return false;
 	}
 }

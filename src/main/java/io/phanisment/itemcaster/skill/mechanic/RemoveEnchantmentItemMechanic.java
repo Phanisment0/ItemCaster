@@ -13,26 +13,27 @@ import static io.phanisment.itemcaster.util.ItemUtil.validateItem;
 import java.io.File;
 import java.util.Optional;
 
-@MythicMechanic(author="Phanisment", name="removeenchantmentitem", description="Add amount item", aliases={
-	"itemcaster:removeenchantmentitem",
-	"itemcaster:removeenchantitem",
-	"itemcaster:removeenchant",
-	"removeenchantitem",
-	"removeenchant"
+@MythicMechanic(author = "Phanisment", name = "removeenchantmentitem", description = "Add amount item", aliases = {
+		"itemcaster:removeenchantmentitem",
+		"itemcaster:removeenchantitem",
+		"itemcaster:removeenchant",
+		"removeenchantitem",
+		"removeenchant"
 })
 public class RemoveEnchantmentItemMechanic extends ItemMechanic {
 	private Enchantment enchantment;
-	
+
 	@SuppressWarnings("deprecation")
 	public RemoveEnchantmentItemMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
 		super(manager, file, line, mlc);
-		String string_enc = mlc.getString(new String[]{"enchantment", "en"}, "UNBREAKING").toUpperCase();
+		String string_enc = mlc.getString(new String[] { "enchantment", "en" }, "UNBREAKING").toUpperCase();
 		this.enchantment = Enchantment.getByName(string_enc);
 	}
-	
+
 	@Override
 	public Optional<ItemStack> resolve(AbstractEntity target, ItemStack item) {
-		if (!validateItem(item)) return Optional.empty();
+		if (!validateItem(item))
+			return Optional.empty();
 		item.removeEnchantment(enchantment);
 		return Optional.empty();
 	}

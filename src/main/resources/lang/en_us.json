@@ -1,0 +1,7 @@
+{
+  "has_plugin_nexo": "Nexo detected, Enabling the Nexo features",
+  "has_plugin_itemsadder": "ItemsAdder detected, Enabling the ItemsAdder features",
+  "has_plugin_craftengine": "CraftEngine detected, Enabling the CraftEngine features",
+  "has_plugin_oraxen": "Oraxen detected, Enabling the Oraxen features",
+  "has_plugin_placeholderapi": "PlaceholderAPI detected, Enabling the PlaceholderAPI features"
+}

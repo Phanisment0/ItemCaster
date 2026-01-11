@@ -14,18 +14,19 @@ import static io.phanisment.itemcaster.util.ItemUtil.validateItem;
 import java.io.File;
 import java.util.Optional;
 
-@MythicMechanic(author="Phanisment", name="setdurabilityitem", description="Set durability item")
+@MythicMechanic(author = "Phanisment", name = "setdurabilityitem", description = "Set durability item")
 public class SetDurabilityItemMechanic extends ItemMechanic {
 	private int amount;
-	
+
 	public SetDurabilityItemMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
 		super(manager, file, line, mlc);
-		this.amount = mlc.getInteger(new String[]{"amount", "a"}, 1);
+		this.amount = mlc.getInteger(new String[] { "amount", "a" }, 1);
 	}
-	
+
 	@Override
 	public Optional<ItemStack> resolve(AbstractEntity target, ItemStack item) {
-		if (!validateItem(item)) return Optional.empty();
+		if (!validateItem(item))
+			return Optional.empty();
 		ItemMeta meta = item.getItemMeta();
 		if (meta instanceof Damageable dmg) {
 			dmg.setDamage(amount);

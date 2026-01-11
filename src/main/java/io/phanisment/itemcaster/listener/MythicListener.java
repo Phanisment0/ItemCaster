@@ -16,19 +16,19 @@ import io.phanisment.itemcaster.skill.SkillActivator.Activator;
 import io.phanisment.itemcaster.util.ItemUtil;
 
 public class MythicListener implements Listener {
-	
-	@EventHandler 
+
+	@EventHandler
 	public void onReload(MythicPostReloadedEvent e) {
 		CasterItem.clear();
 		ItemCaster.inst().reload();
 	}
-	
-	@EventHandler(priority=EventPriority.HIGH)
+
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onItemGenerate(MythicMobItemGenerateEvent e) {
 		CasterItem item = new CasterItem(e.getItem());
 		item.applyData(e);
 	}
-	
+
 	@EventHandler
 	public void onSignal(MythicPlayerSignalEvent e) {
 		Player player = BukkitAdapter.adapt(e.getProfile().getEntity().asPlayer());

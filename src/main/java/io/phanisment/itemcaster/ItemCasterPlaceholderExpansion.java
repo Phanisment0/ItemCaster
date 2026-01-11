@@ -8,17 +8,17 @@ public final class ItemCasterPlaceholderExpansion extends PlaceholderExpansion {
 	public String getAuthor() {
 		return "Phanisment";
 	}
-	
+
 	@Override
 	public String getIdentifier() {
 		return "itemcaster";
 	}
-	
+
 	@Override
 	public String getVersion() {
 		return "0.1";
 	}
-	
+
 	@Override
 	public String onPlaceholderRequest(Player player, String params) {
 		return null;

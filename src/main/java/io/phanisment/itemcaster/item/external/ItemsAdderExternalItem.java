@@ -11,7 +11,7 @@ public class ItemsAdderExternalItem implements IExternalItem {
 	public String getPlugin() {
 		return "itemsadder";
 	}
-	
+
 	@Override
 	public Optional<ItemStack> resolve(String[] parts, MythicItem item) {
 		String raw_id = parts[1] + ":" + parts[2];

@@ -8,7 +8,13 @@ depend:
 - MythicMobs
 - NBTAPI
 softdepend:
-- ItemsAdder
-- Nexo
-- Oraxen
 - PlaceholderAPI
+- CraftEngine
+- ItemsAdder
+- Oraxen
+- Nexo
+commands:
+  itemcaster:
+    aliases:
+    - ic
+    permission: op

@@ -13,7 +13,7 @@ public class CasterRunnable extends BukkitRunnable {
 			if (player.isOnline() || !player.isDead()) this.tick(player);
 		}
 	}
-	
+
 	private void tick(Player player) {
 		ItemUtil.runSkill(player, Activator.TICK);
 	}

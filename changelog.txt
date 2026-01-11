@@ -1,0 +1,28 @@
+Template
+---
+*.*.*
+
+New Features
+- ...
+
+Fixes
+- ...
+
+Removed Features
+- ...
+
+---
+
+2.1.0
+New Features
+- Commands
+- Added menu editor with alot of feature inside it
+- Add support for plugin CraftEngine
+- Localization
+- new changelog file (agil: i think this will need more effort to make lol)
+
+Fixes
+- Fix cooldown skill in item is override 
+
+Removed Features
+- remove recipe class beacuse i think you can just use plugin like Nexo/CraftEngine/ItemsAdder/Oraxe for making crafting recipe

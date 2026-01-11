@@ -12,7 +12,7 @@ public class NexoExternalItem implements IExternalItem {
 	public String getPlugin() {
 		return "nexo";
 	}
-	
+
 	@Override
 	public Optional<ItemStack> resolve(String[] parts, MythicItem item) {
 		ItemBuilder ib = NexoItems.itemFromId(parts[1]);

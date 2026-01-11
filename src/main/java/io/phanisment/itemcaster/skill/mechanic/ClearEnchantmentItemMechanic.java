@@ -12,21 +12,22 @@ import static io.phanisment.itemcaster.util.ItemUtil.validateItem;
 import java.io.File;
 import java.util.Optional;
 
-@MythicMechanic(author="Phanisment", name="clearenchantmentsitem", description="Add amount item", aliases={
-	"itemcaster:clearenchantmentsitem",
-	"itemcaster:clearenchantments",
-	"clearenchantmentsitem",
-	"clearenchantments",
-	"clearenchant"
+@MythicMechanic(author = "Phanisment", name = "clearenchantmentsitem", description = "Add amount item", aliases = {
+		"itemcaster:clearenchantmentsitem",
+		"itemcaster:clearenchantments",
+		"clearenchantmentsitem",
+		"clearenchantments",
+		"clearenchant"
 })
 public class ClearEnchantmentItemMechanic extends ItemMechanic {
 	public ClearEnchantmentItemMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
 		super(manager, file, line, mlc);
 	}
-	
+
 	@Override
 	public Optional<ItemStack> resolve(AbstractEntity target, ItemStack item) {
-		if (!validateItem(item)) return Optional.empty();
+		if (!validateItem(item))
+			return Optional.empty();
 		item.removeEnchantments();
 		return Optional.empty();
 	}

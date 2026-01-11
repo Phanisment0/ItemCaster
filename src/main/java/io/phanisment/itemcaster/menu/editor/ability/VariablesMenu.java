@@ -1,7 +1,9 @@
-package io.phanisment.itemcaster.menu.editor;
+package io.phanisment.itemcaster.menu.editor.ability;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 
 import fr.mrmicky.fastinv.PaginatedFastInv;
 import fr.mrmicky.fastinv.InventoryScheme;
@@ -10,7 +12,8 @@ import fr.mrmicky.fastinv.ItemBuilder;
 import io.lumine.mythic.bukkit.utils.prompts.chat.ChatPrompt;
 
 import io.phanisment.itemcaster.item.CasterItem;
-import io.phanisment.itemcaster.menu.editor.AbilitiesMenu.AbilitiesMenuContext;
+import io.phanisment.itemcaster.menu.editor.ability.AbilitiesMenu.AbilityMenuContext;
+import io.phanisment.itemcaster.util.Legacy;
 
 import java.util.Map;
 
@@ -23,26 +26,23 @@ public class VariablesMenu extends PaginatedFastInv {
 		.mask("111111111")
 		.bindPagination('1');
 	
-	public VariablesMenu(CasterItem item, AbilitiesMenuContext ctx) {
-		super(54, "List of Variable ability slot " + ctx.index()); 
+	public VariablesMenu(CasterItem item, AbilityMenuContext ctx) {
+		super(54, "List of Variable Ability slot: " + ctx.index()); 
 		
-		nextPageItem(53, new ItemBuilder(Material.ARROW).name("§fNext Page").build());
-		previousPageItem(52, new ItemBuilder(Material.ARROW).name("§fPrevious Page").build());
+		previousPageItem(52, new ItemBuilder(Material.ARROW).name(Legacy.serializer("<white>Previous")).build());
+		nextPageItem(53, new ItemBuilder(Material.ARROW).name(Legacy.serializer("<white>Next")).build());
+
 		Map<String, Object> variables = ctx.data().getVariables();
 		
-		setItem(45, new ItemBuilder(Material.STRUCTURE_VOID)
-		.name("§fBack")
-		.build(), e -> {
-			Player player = (Player)e.getWhoClicked();
+		setItem(45, new ItemBuilder(Material.BARRIER).name(Legacy.serializer("<white>Back")).build(), e -> {
+			Player player = (Player) e.getWhoClicked();
+			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 2f, 2f);
 			new AbilityMenu(item, ctx).open(player);
-			player.playSound(player.getLocation(), "entity.experience_orb.pickup", 1.0f, 1.0f);
 		});
 		
-		setItem(48, new ItemBuilder(Material.ENDER_CHEST)
-		.name("§aAdd Variable")
-		.build(), e -> {
+		setItem(48, new ItemBuilder(Material.ENDER_CHEST).name(Legacy.serializer("<white>Add Variable")).build(), e -> {
 			Player player = (Player)e.getWhoClicked();
-			player.playSound(player.getLocation(), "entity.experience_orb.pickup", 1.0f, 1.0f);
+			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 2f, 2f);
 			player.closeInventory();
 			ChatPrompt.listen(player, i -> {
 				String[] parts = i.split("=", 2);
@@ -54,42 +54,37 @@ public class VariablesMenu extends PaginatedFastInv {
 				variables.put(key_var, value_var);
 				ctx.data().setVariables(variables);
 				item.setAbility(ctx.index(), ctx.data());
-				new VariablesMenu(item, ctx).open(player);
 				return ChatPrompt.Response.ACCEPTED;
-			});
+			}).thenAcceptSync(in -> new VariablesMenu(item, ctx).open(player));
 		});
 		
 		setItem(49, item.getItemStack(), e -> {
 			Player player = (Player)e.getWhoClicked();
-			player.performCommand("mythicmobs i get " + item.getName());
-			player.playSound(player.getLocation(), "entity.experience_orb.pickup", 1.0f, 1.0f);
+			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 2f, 2f);
+			player.getInventory().addItem(item.getItemStack(1));
 		});
 		
 		for (Map.Entry<String, Object> entry : variables.entrySet()) {
 			String key = entry.getKey();
 			Object value = entry.getValue();
-			addContent(new ItemBuilder(Material.LIME_DYE)
-			.name("§f" + key + ": §e" + value)
-			.lore("§8(" + instanceOf(value) + ")")
-			.build(), e -> {
+			addContent(new ItemBuilder(Material.CHEST).name("§f" + key + ": §e" + value).lore("§8(" + instanceOf(value) + ")").build(), e -> {
 				Player player = (Player)e.getWhoClicked();
-				player.playSound(player.getLocation(), "entity.experience_orb.pickup", 1.0f, 1.0f);
-				if (e.isShiftClick()) {
+				player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 2f, 2f);
+				if (e.getClick().equals(ClickType.RIGHT)) {
 					variables.remove(key);
 					ctx.data().setVariables(variables);
 					item.setAbility(ctx.index(), ctx.data());
 					new VariablesMenu(item, ctx).open(player);
 					return;
+				} else if (e.getClick().equals(ClickType.LEFT)) {
+					player.closeInventory();
+					ChatPrompt.listen(player, i -> {
+						variables.put(key, formatValue(i));
+						ctx.data().setVariables(variables);
+						item.setAbility(ctx.index(), ctx.data());
+						return ChatPrompt.Response.ACCEPTED;
+					}).thenAcceptSync(in -> new VariablesMenu(item, ctx).open(player));
 				}
-				
-				player.closeInventory();
-				ChatPrompt.listen(player, i -> {
-					variables.put(key, formatValue(i));
-					ctx.data().setVariables(variables);
-					item.setAbility(ctx.index(), ctx.data());
-					new VariablesMenu(item, ctx).open(player);
-					return ChatPrompt.Response.ACCEPTED;
-				});
 			});
 		}
 		scheme.apply(this);
