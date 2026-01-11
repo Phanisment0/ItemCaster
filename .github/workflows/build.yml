@@ -36,16 +36,18 @@ jobs:
         asset_name: ItemCaster-${{ github.event.release.tag_name }}.jar
         asset_content_type: application/java-archive
     - name: Upload to Modrinth
-      uses: RubixDev/modrinth-upload@v1
+      uses: cloudnode-pro/modrinth-publish@v2
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        file_path: build/libs/${{ steps.findjar.outputs.jarname }}
+        token: ${{ secrets.MODRINTH_TOKEN }}
+        project: EkjBKVnH
         name: ${{ github.event.release.name }}
         version: ${{ github.event.release.tag_name }}
         changelog: ${{ github.event.release.body }}
-        relations: nfGCP9fk:required,NLuc7Jjh:required
-        game_versions: 1.20,1.20.1,1.20.2,1.20.3,1.20.4,1.20.5,1.20.6,1.21,1.21.1
-        release_type: beta
-        loaders: paper,spigot,pupur
-        featured: true
-        project_id: EkjBKVnH
+        loaders: |-
+          paper
+          spigot
+          purpr
+        game-versions: |-
+          1.20.x
+          1.21.x
+        files: build/libs/${{ steps.findjar.outputs.jarname }}
