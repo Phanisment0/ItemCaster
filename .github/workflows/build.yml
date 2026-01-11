@@ -23,8 +23,9 @@ jobs:
     - name: Find correct JAR
       id: findjar
       run: |
-        output="$(find build/libs/ ! -name "*-dev.jar" ! -name "*-sources.jar" -type f -printf "%f\n")"
-        echo "jarname=$output" >> $GITHUB_OUTPUTS
+        output="$(find build/libs -type f ! -name "*-dev.jar" ! -name "*-sources.jar" -printf "%f\n" | head -n1)"
+        if [ -z "$output" ]; then echo "No JAR found" >&2; exit 1; fi
+        echo "jarname=$output" >> $GITHUB_OUTPUT
     - name: Upload to the GitHub release
       uses: actions/upload-release-asset@v1
       env:
@@ -44,7 +45,7 @@ jobs:
         changelog: ${{ github.event.release.body }}
         relations: nfGCP9fk:required,NLuc7Jjh:required
         game_versions: 1.20,1.20.1,1.20.2,1.20.3,1.20.4,1.20.5,1.20.6,1.21,1.21.1
-        release_type: ${{ github.event.release.prerelease && 'beta' || 'release' }}
+        release_type: ${{ github.event.release.prerelease ? 'beta' : 'release' }}
         loaders: paper,spigot,pupur
         featured: true
         project_id: EkjBKVnH
