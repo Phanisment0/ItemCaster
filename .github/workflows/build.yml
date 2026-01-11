@@ -1,9 +1,23 @@
 name: Releases Build
 
 on:
-  workflow_dispatch:
   release:
     types: [ "published" ]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release tag (e.g., v1.0.0)'
+        required: true
+      name:
+        description: 'Release name'
+        required: false
+      body:
+        description: 'Changelog'
+        required: false
+      prerelease:
+        description: 'Set true for prerelease/beta'
+        required: false
+        default: 'false'
 
 jobs:
   build:
