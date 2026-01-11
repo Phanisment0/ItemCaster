@@ -45,7 +45,7 @@ jobs:
         changelog: ${{ github.event.release.body }}
         relations: nfGCP9fk:required,NLuc7Jjh:required
         game_versions: 1.20,1.20.1,1.20.2,1.20.3,1.20.4,1.20.5,1.20.6,1.21,1.21.1
-        release_type: ${{ github.event.release.prerelease ? 'beta' : 'release' }}
+        release_type: beta
         loaders: paper,spigot,pupur
         featured: true
         project_id: EkjBKVnH
