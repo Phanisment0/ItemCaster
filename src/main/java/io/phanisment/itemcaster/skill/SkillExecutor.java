@@ -78,4 +78,4 @@ public class SkillExecutor {
 			if (cooldown > 0) skill.setCooldown(caster, cooldown);
 		}
 	}
-}	
+}

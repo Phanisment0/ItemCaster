@@ -18,8 +18,7 @@ import java.lang.reflect.Field;
 public class SkillInjector {
 	public static void register() {
 		// Condition Registry
-		Collection<Class<?>> class_conditions = AnnotationUtil.getAnnotatedClasses(ItemCaster.inst(),
-				"io.phanisment.itemcaster.skill.condition", MythicCondition.class);
+		Collection<Class<?>> class_conditions = AnnotationUtil.getAnnotatedClasses(ItemCaster.inst(), "io.phanisment.itemcaster.skill.condition", MythicCondition.class);
 		for (Class<?> condition : class_conditions) {
 			try {
 				String name = condition.getAnnotation(MythicCondition.class).name();

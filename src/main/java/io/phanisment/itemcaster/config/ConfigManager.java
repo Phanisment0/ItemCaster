@@ -12,15 +12,13 @@ import java.io.IOException;
 
 public final class ConfigManager {
 	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-	private static final File file_location = new File(ItemCaster.inst().getDataFolder(), "configs.json");
-
+	private static final String file_name = "configs.json";
+	private static final File file_location = new File(ItemCaster.inst().getDataFolder(), file_name);
+	
 	public static void load() {
 		if (!ItemCaster.inst().getDataFolder().exists()) ItemCaster.inst().getDataFolder().mkdirs();
-		if (!file_location.exists()) {
-			save();
-			return;
-		}
-
+		if (!file_location.exists()) ItemCaster.inst().saveResource(file_name, false);
+		
 		try (var reader = new FileReader(file_location)) {
 			var load = gson.fromJson(reader, ConfigData.class);
 			if (load != null) ConfigData.handler = load;

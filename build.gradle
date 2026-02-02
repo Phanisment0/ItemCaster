@@ -30,19 +30,19 @@ dependencies {
 	implementation "org.bstats:bstats-bukkit:${project.bstats_version}"
 	implementation "fr.mrmicky:fastinv:${project.fastinv_version}"
 	compileOnly "io.papermc.paper:paper-api:${project.api_version}"
-	
+
 	// Libraries...
 	compileOnly "com.google.code.gson:gson:${project.gson_version}"
 	compileOnly "me.clip:placeholderapi:${project.placeholder_api_version}"
 	compileOnly "io.lumine:Mythic-Dist:${project.mythicmobs_version}"
 	compileOnly "de.tr7zw:item-nbt-api-plugin:${project.nbt_api_version}"
-	
+
 	// ItemsAdder Plugin
 	compileOnly "dev.lone:api-itemsadder:${project.itemsadder_version}"
-	
+
 	// Oraxen Plugin
 	compileOnly "io.th0rgal:oraxen:${project.oraxen_version}"
-	
+
 	// Nexo Plugin
 	compileOnly "com.nexomc:nexo:${project.nexo_version}"
 
@@ -59,7 +59,7 @@ tasks.shadowJar {
 		into(".")
 	}
 	
-	destinationDirectory.set(file("../server/MythicMobs/plugins"))
+	//destinationDirectory.set(file("../server/MythicMobs/plugins"))
 }
 
 tasks.processResources {
