@@ -16,7 +16,7 @@ import io.lumine.mythic.bukkit.utils.version.MinecraftVersion;
 import io.lumine.mythic.bukkit.utils.version.ServerVersion;
 
 import io.phanisment.itemcaster.ItemCaster;
-import io.phanisment.itemcaster.Constants;
+import io.phanisment.itemcaster.Storage;
 import io.phanisment.itemcaster.util.MapSafe;
 import io.phanisment.itemcaster.util.ItemAbilityUtil;
 import io.phanisment.itemcaster.skill.SkillAttribute;
@@ -63,7 +63,7 @@ public class CasterItem {
 		ItemStack item = e.getItemStack();
 		ItemMeta meta = item.getItemMeta();
 
-		if (Constants.hasResourcePack() && model_data != null) model_data.applyModel(item);
+		if (Storage.hasResourcePack() && model_data != null) model_data.applyModel(item);
 		if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.20.5")) && hide_tooltips) meta.setHideTooltip(true);
 
 		item.setItemMeta(meta);

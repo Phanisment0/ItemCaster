@@ -12,7 +12,6 @@ base {
 }
 
 repositories {
-	mavenLocal()
 	mavenCentral()
 	maven { url "https://hub.spigotmc.org/nexus/content/groups/public/" }
 	maven { url "https://repo.papermc.io/repository/maven-public/" }
@@ -59,7 +58,7 @@ tasks.shadowJar {
 		into(".")
 	}
 	
-	//destinationDirectory.set(file("../server/MythicMobs/plugins"))
+	destinationDirectory.set(file("../../server/1.21.1/plugins"))
 }
 
 tasks.processResources {

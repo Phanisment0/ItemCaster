@@ -12,6 +12,8 @@ import java.util.ArrayList;
 
 /**
  * I need to refactor this shit later...
+ * 
+ * I think I dont really nedd refactor this.
  */
 public class SkillAttribute {
 	private String skill;

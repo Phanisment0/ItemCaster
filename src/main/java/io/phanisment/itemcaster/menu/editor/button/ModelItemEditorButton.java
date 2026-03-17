@@ -8,7 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import fr.mrmicky.fastinv.ItemBuilder;
 import io.lumine.mythic.bukkit.utils.prompts.chat.ChatPrompt;
-import io.phanisment.itemcaster.Constants;
+import io.phanisment.itemcaster.Storage;
 import io.phanisment.itemcaster.item.CasterItem;
 import io.phanisment.itemcaster.menu.editor.MenuEditor;
 import io.phanisment.itemcaster.util.CasterLogger;
@@ -29,7 +29,7 @@ public class ModelItemEditorButton implements IEditorButton {
 	@Override
 	public void left(InventoryClickEvent e, CasterItem item) {
 		Player player = (Player) e.getWhoClicked();
-		if (!Constants.hasResourcePack()) {
+		if (!Storage.hasResourcePack()) {
 			CasterLogger.send(player, "<red>You don't have any texture generator plugins, download plugin Nexo/ItemsAdder/Oraxen/CraftEngine to enable");
 			return;
 		}
@@ -49,7 +49,7 @@ public class ModelItemEditorButton implements IEditorButton {
 
 	@Override
 	public void right(InventoryClickEvent e, CasterItem item) {
-		if (!Constants.hasResourcePack()) {
+		if (!Storage.hasResourcePack()) {
 			CasterLogger.send((Player)e.getWhoClicked(), "<red>You don't have any texture generator plugins, download plugin Nexo/ItemsAdder/Oraxen/CraftEngine to enable");
 			return;
 		}

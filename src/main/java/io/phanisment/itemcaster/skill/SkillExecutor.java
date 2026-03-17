@@ -20,6 +20,8 @@ import java.util.List;
 
 /**
  * I need to refactor this shit later...
+ * 
+ * I think I dont really nedd refactor this.
  */
 public class SkillExecutor {
 	private final Player player;

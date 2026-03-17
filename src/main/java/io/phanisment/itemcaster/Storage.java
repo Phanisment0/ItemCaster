@@ -1,10 +1,10 @@
 package io.phanisment.itemcaster;
 
 /**
- * Configuration base on code for ItemCaster.
+ * Hardcoded value base on code for ItemCaster.
  */
-public final class Constants {
-	public static final boolean debugging = true;
+public final class Storage {
+	public static final boolean debugging = false;
 	public static final int id_bstats = 25172;
 
 	public static String prefix = "<gradient:#69DFFF:#5984CF>ItemCaster</gradient> | ";

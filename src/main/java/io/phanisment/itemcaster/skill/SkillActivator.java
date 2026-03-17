@@ -31,19 +31,21 @@ import java.util.UUID;
 
 /**
  * I need to refactor this shit later...
+ * 
+ * I think I dont really nedd refactor this.
  */
 public class SkillActivator {
 	private static final Map<CasterPlayerData, Integer> skill_interval = new HashMap<>();
 
 	private final ItemStack item;
 	private final Player player;
-	private final Activator activator;
+	private final IActivator activator;
 	private NBTCompound inst;
 	private String signal;
 	private boolean cancel_event;
 
 	@SuppressWarnings("deprecation")
-	public SkillActivator(Player player, ItemStack item, Activator activator) {
+	public SkillActivator(Player player, ItemStack item, IActivator activator) {
 		this.item = item;
 		this.player = player;
 		this.activator = activator;
@@ -142,7 +144,7 @@ public class SkillActivator {
 		}
 	}
 
-	public static enum Activator {
+	public static enum Activator implements IActivator {
 		LEFT_CLICK,
 		RIGHT_CLICK,
 		INTERACT_ENTITY,

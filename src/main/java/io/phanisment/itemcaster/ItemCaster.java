@@ -45,32 +45,32 @@ public final class ItemCaster extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		new Metrics(this, Constants.id_bstats);
+		new Metrics(this, Storage.id_bstats);
 		core = MythicBukkit.inst();
 		new LanguageManager().load();
 
 		if (hasPlugin("PlaceholderAPI")) {
-			Constants.has_papi = true;
+			Storage.has_papi = true;
 			CasterLogger.send(LanguageManager.getString("has_plugin_placeholderapi"));
 			new ItemCasterPlaceholderExpansion().register();
 		}
 		if (hasPlugin("ItemsAdder")) {
-			Constants.has_itemsadder = true;
+			Storage.has_itemsadder = true;
 			CasterLogger.send(LanguageManager.getString("has_plugin_itemsadder"));
 			ExternalItemRegistry.register(new ItemsAdderExternalItem());
 		}
 		if (hasPlugin("Nexo")) {
-			Constants.has_nexo = true;
+			Storage.has_nexo = true;
 			CasterLogger.send(LanguageManager.getString("has_plugin_nexo"));
 			ExternalItemRegistry.register(new NexoExternalItem());
 		}
 		if (hasPlugin("Oraxen")) {
-			Constants.has_oraxen = true;
+			Storage.has_oraxen = true;
 			CasterLogger.send(LanguageManager.getString("has_plugin_oraxen"));
 			ExternalItemRegistry.register(new OraxenExternalItem());
 		}
 		if (hasPlugin("CraftEngine")) {
-			Constants.has_craftengine = true;
+			Storage.has_craftengine = true;
 			CasterLogger.send(LanguageManager.getString("has_plugin_craftengine"));
 			ExternalItemRegistry.register(new CraftEngineExternalItem());
 		}

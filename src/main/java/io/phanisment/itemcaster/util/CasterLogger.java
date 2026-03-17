@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import io.phanisment.itemcaster.ItemCaster;
-import io.phanisment.itemcaster.Constants;
+import io.phanisment.itemcaster.Storage;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +30,7 @@ public class CasterLogger {
 	 * @param message The message to send.
 	 */
 	public static void send(String message) {
-		Bukkit.getConsoleSender().sendMessage(Legacy.serializer(Constants.prefix + message));
+		Bukkit.getConsoleSender().sendMessage(Legacy.serializer(Storage.prefix + message));
 	}
 	
 	/**
@@ -40,7 +40,7 @@ public class CasterLogger {
 	 * @param message The message to send.
 	 */
 	public static void send(Player player, String message) {
-		player.sendMessage(Legacy.serializer(Constants.prefix + message));
+		player.sendMessage(Legacy.serializer(Storage.prefix + message));
 	}
 	
 	/**
@@ -50,7 +50,7 @@ public class CasterLogger {
 	 * @param message The message to send.
 	 */
 	public static void send(CommandSender sender, String message) {
-		sender.sendMessage(Legacy.serializer(Constants.prefix + message));
+		sender.sendMessage(Legacy.serializer(Storage.prefix + message));
 	}
 	
 	/**
@@ -92,6 +92,6 @@ public class CasterLogger {
 	 * @return True if debugging is enabled, false otherwise.
 	 */
 	private static boolean isDebugMode() {
-		return Constants.debugging;
+		return Storage.debugging;
 	}
 }
