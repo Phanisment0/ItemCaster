@@ -6,7 +6,10 @@ import static io.phanisment.itemcaster.ItemCaster.inst;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -38,6 +41,7 @@ public class MenuBrowser extends PaginatedFastInv {
 		.mask("111111111")
 		.bindPagination('1');
 	private final Collection<MythicItem> mis;
+	private final Map<UUID, Map<String, Long>> del_pending = new HashMap<>();
 
 	public MenuBrowser() {
 		super(54, "Item Browser");
@@ -96,12 +100,29 @@ public class MenuBrowser extends PaginatedFastInv {
 				"<gray>Right - Click to remove"
 			)).build(), e -> {
 				Player player = (Player) e.getWhoClicked();
+				UUID player_uuid = player.getUniqueId();
+				Map<String, Long> item_time = del_pending.computeIfAbsent(player_uuid, k -> new HashMap<>());
 				if (e.getClick().equals(ClickType.LEFT)) {
 					player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 2f, 2f);
 					new MenuEditor(CasterItem.getCasterItem(item)).open(player);
 				} else if (e.getClick().equals(ClickType.RIGHT)) {
-					core().getItemManager().deleteItem(item);
-					new MenuBrowser().open(player);
+					String item_id = item.getInternalName();
+					long now = System.currentTimeMillis();
+					if (item_time.containsKey(item_id)) {
+						long last = item_time.get(item_id);
+						if ((now - last) <= 5000) {
+							core().getItemManager().deleteItem(item);
+							CasterLogger.send(player, "<red>Item Deleted");
+							player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 2f, 2f);
+							item_time.remove(item_id);
+							if (item_time.isEmpty()) del_pending.remove(player_uuid);
+							new MenuBrowser().open(player);
+							return;
+						}
+					}
+
+					item_time.put(item_id, now);
+					CasterLogger.send(player, "Click again to delete item");
 				}
 			});
 		}

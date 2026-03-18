@@ -10,6 +10,7 @@ import io.lumine.mythic.bukkit.utils.prompts.chat.ChatPrompt;
 
 import io.phanisment.itemcaster.item.CasterItem;
 import io.phanisment.itemcaster.menu.editor.ability.AbilitiesMenu.AbilityMenuContext;
+import io.phanisment.itemcaster.skill.SkillActivator.Activator;
 import io.phanisment.itemcaster.menu.editor.ability.AbilityMenu;
 import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.util.Legacy;
@@ -32,7 +33,11 @@ public class ActivatorAbilityButton implements IAbilityButton {
 	public void left(InventoryClickEvent e, CasterItem item, AbilityMenuContext ctx) {
 		Player player = (Player)e.getWhoClicked();
 		player.closeInventory();
-		CasterLogger.send(player, "");
+		var builder = new StringBuilder();
+		for (Activator act : Activator.values()) builder.append(act.toString() + "\n");
+		
+		CasterLogger.send(player, "<yellow>Enter the new activator for the ability. Type 'cancel' to cancel.");
+		CasterLogger.send(player, "List Activator: \n<green>" + builder.toString());
 		ChatPrompt.listen(player, i -> {
 			if (i.equalsIgnoreCase("cancel")) return ChatPrompt.Response.ACCEPTED;
 			ctx.data().setActivator(i);

@@ -59,7 +59,12 @@ public class AbilitiesMenu extends PaginatedFastInv {
 			Map<String, Object> ability = abilities.get(i);
 			var data = SkillAttribute.fromMap(ability);
 			var context = new AbilityMenuContext(i, data);
-			addContent(new ItemBuilder(Material.BLAZE_POWDER).name(Legacy.serializer("<white>Ability Slot: " + index)).build(), e -> {
+			List<String> lore = data.toStringList();
+			for (int lore_i = 0; lore_i < lore.size(); lore_i++) lore.set(lore_i, " <gray>" + lore.get(lore_i));
+			lore.add("");
+			lore.add("<gray>Left - Click to edit");
+			lore.add("<gray>Right - Click to remove");
+			addContent(new ItemBuilder(Material.BLAZE_POWDER).name(Legacy.serializer("<white>Ability Slot: " + index)).lore(Legacy.serializer(lore)).build(), e -> {
 				Player player = (Player)e.getWhoClicked();
 				player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 2f, 2f);
 				if (e.getClick().equals(ClickType.RIGHT)) {

@@ -13,6 +13,7 @@ import io.lumine.mythic.bukkit.utils.prompts.chat.ChatPrompt;
 
 import io.phanisment.itemcaster.item.CasterItem;
 import io.phanisment.itemcaster.menu.editor.ability.AbilitiesMenu.AbilityMenuContext;
+import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.util.Legacy;
 
 import java.util.Map;
@@ -25,7 +26,47 @@ public class VariablesMenu extends PaginatedFastInv {
 		.mask("111111111")
 		.mask("111111111")
 		.bindPagination('1');
+
+	private static final String CREATE_GUIDE = """
+	Format: <yellow>key=value</yellow>
+	Example:<gray>
+	 damage=10
+	 name=\"Joe\"
+	 light=true</gray>
+
+	Typed Value (Optional):<yellow>
+	 (string) \"text\"
+	 (number) 1 or 1.5
+	  (float)
+	  (integer)
+	 (boolean) true or false</yellow>
+
+	Format: <yellow>key=(type)value</yellow>
+	Example:<gray>
+	 string_number=\"10\" or string_number=(string)10
+	 number=10 or number=1.5
+	 boolean=true or boolean=false</gray>
 	
+	<yellow>Type to edit or type 'cancel' to cancel.</yellow>
+	""";
+	
+	private static final String EDIT_GUIDE = """
+	Typed Value (Optional):<yellow>
+	 (string) \"text\"
+	 (number) 1 or 1.5
+	  (float)
+	  (integer)
+	 (boolean) true or false</yellow>
+
+	Format: <yellow>(type)value</yellow>
+	Example:<gray>
+	 \"10\" or (string)10
+	 10 or 1.5
+	 true or false</gray>
+	
+	<yellow>Type to edit or type 'cancel' to cancel.</yellow>
+	""";
+
 	public VariablesMenu(CasterItem item, AbilityMenuContext ctx) {
 		super(54, "List of Variable Ability slot: " + ctx.index()); 
 		
@@ -44,7 +85,13 @@ public class VariablesMenu extends PaginatedFastInv {
 			Player player = (Player)e.getWhoClicked();
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 2f, 2f);
 			player.closeInventory();
+			CasterLogger.send(player, CREATE_GUIDE);
 			ChatPrompt.listen(player, i -> {
+				if (i.equalsIgnoreCase("cancel")) {
+					CasterLogger.send(player, "<green>Cancelled!");
+					return ChatPrompt.Response.ACCEPTED;
+				}
+
 				String[] parts = i.split("=", 2);
 				if (parts.length != 2) return ChatPrompt.Response.TRY_AGAIN;;
 				
@@ -78,7 +125,12 @@ public class VariablesMenu extends PaginatedFastInv {
 					return;
 				} else if (e.getClick().equals(ClickType.LEFT)) {
 					player.closeInventory();
+					CasterLogger.send(player, EDIT_GUIDE);
 					ChatPrompt.listen(player, i -> {
+						if (i.equalsIgnoreCase("cancel")) {
+							CasterLogger.send(player, "<green>Cancelled!");
+							return ChatPrompt.Response.ACCEPTED;
+						}
 						variables.put(key, formatValue(i));
 						ctx.data().setVariables(variables);
 						item.setAbility(ctx.index(), ctx.data());

@@ -13,8 +13,7 @@ import java.util.ArrayList;
  * {@link LegacyComponentSerializer}.
  */
 public final class Legacy {
-	public static final LegacyComponentSerializer serializer = LegacyComponentSerializer.builder().hexColors()
-			.useUnusualXRepeatedCharacterHexFormat().build();
+	public static final LegacyComponentSerializer serializer = LegacyComponentSerializer.builder().hexColors().useUnusualXRepeatedCharacterHexFormat().build();
 	public static final MiniMessage mm = MiniMessage.miniMessage();
 
 	/**
