@@ -6,7 +6,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import io.lumine.mythic.bukkit.BukkitAdapter;
+import io.lumine.mythic.api.adapters.AbstractItemStackRarity;
 import io.lumine.mythic.api.config.MythicConfig;
+import io.lumine.mythic.api.skills.placeholders.PlaceholderInt;
 import io.lumine.mythic.api.skills.placeholders.PlaceholderString;
 import io.lumine.mythic.core.items.MythicItem;
 import io.lumine.mythic.bukkit.events.MythicMobItemGenerateEvent;
@@ -118,9 +120,23 @@ public class CasterItem {
 	}
 
 	// Set /////////////////////////////////////
+	public void setMaxDurability(int value) {
+		save("MaxDurability", value);
+	}
+
+	public void setDurability(int value) {
+		save("Durability", value);
+	}
+
+	public void setRarity(AbstractItemStackRarity value) {
+		save("Rarity", value.toString());
+	}
+
+	public void setTemplate(String value) {
+		save("Template", value);
+	}
 
 	public void setPreventAnvil(boolean value) {
-		mi.setPreventAnvilWith(value);
 		save("Options.PreventAnvil", value);
 	}
 
@@ -130,19 +146,14 @@ public class CasterItem {
 	}
 
 	public void setModelData(String model) {
-		if (model != null) {
-			model_data = new ModelData(model, mi);
-		} else {
-			model_data = null;
-		}
+		if (model != null) model_data = new ModelData(model, mi);
+		else model_data = null;
 		save("ModelItem", model_data);
 	}
 
 	public void setLore(List<String> lore) {
 		List<PlaceholderString> list = new ArrayList<>();
-		for (var line : lore) {
-			list.add(new PlaceholderStringImpl(line));
-		}
+		for (var line : lore) list.add(new PlaceholderStringImpl(line));
 		mi.setLore(list);
 		save("Lore", lore);
 	}
@@ -157,16 +168,30 @@ public class CasterItem {
 	}
 
 	public void setName(String name) {
-		mi.setDisplayName(name);
 		save("Display", name);
 	}
 
 	public void setModel(int id) {
-		mi.setCustomModelData(id);
 		save("Model", id);
 	}
 
 	// Remove /////////////////////////////
+	public void removeMaxDurability() {
+		save("MaxDurability", null);
+	}
+
+	public void removeDurability() {
+		save("Durability", null);
+	}
+
+	public void removeRarity() {
+		save("Rarity", null);
+	}
+	
+	public void removeTemplate() {
+		save("Template", null);
+	}
+
 	public void removeAbility(int index) {
 		abilities.remove(index);
 		save("Abilities", abilities);
@@ -178,7 +203,6 @@ public class CasterItem {
 	}
 
 	public void removeName() {
-		mi.setDisplayName(null);
 		save("Display", null);
 	}
 
@@ -195,17 +219,14 @@ public class CasterItem {
 	public void removeLore(int index) {
 		List<PlaceholderString> list = mi.getLoreRaw();
 		list.remove(index);
-		mi.setLore(list);
 		save("Lore", list);
 	}
 
 	public void removeLores() {
-		mi.setLore(null);
 		save("Lore", null);
 	}
 
 	public void removeModel() {
-		mi.setCustomModelData(0);
 		save("Model", null);
 	}
 
@@ -214,13 +235,16 @@ public class CasterItem {
 	}
 
 	public void removePreventAnvil() {
-		mi.setPreventAnvilWith(false);
 		save("Options.PreventAnvil", null);
 	}
 
 	// Get /////////////////////////////////
 	public String getId() {
 		return this.mi.getInternalName();
+	}
+
+	public List<String> getLore() {
+		return this.mi.getLore();
 	}
 
 	public MythicConfig getConfig() {

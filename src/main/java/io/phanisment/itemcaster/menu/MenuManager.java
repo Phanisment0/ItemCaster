@@ -19,8 +19,11 @@ import io.phanisment.itemcaster.menu.editor.ability.button.CooldownAbilityButton
 import io.phanisment.itemcaster.menu.editor.button.AbilitiesEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.DisplayNameEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.IEditorButton;
+import io.phanisment.itemcaster.menu.editor.button.LoreEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.ModelItemEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.PreventAnvilEditorButton;
+import io.phanisment.itemcaster.menu.editor.button.RarityEditorButton;
+import io.phanisment.itemcaster.menu.editor.button.TemplateEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.MaterialEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.ModelEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.UnbreakableEditorButton;
@@ -29,11 +32,14 @@ public class MenuManager {
 	public MenuManager() {
 		// Menu editor
 		registerEditorButton(new MaterialEditorButton());
+		registerEditorButton(new TemplateEditorButton());
 		registerEditorButton(new DisplayNameEditorButton());
+		registerEditorButton(new LoreEditorButton());
 		registerEditorButton(new ModelEditorButton());
 		registerEditorButton(new ModelItemEditorButton());
 		registerEditorButton(new UnbreakableEditorButton());
 		registerEditorButton(new AbilitiesEditorButton());
+		registerEditorButton(new RarityEditorButton());
 		registerEditorButton(new PreventAnvilEditorButton());
 
 		// Ability Editor
