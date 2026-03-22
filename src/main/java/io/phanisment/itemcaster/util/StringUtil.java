@@ -20,9 +20,9 @@ public final class StringUtil {
    * @param text 
    * @return
    */
-  public static boolean containsSpecial(String string) {
-    if (string == null || string.isEmpty()) return false;
-    for (int i = 0; i < string.length(); i++) if (!allowedChar(string.charAt(i))) return true;
+  public static boolean containsSpecial(String text) {
+    if (text == null || text.isEmpty()) return false;
+    for (int i = 0; i < text.length(); i++) if (!allowedChar(text.charAt(i))) return true;
     return false;
   }
 

@@ -1,13 +1,13 @@
 package io.phanisment.itemcaster;
 
 import org.bstats.bukkit.Metrics;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
 import fr.mrmicky.fastinv.FastInvManager;
 
 import io.lumine.mythic.bukkit.MythicBukkit;
+import io.lumine.mythic.bukkit.utils.plugin.LuminePlugin;
 import io.lumine.mythic.bukkit.utils.version.ServerVersion;
 import io.lumine.mythic.core.players.PlayerManager;
 import io.lumine.mythic.core.items.ItemExecutor;
@@ -15,6 +15,7 @@ import io.lumine.mythic.core.mobs.MobExecutor;
 import io.lumine.mythic.core.packs.PackExecutor;
 import io.lumine.mythic.core.skills.SkillExecutor;
 import io.phanisment.itemcaster.command.ItemCasterCommand;
+import io.phanisment.itemcaster.config.ConfigData;
 import io.phanisment.itemcaster.config.ConfigManager;
 import io.phanisment.itemcaster.config.LanguageManager;
 import io.phanisment.itemcaster.util.CasterLogger;
@@ -30,24 +31,31 @@ import io.phanisment.itemcaster.item.external.NexoExternalItem;
 import io.phanisment.itemcaster.item.external.OraxenExternalItem;
 import io.phanisment.itemcaster.skill.SkillInjector;
 
-public final class ItemCaster extends JavaPlugin {
+public final class ItemCaster extends LuminePlugin {
 	private static ItemCaster inst;
 	private static MythicBukkit core;
+	private LanguageManager lang_manager;
 
 	public ItemCaster() {
 		inst = this;
 	}
 
 	@Override
-	public void onLoad() {
+	public void load() {
 		SkillInjector.register();
 	}
 
 	@Override
-	public void onEnable() {
+	public void enable() {
 		new Metrics(this, Storage.id_bstats);
 		core = MythicBukkit.inst();
-		new LanguageManager().load();
+		ConfigManager.load();
+		this.lang_manager = new LanguageManager();
+		this.lang_manager.load();
+		
+
+		String prefix = config().prefix;
+		if (!prefix.isEmpty()) Storage.prefix = prefix;
 
 		if (hasPlugin("PlaceholderAPI")) {
 			Storage.has_papi = true;
@@ -76,7 +84,6 @@ public final class ItemCaster extends JavaPlugin {
 		}
 		if (ServerVersion.isPaper()) this.listen(new PaperListener());
 
-		ConfigManager.load();
 		new MenuManager();
 
 		this.listen(new ActivatorListener());
@@ -84,11 +91,11 @@ public final class ItemCaster extends JavaPlugin {
 		FastInvManager.register(this);
 
 		new CasterRunnable().runTaskTimer(this, 1L, 1L);
-		this.getCommand("itemcaster").setExecutor(new ItemCasterCommand());
+		new ItemCasterCommand(this);
 	}
 
 	@Override
-	public void onDisable() {
+	public void disable() {
 		ConfigManager.save();
 	}
 
@@ -116,6 +123,10 @@ public final class ItemCaster extends JavaPlugin {
 	 */
 	public void reload() {
 		ConfigManager.load();
+		this.lang_manager.load();
+
+		String prefix = config().prefix;
+		if (!prefix.isEmpty()) Storage.prefix = prefix;
 	}
 
 	/**
@@ -161,6 +172,10 @@ public final class ItemCaster extends JavaPlugin {
 	 */
 	public static MobExecutor getMobManager() {
 		return core.getMobManager();
+	}
+
+	public static ConfigData config() {
+		return ConfigData.handler;
 	}
 
 	/**

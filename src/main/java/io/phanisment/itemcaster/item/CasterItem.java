@@ -8,7 +8,6 @@ import org.bukkit.persistence.PersistentDataType;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.api.adapters.AbstractItemStackRarity;
 import io.lumine.mythic.api.config.MythicConfig;
-import io.lumine.mythic.api.skills.placeholders.PlaceholderInt;
 import io.lumine.mythic.api.skills.placeholders.PlaceholderString;
 import io.lumine.mythic.core.items.MythicItem;
 import io.lumine.mythic.bukkit.events.MythicMobItemGenerateEvent;
@@ -120,6 +119,11 @@ public class CasterItem {
 	}
 
 	// Set /////////////////////////////////////
+	
+	/*public void setAttributes() {
+		save(, TYPE);
+	}*/
+
 	public void setMaxDurability(int value) {
 		save("MaxDurability", value);
 	}
