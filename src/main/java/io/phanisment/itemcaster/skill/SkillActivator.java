@@ -15,9 +15,9 @@ import io.lumine.mythic.core.mobs.MobExecutor;
 import io.lumine.mythic.core.skills.MetaSkill;
 
 import de.tr7zw.nbtapi.NBTType;
-import de.tr7zw.nbtapi.NBTItem;
-import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTCompoundList;
+import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.nbtapi.iface.ReadWriteNBTCompoundList;
 import de.tr7zw.nbtapi.iface.ReadableNBT;
 
 import io.phanisment.itemcaster.util.NbtSafe;
@@ -30,9 +30,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * I need to refactor this shit later...
+ * I need to change nbt to map beacuse right now has other casting type
  * 
- * I think I dont really nedd refactor this.
+ * not now but after the beta version complete
  */
 public class SkillActivator {
 	private static final Map<CasterPlayerData, Integer> skill_interval = new HashMap<>();
@@ -40,21 +40,20 @@ public class SkillActivator {
 	private final ItemStack item;
 	private final Player player;
 	private final IActivator activator;
-	private NBTCompound inst;
+	private ReadWriteNBT inst;
 	private String signal;
 	private boolean cancel_event;
 
-	@SuppressWarnings("deprecation")
 	public SkillActivator(Player player, ItemStack item, IActivator activator) {
 		this.item = item;
 		this.player = player;
 		this.activator = activator;
 		if (!ItemUtil.validateItem(this.item)) return;
-		this.inst = new NBTItem(item).getCompound("ItemCaster");
+		this.inst = NBT.itemStackToNBT(item).getCompound("ItemCaster");
 
 		if (this.inst == null) return;
 
-		NBTCompoundList abilities = inst.getCompoundList("abilities");
+		ReadWriteNBTCompoundList abilities = inst.getCompoundList("abilities");
 		abilities.forEach(this::readAbilityAttributes);
 	}
 

@@ -18,11 +18,6 @@ import de.tr7zw.nbtapi.iface.ReadableNBT;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * I need to refactor this shit later...
- * 
- * I think I dont really nedd refactor this.
- */
 public class SkillExecutor {
 	private final Player player;
 	private final SkillCaster caster;
@@ -51,17 +46,16 @@ public class SkillExecutor {
 	}
 
 	public void execute() {
-		List<AbstractEntity> aEntity = new ArrayList<>();
-		List<AbstractLocation> aLocation = new ArrayList<>();
+		List<AbstractEntity> abstract_entities = new ArrayList<>();
+		List<AbstractLocation> abstract_location = new ArrayList<>();
 
 		LivingEntity target = MythicUtil.getTargetedEntity(player);
 		if (target != null) {
-			aEntity.add(BukkitAdapter.adapt(target));
-			aLocation.add(BukkitAdapter.adapt(target.getLocation()));
+			abstract_entities.add(BukkitAdapter.adapt(target));
+			abstract_location.add(BukkitAdapter.adapt(target.getLocation()));
 		}
 
-		SkillMetadataImpl meta = new SkillMetadataImpl(SkillTriggers.API, caster, BukkitAdapter.adapt(player),
-				BukkitAdapter.adapt(player.getLocation()), aEntity, aLocation, this.power);
+		var meta = new SkillMetadataImpl(SkillTriggers.API, caster, BukkitAdapter.adapt(player), BukkitAdapter.adapt(player.getLocation()), abstract_entities, abstract_location, this.power);
 
 		if (variables != null) {
 			for (String key : variables.getKeys()) {
