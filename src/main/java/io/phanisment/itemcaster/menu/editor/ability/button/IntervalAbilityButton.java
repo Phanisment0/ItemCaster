@@ -19,7 +19,7 @@ public class IntervalAbilityButton implements IAbilityButton {
 		return new ItemBuilder(Material.REPEATER)
 		.name(Legacy.serializer("<white>Interval"))
 		.lore(Legacy.serializer(
-			"<dark_gray>Current: <white>" + ctx.data().getInterval(),
+			"<dark_gray>Current: <white>" + ctx.data().interval,
 			"",
 			"<gray>Left - Click to edit",
 			"<gray>Right - Click to remove"
@@ -37,7 +37,7 @@ public class IntervalAbilityButton implements IAbilityButton {
 			}
 			
 			try {
-				ctx.data().setInterval(Integer.parseInt(i));
+				ctx.data().interval = Integer.parseInt(i);
 				item.setAbility(ctx.index(), ctx.data());
 			} catch (NumberFormatException err) {
 				CasterLogger.send(player, "<red>Input must be number, try agin");
@@ -50,7 +50,7 @@ public class IntervalAbilityButton implements IAbilityButton {
 	
 	@Override
 	public void right(InventoryClickEvent e, CasterItem item, AbilityMenuContext ctx) {
-		ctx.data().setInterval(null);
+		ctx.data().interval = null;
 		item.setAbility(ctx.index(), ctx.data());
 		new AbilityMenu(item, ctx).open((Player)e.getWhoClicked());
 	}

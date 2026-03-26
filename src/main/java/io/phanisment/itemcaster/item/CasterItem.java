@@ -18,7 +18,6 @@ import io.lumine.mythic.bukkit.utils.version.ServerVersion;
 
 import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.Storage;
-import io.phanisment.itemcaster.util.MapSafe;
 import io.phanisment.itemcaster.util.ItemAbilityUtil;
 import io.phanisment.itemcaster.skill.SkillAttribute;
 
@@ -41,7 +40,7 @@ public class CasterItem {
 
 	private boolean hide_tooltips = false;
 	private ModelData model_data;
-	private List<Map<String, Object>> abilities = new ArrayList<>();
+	private List<SkillAttribute> abilities = new ArrayList<>();
 
 	@SuppressWarnings("unchecked")
 	public CasterItem(MythicItem mi) {
@@ -50,7 +49,10 @@ public class CasterItem {
 
 		this.hide_tooltips = config.getBoolean("Options.HideTooltips");
 		this.model_data = new ModelData(config.getString("ModelItem"), mi);
-		this.abilities = (List<Map<String, Object>>) (Object) config.getMapList("Abilities");
+
+		List<SkillAttribute> new_list_ability = new ArrayList<>();
+    for (Map<?, ?> map : config.getMapList("Abilities")) new_list_ability.add(new SkillAttribute((Map<String, Object>)map));
+    this.abilities = new_list_ability;
 
 		items.put(mi.getInternalName(), this);
 	}
@@ -75,21 +77,13 @@ public class CasterItem {
 	}
 
 	private ItemStack parseAbilities(ItemStack item) {
-		for (Map<String, Object> ability : abilities) {
-			var safe = new MapSafe(ability);
-			if (!ability.containsKey("skill") || !ability.containsKey("activator")) {
+		for (SkillAttribute attribute : abilities) {
+			if (attribute.skill != null || attribute.activator != null) {
 				MythicLogger.errorItemConfig(mi, config, "Required attributes `skill` and `activator` in Abilities component!");
 				continue;
 			}
 
-			var data = new SkillAttribute(safe.getString("skill"), safe.getString("activator"));
-			if (ability.containsKey("power")) data.setPower(safe.getFloat("power"));
-			if (ability.containsKey("cooldown")) data.setCooldown(safe.getDouble("cooldown"));
-			if (ability.containsKey("interval")) data.setInterval(safe.getInteger("interval"));
-			if (ability.containsKey("sneaking")) data.setSneaking(safe.getBoolean("sneaking"));
-			if (ability.containsKey("signal")) data.setSignal(safe.getString("signal"));
-			if (ability.containsKey("variables")) data.setVariables(safe.getMap("variables"));
-			item = ItemAbilityUtil.of(item).addAbility(data).orElse(item);
+			item = ItemAbilityUtil.of(item).addAbility(attribute).orElse(item);
 		}
 		return item;
 	}
@@ -105,7 +99,7 @@ public class CasterItem {
 
 	// Add /////////////////////////////////////
 	public void addAbility(SkillAttribute attribute) {
-		abilities.add(attribute.toMap());
+		abilities.add(attribute);
 		save("Abilities", abilities);
 	}
 
@@ -163,7 +157,7 @@ public class CasterItem {
 	}
 
 	public void setAbility(int index, SkillAttribute attribute) {
-		abilities.set(index, attribute.toMap());
+		abilities.set(index, attribute);
 		save("Abilities", abilities);
 	}
 
@@ -264,10 +258,10 @@ public class CasterItem {
 	}
 
 	public SkillAttribute getAbility(int index) {
-		return SkillAttribute.fromMap(this.abilities.get(index));
+		return this.abilities.get(index);
 	}
 
-	public List<Map<String, Object>> getAbilities() {
+	public List<SkillAttribute> getAbilities() {
 		return this.abilities;
 	}
 

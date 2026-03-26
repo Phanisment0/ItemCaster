@@ -3,8 +3,10 @@ package io.phanisment.itemcaster.skill;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import io.lumine.mythic.api.skills.Skill;
 import io.lumine.mythic.api.skills.SkillCaster;
 import io.lumine.mythic.core.utils.MythicUtil;
+import io.phanisment.itemcaster.util.MythicMobsUtil;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.adapters.AbstractLocation;
@@ -13,36 +15,46 @@ import io.lumine.mythic.core.skills.SkillTriggers;
 import io.lumine.mythic.core.skills.MetaSkill;
 import io.lumine.mythic.core.skills.variables.VariableRegistry;
 
-import de.tr7zw.nbtapi.iface.ReadableNBT;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SkillExecutor {
 	private final Player player;
 	private final SkillCaster caster;
-	private final MetaSkill skill;
+	private final Skill skill;
 
-	private float power;
-	private double cooldown;
-	private ReadableNBT variables;
+	private float power = 0;
+	private double cooldown = 0;
+	private Map<String, Object> variables = new HashMap<>();
 
-	public SkillExecutor(MetaSkill skill, Player player) {
+	public SkillExecutor(Skill skill, Player player) {
 		this.player = player;
-		this.caster = SkillActivator.toCaster(player);
+		this.caster = MythicMobsUtil.toCaster(player);
 		this.skill = skill;
 	}
 
-	public void setPower(float power) {
+	public SkillExecutor setPower(float power) {
 		this.power = power;
+		return this;
 	}
 
-	public void setCooldown(double cooldown) {
+	public SkillExecutor setCooldown(double cooldown) {
 		this.cooldown = cooldown;
+		return this;
 	}
 
-	public void setVariables(ReadableNBT variables) {
+	public SkillExecutor setVariables(Map<String, Object> variables) {
 		this.variables = variables;
+		return this;
+	}
+
+	public SkillExecutor setAttribute(SkillAttribute attributes) {
+		this.power = attributes.power;
+		this.cooldown = attributes.cooldown;
+		this.variables = attributes.variables;
+		return this;
 	}
 
 	public void execute() {
@@ -58,20 +70,20 @@ public class SkillExecutor {
 		var meta = new SkillMetadataImpl(SkillTriggers.API, caster, BukkitAdapter.adapt(player), BukkitAdapter.adapt(player.getLocation()), abstract_entities, abstract_location, this.power);
 
 		if (variables != null) {
-			for (String key : variables.getKeys()) {
-				VariableRegistry skill_var = meta.getVariables();
-				switch (variables.getType(key)) {
-					case NBTTagFloat -> skill_var.putFloat(key, variables.getFloat(key));
-					case NBTTagInt -> skill_var.putInt(key, variables.getInteger(key));
-					case NBTTagString -> skill_var.putString(key, variables.getString(key));
-					default -> skill_var.putFloat(key, variables.getFloat(key));
-				}
+			VariableRegistry skill_var = meta.getVariables();
+			for (var map : variables.entrySet()) {
+				String key = map.getKey();
+				Object value = map.getValue();
+				if (value instanceof Float value_float) skill_var.putFloat(key, value_float);
+				else if (value instanceof Double value_double) skill_var.putDouble(key, value_double);
+				else if (value instanceof Integer value_integer) skill_var.putInt(key, value_integer);
+				else skill_var.putString(key, (String)value);
 			}
 		}
 
 		if (skill.isUsable(meta, SkillTriggers.API) && !skill.onCooldown(caster)) {
 			skill.execute(meta);
-			if (cooldown > 0) skill.setCooldown(caster, cooldown);
+			if (cooldown > 0) ((MetaSkill)skill).setCooldown(caster, cooldown);
 		}
 	}
 }

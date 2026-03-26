@@ -9,11 +9,6 @@ import fr.mrmicky.fastinv.FastInvManager;
 import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.bukkit.utils.plugin.LuminePlugin;
 import io.lumine.mythic.bukkit.utils.version.ServerVersion;
-import io.lumine.mythic.core.players.PlayerManager;
-import io.lumine.mythic.core.items.ItemExecutor;
-import io.lumine.mythic.core.mobs.MobExecutor;
-import io.lumine.mythic.core.packs.PackExecutor;
-import io.lumine.mythic.core.skills.SkillExecutor;
 import io.phanisment.itemcaster.command.ItemCasterCommand;
 import io.phanisment.itemcaster.config.ConfigData;
 import io.phanisment.itemcaster.config.ConfigManager;
@@ -127,51 +122,6 @@ public final class ItemCaster extends LuminePlugin {
 
 		String prefix = config().prefix;
 		if (!prefix.isEmpty()) Storage.prefix = prefix;
-	}
-
-	/**
-	 * Shortcut for MythicBukkit.
-	 * 
-	 * @return the instance
-	 */
-	public static ItemExecutor getItemManager() {
-		return (ItemExecutor) core.getItemManager();
-	}
-
-	/**
-	 * Shortcut for MythicBukkit.
-	 * 
-	 * @return the instance
-	 */
-	public static PackExecutor getPackManager() {
-		return core.getPackManager();
-	}
-
-	/**
-	 * Shortcut for MythicBukkit.
-	 * 
-	 * @return the instance
-	 */
-	public static SkillExecutor getSkillManager() {
-		return core.getSkillManager();
-	}
-
-	/**
-	 * Shortcut for MythicBukkit.
-	 * 
-	 * @return the instance
-	 */
-	public static PlayerManager getPlayerManager() {
-		return core.getPlayerManager();
-	}
-
-	/**
-	 * Shortcut for MythicBukkit.
-	 * 
-	 * @return the instance
-	 */
-	public static MobExecutor getMobManager() {
-		return core.getMobManager();
 	}
 
 	public static ConfigData config() {

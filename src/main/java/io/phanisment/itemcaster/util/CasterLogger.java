@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.Storage;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,11 +17,9 @@ import java.util.logging.Logger;
  * with built-in support for prefixing and debug-level logging.
  */
 public class CasterLogger {
+	private static final MiniMessage MM = MiniMessage.miniMessage();
 	private static final Logger LOGGER = ItemCaster.inst().getLogger();
-	
-	/**
-	 * Private constructor to prevent instantiation.
-	 */
+
 	private CasterLogger() {
 	}
 	
@@ -30,7 +29,7 @@ public class CasterLogger {
 	 * @param message The message to send.
 	 */
 	public static void send(String message) {
-		Bukkit.getConsoleSender().sendMessage(Legacy.serializer(Storage.prefix + message));
+		Bukkit.getConsoleSender().sendMessage(MM.deserialize(Storage.prefix + message));
 	}
 	
 	/**
@@ -40,7 +39,7 @@ public class CasterLogger {
 	 * @param message The message to send.
 	 */
 	public static void send(Player player, String message) {
-		player.sendMessage(Legacy.serializer(Storage.prefix + message));
+		player.sendMessage(MM.deserialize(Storage.prefix + message));
 	}
 	
 	/**
@@ -50,7 +49,7 @@ public class CasterLogger {
 	 * @param message The message to send.
 	 */
 	public static void send(CommandSender sender, String message) {
-		sender.sendMessage(Legacy.serializer(Storage.prefix + message));
+		sender.sendMessage(MM.deserialize(Storage.prefix + message));
 	}
 	
 	/**

@@ -12,7 +12,7 @@ import io.lumine.mythic.bukkit.BukkitAdapter;
 
 import io.phanisment.itemcaster.item.CasterItem;
 import io.phanisment.itemcaster.ItemCaster;
-import io.phanisment.itemcaster.skill.SkillActivator.Activator;
+import io.phanisment.itemcaster.skill.Activator;
 import io.phanisment.itemcaster.util.ItemUtil;
 
 public class MythicListener implements Listener {

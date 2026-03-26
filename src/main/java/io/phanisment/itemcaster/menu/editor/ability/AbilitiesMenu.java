@@ -14,7 +14,6 @@ import io.phanisment.itemcaster.menu.editor.MenuEditor;
 import io.phanisment.itemcaster.skill.SkillAttribute;
 import io.phanisment.itemcaster.util.Legacy;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.List;
 
@@ -52,18 +51,19 @@ public class AbilitiesMenu extends PaginatedFastInv {
 		previousPageItem(52, new ItemBuilder(Material.ARROW).name(Legacy.serializer("<white>Previous")).build());
 		nextPageItem(53, new ItemBuilder(Material.ARROW).name(Legacy.serializer("<white>Next")).build());
 		
-		List<Map<String, Object>> abilities = item.getAbilities();
+		List<SkillAttribute> abilities = item.getAbilities();
 		
 		for (int i = 0; i < abilities.size(); i++) {
 			final int index = i;
-			Map<String, Object> ability = abilities.get(i);
-			var data = SkillAttribute.fromMap(ability);
+			SkillAttribute data = abilities.get(i);
 			var context = new AbilityMenuContext(i, data);
-			List<String> lore = data.toStringList();
-			for (int lore_i = 0; lore_i < lore.size(); lore_i++) lore.set(lore_i, " <gray>" + lore.get(lore_i));
-			lore.add("");
-			lore.add("<gray>Left - Click to edit");
-			lore.add("<gray>Right - Click to remove");
+			List<String> lore = List.of(
+				"<gray>Skill: <white>" + data.skill,
+				"<gray>Activator: <white>" + data.activator,
+				"",
+				"<gray>Left - Click to edit",
+				"<gray>Right - Click to remove"
+			);
 			addContent(new ItemBuilder(Material.BLAZE_POWDER).name(Legacy.serializer("<white>Ability Slot: " + index)).lore(Legacy.serializer(lore)).build(), e -> {
 				Player player = (Player)e.getWhoClicked();
 				player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 2f, 2f);

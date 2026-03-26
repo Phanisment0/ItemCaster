@@ -19,7 +19,7 @@ public class CooldownAbilityButton implements IAbilityButton {
 		return new ItemBuilder(Material.CLOCK)
 		.name(Legacy.serializer("<white>Cooldown"))
 		.lore(Legacy.serializer(
-			"<dark_gray>Current: <white>" + ctx.data().getCooldown(),
+			"<dark_gray>Current: <white>" + ctx.data().cooldown,
 			"",
 			"<gray>Left - Click to edit",
 			"<gray>Right - Click to remove"
@@ -37,7 +37,7 @@ public class CooldownAbilityButton implements IAbilityButton {
 				return ChatPrompt.Response.ACCEPTED;
 			}
 			try {
-				ctx.data().setCooldown(Double.parseDouble(i));
+				ctx.data().cooldown = Double.parseDouble(i);
 			} catch (NumberFormatException err) {
 				CasterLogger.send(player, "The value must number, try again.");
 				return ChatPrompt.Response.TRY_AGAIN;
@@ -49,7 +49,7 @@ public class CooldownAbilityButton implements IAbilityButton {
 	
 	@Override
 	public void right(InventoryClickEvent e, CasterItem item, AbilityMenuContext ctx) {
-		ctx.data().setCooldown(null);
+		ctx.data().cooldown = null;
 		item.setAbility(ctx.index(), ctx.data());
 		new AbilityMenu(item, ctx).open((Player)e.getWhoClicked());
 	}

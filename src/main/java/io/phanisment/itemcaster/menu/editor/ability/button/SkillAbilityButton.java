@@ -19,7 +19,7 @@ public class SkillAbilityButton implements IAbilityButton {
 		return new ItemBuilder(Material.BLAZE_POWDER)
 		.name(Legacy.serializer("<white>Skill"))
 		.lore(
-			Legacy.serializer("<dark_gray>Current: <white>" + ctx.data().getSkill(),
+			Legacy.serializer("<dark_gray>Current: <white>" + ctx.data().skill,
 			"",
 			"<gray>Left - Click to edit",
 			"<gray>Right - Click to remove"
@@ -36,7 +36,7 @@ public class SkillAbilityButton implements IAbilityButton {
 				CasterLogger.send(player, "<green>Cancelled!");
 				return ChatPrompt.Response.ACCEPTED;
 			}
-			ctx.data().setSkill(i);
+			ctx.data().skill = i;
 			item.setAbility(ctx.index(), ctx.data());
 			return ChatPrompt.Response.ACCEPTED;
 		}).thenAcceptSync(in -> new AbilityMenu(item, ctx).open(player));
@@ -44,7 +44,7 @@ public class SkillAbilityButton implements IAbilityButton {
 	
 	@Override
 	public void right(InventoryClickEvent e, CasterItem item, AbilityMenuContext ctx) {
-		ctx.data().setSkill(null);
+		ctx.data().skill = null;
 		item.setAbility(ctx.index(), ctx.data());
 		new AbilityMenu(item, ctx).open((Player)e.getWhoClicked());
 	}

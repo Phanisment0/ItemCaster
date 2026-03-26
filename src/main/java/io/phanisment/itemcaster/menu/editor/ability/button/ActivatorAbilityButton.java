@@ -10,7 +10,7 @@ import io.lumine.mythic.bukkit.utils.prompts.chat.ChatPrompt;
 
 import io.phanisment.itemcaster.item.CasterItem;
 import io.phanisment.itemcaster.menu.editor.ability.AbilitiesMenu.AbilityMenuContext;
-import io.phanisment.itemcaster.skill.SkillActivator.Activator;
+import io.phanisment.itemcaster.skill.Activator;
 import io.phanisment.itemcaster.menu.editor.ability.AbilityMenu;
 import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.util.Legacy;
@@ -22,7 +22,7 @@ public class ActivatorAbilityButton implements IAbilityButton {
 		return new ItemBuilder(Material.BEACON)
 		.name(Legacy.serializer("<white>Activator"))
 		.lore(Legacy.serializer(
-			"<dark_gray>Current: <white>" + ctx.data().getActivator(),
+			"<dark_gray>Current: <white>" + ctx.data().activator,
 			"",
 			"<gray>Left - Click to edit",
 			"<gray>Right - Click to remove"
@@ -40,7 +40,7 @@ public class ActivatorAbilityButton implements IAbilityButton {
 		CasterLogger.send(player, "List Activator: \n<green>" + builder.toString());
 		ChatPrompt.listen(player, i -> {
 			if (i.equalsIgnoreCase("cancel")) return ChatPrompt.Response.ACCEPTED;
-			ctx.data().setActivator(i);
+			ctx.data().activator = i;
 			item.setAbility(ctx.index(), ctx.data());
 			return ChatPrompt.Response.ACCEPTED;
 		}).thenAcceptSync(in -> new AbilityMenu(item, ctx).open(player));
@@ -48,7 +48,7 @@ public class ActivatorAbilityButton implements IAbilityButton {
 
 	@Override
 	public void right(InventoryClickEvent e, CasterItem item, AbilityMenuContext ctx) {
-		ctx.data().setActivator(null);
+		ctx.data().activator = null;
 		item.setAbility(ctx.index(), ctx.data());
 		new AbilityMenu(item, ctx).open((Player)e.getWhoClicked());
 	}

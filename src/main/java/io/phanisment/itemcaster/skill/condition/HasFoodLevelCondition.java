@@ -21,6 +21,7 @@ public class HasFoodLevelCondition extends SkillCondition implements IEntityCond
 		this.amount = mlc.getPlaceholderString(new String[] { "amount", "a", "food", "f" }, "0", this.conditionVar);
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public boolean check(AbstractEntity e) {
 		if (!e.isPlayer())
@@ -28,6 +29,7 @@ public class HasFoodLevelCondition extends SkillCondition implements IEntityCond
 		return new RangedInt(this.amount.get(e)).equals(e.asPlayer().getFoodLevel());
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public boolean check(SkillMetadata meta, AbstractEntity e) {
 		if (!e.isPlayer())

@@ -19,7 +19,7 @@ public class SignalAbilityButton implements IAbilityButton {
 		return new ItemBuilder(Material.REDSTONE_TORCH)
 		.name(Legacy.serializer("<white>Skill"))
 		.lore(
-			Legacy.serializer("<dark_gray>Current: <white>" + ctx.data().getSignal(),
+			Legacy.serializer("<dark_gray>Current: <white>" + ctx.data().signal,
 			"",
 			"<gray>Left - Click to edit",
 			"<gray>Right - Click to remove"
@@ -36,7 +36,7 @@ public class SignalAbilityButton implements IAbilityButton {
 				CasterLogger.send(player, "<green>Cancelled!");
 				return ChatPrompt.Response.ACCEPTED;
 			}
-			ctx.data().setSignal(i);
+			ctx.data().signal = i;
 			item.setAbility(ctx.index(), ctx.data());
 			return ChatPrompt.Response.ACCEPTED;
 		}).thenAcceptSync(in -> new AbilityMenu(item, ctx).open(player));
@@ -44,7 +44,7 @@ public class SignalAbilityButton implements IAbilityButton {
 	
 	@Override
 	public void right(InventoryClickEvent e, CasterItem item, AbilityMenuContext ctx) {
-		ctx.data().setSignal(null);
+		ctx.data().signal = null;
 		item.setAbility(ctx.index(), ctx.data());
 		new AbilityMenu(item, ctx).open((Player)e.getWhoClicked());
 	}

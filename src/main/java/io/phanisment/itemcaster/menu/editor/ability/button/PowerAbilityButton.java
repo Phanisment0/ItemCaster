@@ -19,7 +19,7 @@ public class PowerAbilityButton implements IAbilityButton {
 		return new ItemBuilder(Material.REDSTONE)
 		.name(Legacy.serializer("<white>Power"))
 		.lore(Legacy.serializer(
-			"<dark_gray>Current: <white>" + ctx.data().getPower(),
+			"<dark_gray>Current: <white>" + ctx.data().power,
 			"",
 			"<gray>Left - Click to edit",
 			"<gray>Right - Click to remove"
@@ -37,7 +37,7 @@ public class PowerAbilityButton implements IAbilityButton {
 			}
 			
 			try {
-				ctx.data().setPower(Float.parseFloat(i));
+				ctx.data().power = Float.parseFloat(i);
 				item.setAbility(ctx.index(), ctx.data());
 			} catch (NumberFormatException err) {
 				CasterLogger.send(player, "<red>Input must be number, try agin");
@@ -50,7 +50,7 @@ public class PowerAbilityButton implements IAbilityButton {
 	
 	@Override
 	public void right(InventoryClickEvent e, CasterItem item, AbilityMenuContext ctx) {
-		ctx.data().setPower(null);
+		ctx.data().power = null;
 		item.setAbility(ctx.index(), ctx.data());
 		new AbilityMenu(item, ctx).open((Player)e.getWhoClicked());
 	}

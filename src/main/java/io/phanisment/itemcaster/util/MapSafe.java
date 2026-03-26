@@ -30,7 +30,7 @@ public final class MapSafe {
 		return value instanceof String s ? s : String.valueOf(value);
 	}
 	
-	public float getFloat(String key) {
+	public Float getFloat(String key) {
 		Object value = map.get(key);
 		if (value instanceof Number n) return n.floatValue();
 		if (value instanceof String s) {
@@ -41,7 +41,7 @@ public final class MapSafe {
 		return 0f;
 	}
 	
-	public double getDouble(String key) {
+	public Double getDouble(String key) {
 		Object value = map.get(key);
 		if (value instanceof Number n) return n.doubleValue();
 		if (value instanceof String s) {
@@ -52,7 +52,7 @@ public final class MapSafe {
 		return 0D;
 	}
 	
-	public int getInteger(String key) {
+	public Integer getInteger(String key) {
 		Object value = map.get(key);
 		if (value instanceof Number n) return n.intValue();
 		if (value instanceof String s) {
@@ -63,7 +63,7 @@ public final class MapSafe {
 		return 0;
 	}
 	
-	public boolean getBoolean(String key) {
+	public Boolean getBoolean(String key) {
 		Object value = map.get(key);
 		if (value instanceof Boolean b) return b;
 		if (value instanceof String s) return Boolean.parseBoolean(s);

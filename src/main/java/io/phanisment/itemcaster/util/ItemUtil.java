@@ -10,7 +10,7 @@ import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.core.items.MythicItem;
 
 import io.phanisment.itemcaster.skill.SkillActivator;
-import io.phanisment.itemcaster.skill.SkillActivator.Activator;
+import io.phanisment.itemcaster.skill.Activator;
 import io.phanisment.itemcaster.registry.ExternalItemRegistry;
 import io.phanisment.itemcaster.item.external.IExternalItem;
 
@@ -58,28 +58,24 @@ public class ItemUtil {
 	public static void runSkill(Player player, Activator type) {
 		PlayerInventory inv = player.getInventory();
 		
-		ItemStack mainHand = inv.getItemInMainHand();
-		if (validateItem(mainHand)) new SkillActivator(player, mainHand, type);
+		ItemStack main_hand = inv.getItemInMainHand();
+		if (validateItem(main_hand)) new SkillActivator(player, type, main_hand).execute();
 		
-		ItemStack offHand = inv.getItemInOffHand();
-		if (validateItem(offHand)) new SkillActivator(player, offHand, type);
+		ItemStack off_hand = inv.getItemInOffHand();
+		if (validateItem(off_hand)) new SkillActivator(player, type, off_hand).execute();
 		
-		for (ItemStack armor : inv.getArmorContents()) {
-			if (validateItem(armor)) new SkillActivator(player, armor, type);
-		}
+		for (ItemStack armor : inv.getArmorContents()) if (validateItem(armor)) new SkillActivator(player, type, off_hand).execute();
 	}
 	
 	public static void runSkill(Player player, Activator type, String signal) {
 		PlayerInventory inv = player.getInventory();
 		
-		ItemStack mainHand = inv.getItemInMainHand();
-		if (validateItem(mainHand)) new SkillActivator(player, mainHand, type).setSignal(signal);
+		ItemStack main_hand = inv.getItemInMainHand();
+		if (validateItem(main_hand)) new SkillActivator(player, type, main_hand).setSignal(signal).execute();
 		
-		ItemStack offHand = inv.getItemInOffHand();
-		if (validateItem(offHand)) new SkillActivator(player, offHand, type).setSignal(signal);
+		ItemStack off_hand = inv.getItemInOffHand();
+		if (validateItem(off_hand)) new SkillActivator(player, type, off_hand).setSignal(signal).execute();
 		
-		for (ItemStack armor : inv.getArmorContents()) {
-			if (validateItem(armor)) new SkillActivator(player, armor, type).setSignal(signal);
-		}
+		for (ItemStack armor : inv.getArmorContents()) if (validateItem(armor)) new SkillActivator(player, type, off_hand).setSignal(signal).execute();
 	}
 }

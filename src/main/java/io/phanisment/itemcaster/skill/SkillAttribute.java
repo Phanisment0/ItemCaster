@@ -1,139 +1,94 @@
 package io.phanisment.itemcaster.skill;
 
-import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
-
+import de.tr7zw.nbtapi.iface.ReadableNBT;
 import io.phanisment.itemcaster.util.MapSafe;
 
 import java.util.Map;
 import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
 
 public class SkillAttribute {
-	private static final String SKILL = "skill";
-	private static final String ACTIVATOR = "aactivator";
-	private static final String POWER = "power";
-	private static final String COOLDOWN = "cooldown";
-	private static final String INTERVAL = "interval";
-	private static final String SNEAKING = "sneaking";
-	private static final String SIGNAL = "signal";
-	private static final String VARIABLES = "variables";
+	public static final String SKILL = "skill";
+	public static final String ACTIVATOR = "activator";
+	public static final String POWER = "power";
+	public static final String COOLDOWN = "cooldown";
+	public static final String INTERVAL = "interval";
+	public static final String SNEAKING = "sneaking";
+	public static final String SIGNAL = "signal";
+	public static final String VARIABLES = "variables";
+	public static final String CANCEL_EVENT = "cancel_event";
 
-	private String skill;
-	private String activator;
-	private Float power;
-	private Double cooldown;
-	private Integer interval;
-	private Boolean sneaking;
-	private String signal;
-	private Map<String, Object> variables = new HashMap<>();
+	private Map<String, Object> data = new HashMap<>();
+
+	public String skill;
+	public String activator;
+	public Float power;
+	public Double cooldown;
+	public Integer interval;
+	public Boolean sneaking;
+	public String signal;
+	public Map<String, Object> variables = new HashMap<>();
+	public Boolean cancel_event;
 
 	public SkillAttribute() {
 	}
 
-	public SkillAttribute(String skill, String activator) {
-		this.skill = skill;
-		this.activator = activator;
+	public SkillAttribute(Map<String, Object> data) {
+		var map = new MapSafe(data);
+		this.skill = map.getString(SKILL);
+		this.activator = map.getString(ACTIVATOR);
+		this.power = map.getFloat(POWER);
+		this.cooldown = map.getDouble(COOLDOWN);
+		this.interval = map.getInteger(INTERVAL);
+		this.sneaking = map.getBoolean(SNEAKING);
+		this.signal = map.getString(SIGNAL);
+		this.variables = map.getMap(VARIABLES);
+		this.cancel_event = map.getBoolean(CANCEL_EVENT);
+
+		this.data = data;
 	}
 
-	public void setSkill(String value) {
-		this.skill = value;
+	public SkillAttribute(ReadableNBT data) {
+		this.skill = data.getString(SKILL);
+		this.activator = data.getString(ACTIVATOR);
+		this.power = data.getFloat(POWER);
+		this.cooldown = data.getDouble(COOLDOWN);
+		this.interval = data.getInteger(INTERVAL);
+		this.sneaking = data.getBoolean(SNEAKING);
+		this.signal = data.getString(SIGNAL);
+		this.cancel_event = data.getBoolean(CANCEL_EVENT);
+		
+		ReadableNBT variables_nbt = data.getCompound(VARIABLES);
+		for (String key : variables_nbt.getKeys()) {
+			switch (variables_nbt.getType(key)) {
+				case NBTTagFloat -> variables.put(key, variables_nbt.getFloat(key));
+				case NBTTagInt -> variables.put(key, variables_nbt.getInteger(key));
+				case NBTTagString -> variables.put(key, variables_nbt.getString(key));
+				case NBTTagByte -> variables.put(key, variables_nbt.getByte(key));
+				default -> variables.put(key, variables_nbt.getString(key));
+			}
+		}
+
+		applyToData();
 	}
 
-	public void setActivator(String value) {
-		this.activator = value;
+	public boolean contains(String attribute_name) {
+		return data.containsKey(attribute_name);
 	}
 
-	public void setPower(Float value) {
-		this.power = value;
+	private void applyToData() {
+		if (skill != null) data.put(SKILL, skill);
+		if (activator != null) data.put(ACTIVATOR, activator);
+		if (power != null) data.put(POWER, power);
+		if (cooldown != null) data.put(COOLDOWN, cooldown);
+		if (interval != null) data.put(INTERVAL, interval);
+		if (sneaking != null) data.put(SNEAKING, sneaking);
+		if (signal != null) data.put(SIGNAL, signal);
+		if (!variables.isEmpty()) data.put(VARIABLES, variables);
+		if (cancel_event != null) data.put(CANCEL_EVENT, cancel_event);
 	}
 
-	public void setCooldown(Double value) {
-		this.cooldown = value;
-	}
-
-	public void setInterval(Integer value) {
-		this.interval = value;
-	}
-
-	public void setSneaking(Boolean value) {
-		this.sneaking = value;
-	}
-
-	public void setSignal(String value) {
-		this.signal = value;
-	}
-
-	public void setVariables(Map<String, Object> value) {
-		this.variables = value;
-	}
-
-	public void putVariable(String key, Object value) {
-		this.variables.put(key, value);
-	}
-
-	public String getSkill() {
-		return this.skill;
-	}
-
-	public String getActivator() {
-		return this.activator;
-	}
-
-	public Float getPower() {
-		return this.power;
-	}
-
-	public Double getCooldown() {
-		return this.cooldown;
-	}
-
-	public Integer getInterval() {
-		return this.interval;
-	}
-
-	public Boolean getSneaking() {
-		if (sneaking == null) return false;
-		return this.sneaking;
-	}
-
-	public String getSignal() {
-		return this.signal;
-	}
-
-	public Map<String, Object> getVariables() {
-		return this.variables;
-	}
-
-	public Map<String, Object> toMap() {
-		Map<String, Object> map = new HashMap<>();
-		if (this.skill != null) map.put(SKILL, this.skill);
-		if (this.activator != null) map.put(ACTIVATOR, this.activator);
-		if (this.power != null) map.put(POWER, this.power);
-		if (this.cooldown != null) map.put(COOLDOWN, this.cooldown);
-		if (this.interval != null) map.put(INTERVAL, this.interval);
-		if (this.sneaking != null) map.put(SNEAKING, this.sneaking);
-		if (this.signal != null) map.put(SIGNAL, this.signal);
-		if (!this.variables.isEmpty()) map.put(VARIABLES, this.variables);
-		return map;
-	}
-
-	public static SkillAttribute fromMap(Map<String, Object> map) {
-		var data = new SkillAttribute();
-		var safe = new MapSafe(map);
-		if (safe.contains(SKILL)) data.skill = safe.getString(SKILL);
-		if (safe.contains(ACTIVATOR)) data.activator = safe.getString(ACTIVATOR);
-		if (safe.contains(POWER)) data.power = safe.getFloat(POWER);
-		if (safe.contains(COOLDOWN)) data.cooldown = safe.getDouble(COOLDOWN);
-		if (safe.contains(INTERVAL)) data.interval = safe.getInteger(INTERVAL);
-		if (safe.contains(SNEAKING)) data.sneaking = safe.getBoolean(SNEAKING);
-		if (safe.contains(SIGNAL)) data.signal = safe.getString(SIGNAL);
-		if (safe.contains(VARIABLES)) data.variables = safe.getMap(VARIABLES);
-		return data;
-	}
-
-	public void setNBT(NBTCompound compound) {
+	public void setNBT(ReadWriteNBT compound) {
 		if (skill != null) compound.setString(SKILL, skill);
 		if (activator != null) compound.setString(ACTIVATOR, activator);
 
@@ -142,9 +97,10 @@ public class SkillAttribute {
 		if (interval != null) compound.setInteger(INTERVAL, interval);
 		if (sneaking != null) compound.setBoolean(SNEAKING, sneaking);
 		if (signal != null) compound.setString(SIGNAL, signal);
+		if (cancel_event != null) compound.setBoolean(CANCEL_EVENT, cancel_event);
 
 		if (!variables.isEmpty()) {
-			NBTCompound variable_compound = compound.getOrCreateCompound(VARIABLES);
+			ReadWriteNBT variable_compound = compound.getOrCreateCompound(VARIABLES);
 			for (Map.Entry<String, Object> entry : variables.entrySet()) {
 				Object value = entry.getValue();
 				String key = entry.getKey();
@@ -157,47 +113,5 @@ public class SkillAttribute {
 				else variable_compound.setString(key, String.valueOf(value));
 			}
 		}
-	}
-
-	public static SkillAttribute fromNBT(ReadWriteNBT compound) {
-		return fromNBT(compound);
-	}
-
-	public static SkillAttribute fromNBT(NBTCompound compound) {
-		var data = new SkillAttribute();
-		if (compound.hasTag(SKILL)) data.setSkill(compound.getString(SKILL));
-		if (compound.hasTag(ACTIVATOR)) data.setActivator(compound.getString(ACTIVATOR));
-		if (compound.hasTag(POWER)) data.setPower(compound.getFloat(POWER));
-		if (compound.hasTag(COOLDOWN)) data.setCooldown(compound.getDouble(COOLDOWN));
-		if (compound.hasTag(INTERVAL)) data.setInterval(compound.getInteger(INTERVAL));
-		if (compound.hasTag(SNEAKING)) data.setSneaking(compound.getBoolean(SNEAKING));
-		if (compound.hasTag(SIGNAL)) data.setSignal(compound.getString(SIGNAL));
-
-		if (compound.hasTag(VARIABLES)) {
-			NBTCompound vars = compound.getCompound(VARIABLES);
-			for (String key : vars.getKeys()) {
-				switch (vars.getType(key)) {
-					case NBTTagFloat -> data.putVariable(key, vars.getFloat(key));
-					case NBTTagInt -> data.putVariable(key, vars.getInteger(key));
-					case NBTTagString -> data.putVariable(key, vars.getString(key));
-					case NBTTagByte -> data.putVariable(key, vars.getBoolean(key));
-					default -> data.putVariable(key, vars.getString(key));
-				}
-			}
-		}
-		return data;
-	}
-
-	public List<String> toStringList() {
-		List<String> list = new ArrayList<>();
-		if (skill != null) list.add("skill: " + skill);
-		if (activator != null) list.add("activator: " + activator);
-		if (power != null) list.add("power: " + String.valueOf(power));
-		if (cooldown != null) list.add("cooldown: " + String.valueOf(cooldown));
-		if (interval != null) list.add("interval: " + String.valueOf(interval));
-		if (sneaking != null) list.add("sneaking: " + String.valueOf(sneaking));
-		if (signal != null) list.add("signal: " + signal);
-		if (!variables.isEmpty()) list.add("variables: ...");
-		return list;
 	}
 }

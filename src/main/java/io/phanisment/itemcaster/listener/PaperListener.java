@@ -12,7 +12,7 @@ import com.destroystokyo.paper.event.player.PlayerElytraBoostEvent;
 import com.destroystokyo.paper.event.player.PlayerPickupExperienceEvent;
 
 import io.phanisment.itemcaster.skill.SkillActivator;
-import io.phanisment.itemcaster.skill.SkillActivator.Activator;
+import io.phanisment.itemcaster.skill.Activator;
 import io.phanisment.itemcaster.util.ItemUtil;
 
 public class PaperListener implements Listener {
@@ -26,14 +26,14 @@ public class PaperListener implements Listener {
 	public void onStopUseItem(PlayerStopUsingItemEvent e) {
 		Player player = e.getPlayer();
 		ItemStack item = e.getItem();
-		if (ItemUtil.validateItem(item)) new SkillActivator(player, item, Activator.STOP_USE_ITEM);
+		if (ItemUtil.validateItem(item)) new SkillActivator(player, Activator.STOP_USE_ITEM, item);
 	}
 
 	@EventHandler
 	public void onArmorChange(PlayerArmorChangeEvent e) {
 		Player player = e.getPlayer();
 		ItemStack item = e.getNewItem();
-		if (ItemUtil.validateItem(item)) new SkillActivator(player, item, Activator.ARMOR_CHANGE);
+		if (ItemUtil.validateItem(item)) new SkillActivator(player, Activator.ARMOR_CHANGE, item).execute();
 	}
 
 	@EventHandler

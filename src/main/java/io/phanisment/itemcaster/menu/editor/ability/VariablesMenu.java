@@ -35,7 +35,7 @@ public class VariablesMenu extends PaginatedFastInv {
 		previousPageItem(52, new ItemBuilder(Material.ARROW).name(Legacy.serializer("<white>Previous")).build());
 		nextPageItem(53, new ItemBuilder(Material.ARROW).name(Legacy.serializer("<white>Next")).build());
 
-		Map<String, Object> variables = ctx.data().getVariables();
+		Map<String, Object> variables = ctx.data().variables;
 		
 		setItem(45, new ItemBuilder(Material.BARRIER).name(Legacy.serializer("<white>Back")).build(), e -> {
 			Player player = (Player) e.getWhoClicked();
@@ -55,7 +55,7 @@ public class VariablesMenu extends PaginatedFastInv {
 				}
 				VariableData var_data = VariableParser.parseKey(i);
 				variables.put(var_data.key(), var_data.value());
-				ctx.data().setVariables(variables);
+				ctx.data().variables = variables;
 				item.setAbility(ctx.index(), ctx.data());
 				return ChatPrompt.Response.ACCEPTED;
 			}).thenAcceptSync(in -> new VariablesMenu(item, ctx).open(player));
@@ -75,7 +75,7 @@ public class VariablesMenu extends PaginatedFastInv {
 				player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 2f, 2f);
 				if (e.getClick().equals(ClickType.RIGHT)) {
 					variables.remove(key);
-					ctx.data().setVariables(variables);
+					ctx.data().variables = variables;
 					item.setAbility(ctx.index(), ctx.data());
 					new VariablesMenu(item, ctx).open(player);
 					return;
@@ -89,7 +89,7 @@ public class VariablesMenu extends PaginatedFastInv {
 						}
 						Object new_value = VariableParser.parseValue(i);
 						variables.put(key, new_value);
-						ctx.data().setVariables(variables);
+						ctx.data().variables = variables;
 						item.setAbility(ctx.index(), ctx.data());
 						return ChatPrompt.Response.ACCEPTED;
 					}).thenAcceptSync(in -> new VariablesMenu(item, ctx).open(player));

@@ -18,21 +18,21 @@ public class SneakingEditorButton implements IAbilityButton {
 			.name(Legacy.serializer("<white>Sneaking"))
 			.lore(Legacy.serializer(
 				"", 
-				"<gray>Left - Click to toggle (Current: <white>" + (ctx.data().getSneaking() ? "True" : "False") + "<gray>)",
+				"<gray>Left - Click to toggle (Current: <white>" + (ctx.data().sneaking ? "True" : "False") + "<gray>)",
 				"<gray>Right - Click to remove"
 			));
 	}
 
 	@Override
 	public void left(InventoryClickEvent e, CasterItem item, AbilityMenuContext ctx) {
-		ctx.data().setSneaking(!ctx.data().getSneaking());
+		ctx.data().sneaking = !ctx.data().sneaking;
 		item.setAbility(ctx.index(), ctx.data());
 		new AbilityMenu(item, ctx).open((Player)e.getWhoClicked());
 	}
 
 	@Override
 	public void right(InventoryClickEvent e, CasterItem item, AbilityMenuContext ctx) {
-		ctx.data().setSneaking(null);
+		ctx.data().sneaking = null;
 		item.setAbility(ctx.index(), ctx.data());
 		new AbilityMenu(item, ctx).open((Player)e.getWhoClicked());
 	}

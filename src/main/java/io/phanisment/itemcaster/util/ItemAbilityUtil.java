@@ -119,15 +119,13 @@ public final class ItemAbilityUtil {
 		List<SkillAttribute> list = new ArrayList<>();
 		NBTCompoundList abilities = nbt_item.getCompound("ItemCaster").getCompoundList("abilities");
 		if (abilities == null) return null;
-		for (var comp : abilities) {
-			list.add(SkillAttribute.fromNBT(comp));
-		}
+		for (var comp : abilities) list.add(new SkillAttribute(comp));
 		return list;
 	}
 	
 	public SkillAttribute getAbility(int index) {
 		NBTCompoundList abilities = nbt_item.getCompound("ItemCaster").getCompoundList("abilities");
 		if (abilities == null) return null;
-		return SkillAttribute.fromNBT(abilities.get(index));
+		return new SkillAttribute(abilities.get(index));
 	}
 }
