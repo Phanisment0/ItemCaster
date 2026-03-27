@@ -18,7 +18,7 @@ public class RarityEditorButton implements IEditorButton {
 
 	@Override
 	public ItemBuilder icon(CasterItem item) {
-		return new ItemBuilder(Material.PAPER)
+		return new ItemBuilder(Material.DIAMOND)
 			.name(Legacy.serializer("<white>Edit Rarity"))
 			.lore(Legacy.serializer(
 				"",

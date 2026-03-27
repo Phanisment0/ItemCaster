@@ -17,7 +17,7 @@ public class TemplateEditorButton implements IEditorButton {
 
 	@Override
 	public ItemBuilder icon(CasterItem item) {
-		return new ItemBuilder(Material.PAPER)
+		return new ItemBuilder(Material.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE)
 			.name(Legacy.serializer("<white>Edit Template"))
 			.lore(Legacy.serializer(
 				"",

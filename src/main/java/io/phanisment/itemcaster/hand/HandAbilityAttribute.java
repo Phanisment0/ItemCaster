@@ -24,7 +24,7 @@ public class HandAbilityAttribute {
   @SuppressWarnings("unchecked")
   public void load() {
     this.display = config.getString("display");
-
+    
     List<SkillAttribute> new_list_ability = new ArrayList<>();
     for (Map<?, ?> map : config.getMapList("abilities")) new_list_ability.add(new SkillAttribute((Map<String, Object>)map));
     this.abilities = new_list_ability;

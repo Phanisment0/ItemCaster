@@ -8,7 +8,6 @@ import io.phanisment.itemcaster.item.CasterItem;
 import io.phanisment.itemcaster.menu.editor.MenuEditor;
 import io.phanisment.itemcaster.menu.editor.ability.AbilityMenu;
 import io.phanisment.itemcaster.menu.editor.ability.button.IAbilityButton;
-import io.phanisment.itemcaster.menu.editor.ability.button.IntervalAbilityButton;
 import io.phanisment.itemcaster.menu.editor.ability.button.PowerAbilityButton;
 import io.phanisment.itemcaster.menu.editor.ability.button.SignalAbilityButton;
 import io.phanisment.itemcaster.menu.editor.ability.button.SkillAbilityButton;
@@ -47,7 +46,6 @@ public class MenuManager {
 		registerAbilityButton(new ActivatorAbilityButton());
 		registerAbilityButton(new CooldownAbilityButton());
 		registerAbilityButton(new PowerAbilityButton());
-		registerAbilityButton(new IntervalAbilityButton());
 		registerAbilityButton(new SneakingEditorButton());
 		registerAbilityButton(new SignalAbilityButton());
 		registerAbilityButton(new VariablesEditorButton());

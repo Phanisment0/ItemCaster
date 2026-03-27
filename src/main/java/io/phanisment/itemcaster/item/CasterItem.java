@@ -40,7 +40,7 @@ public class CasterItem {
 
 	private boolean hide_tooltips = false;
 	private ModelData model_data;
-	private List<SkillAttribute> abilities = new ArrayList<>();
+	private List<Map<String, Object>> abilities = new ArrayList<>();
 
 	@SuppressWarnings("unchecked")
 	public CasterItem(MythicItem mi) {
@@ -50,9 +50,7 @@ public class CasterItem {
 		this.hide_tooltips = config.getBoolean("Options.HideTooltips");
 		this.model_data = new ModelData(config.getString("ModelItem"), mi);
 
-		List<SkillAttribute> new_list_ability = new ArrayList<>();
-    for (Map<?, ?> map : config.getMapList("Abilities")) new_list_ability.add(new SkillAttribute((Map<String, Object>)map));
-    this.abilities = new_list_ability;
+		this.abilities = (List<Map<String, Object>>)(Object)config.getMapList("Abilities");
 
 		items.put(mi.getInternalName(), this);
 	}
@@ -77,13 +75,13 @@ public class CasterItem {
 	}
 
 	private ItemStack parseAbilities(ItemStack item) {
-		for (SkillAttribute attribute : abilities) {
-			if (attribute.skill != null || attribute.activator != null) {
-				MythicLogger.errorItemConfig(mi, config, "Required attributes `skill` and `activator` in Abilities component!");
+		for (Map<String, Object> attribute : abilities) {
+			if (!attribute.containsKey(SkillAttribute.SKILL) || !attribute.containsKey(SkillAttribute.ACTIVATOR)) {
+				MythicLogger.errorItemConfig(mi, config, "Required attributes 'skill' and 'activator' in Abilities component!");
 				continue;
 			}
 
-			item = ItemAbilityUtil.of(item).addAbility(attribute).orElse(item);
+			item = ItemAbilityUtil.of(item).addAbility(new SkillAttribute(attribute)).orElse(item);
 		}
 		return item;
 	}
@@ -94,12 +92,12 @@ public class CasterItem {
 	}
 
 	public boolean hasAbilities() {
-		return abilities != null;
+		return !abilities.isEmpty();
 	}
 
 	// Add /////////////////////////////////////
 	public void addAbility(SkillAttribute attribute) {
-		abilities.add(attribute);
+		abilities.add(attribute.toMap());
 		save("Abilities", abilities);
 	}
 
@@ -157,7 +155,7 @@ public class CasterItem {
 	}
 
 	public void setAbility(int index, SkillAttribute attribute) {
-		abilities.set(index, attribute);
+		abilities.set(index, attribute.toMap());
 		save("Abilities", abilities);
 	}
 
@@ -258,10 +256,10 @@ public class CasterItem {
 	}
 
 	public SkillAttribute getAbility(int index) {
-		return this.abilities.get(index);
+		return new SkillAttribute(this.abilities.get(index));
 	}
 
-	public List<SkillAttribute> getAbilities() {
+	public List<Map<String, Object>> getAbilities() {
 		return this.abilities;
 	}
 

@@ -29,6 +29,7 @@ public class PowerAbilityButton implements IAbilityButton {
 	@Override
 	public void left(InventoryClickEvent e, CasterItem item, AbilityMenuContext ctx) {
 		Player player = (Player)e.getWhoClicked();
+		CasterLogger.send(player, "<color:yellow>Enter the new power for the ability. Type 'cancel' to cancel.");
 		player.closeInventory();
 		ChatPrompt.listen(player, i -> {
 			if (i.equalsIgnoreCase("cancel")) {

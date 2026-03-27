@@ -1,16 +1,21 @@
 package io.phanisment.itemcaster.menu.editor.ability.button;
 
+import java.util.Optional;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import fr.mrmicky.fastinv.ItemBuilder;
+import io.lumine.mythic.api.skills.Skill;
 import io.lumine.mythic.bukkit.utils.prompts.chat.ChatPrompt;
+import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.item.CasterItem;
 import io.phanisment.itemcaster.menu.editor.ability.AbilitiesMenu.AbilityMenuContext;
 import io.phanisment.itemcaster.menu.editor.ability.AbilityMenu;
 import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.util.Legacy;
+import io.phanisment.itemcaster.util.MythicMobsUtil;
 
 public class CooldownAbilityButton implements IAbilityButton {
 
@@ -29,7 +34,7 @@ public class CooldownAbilityButton implements IAbilityButton {
 	@Override
 	public void left(InventoryClickEvent e, CasterItem item, AbilityMenuContext ctx) {
 		Player player = (Player)e.getWhoClicked();
-		CasterLogger.send(player, "<color:yellow>Enter the new skill for the ability. Type 'cancel' to cancel.");
+		CasterLogger.send(player, "<color:yellow>Enter the new cooldown for the ability. Type 'cancel' to cancel.");
 		player.closeInventory();
 		ChatPrompt.listen(player, i -> {
 			if (i.equalsIgnoreCase("cancel")) {
@@ -43,6 +48,15 @@ public class CooldownAbilityButton implements IAbilityButton {
 				return ChatPrompt.Response.TRY_AGAIN;
 			}
 			item.setAbility(ctx.index(), ctx.data());
+			
+			if (ItemCaster.config().auto_set_skill_cooldown) {
+				Optional<Skill> mybe_skill = MythicMobsUtil.toSkill(ctx.data().skill);
+				if (mybe_skill.isPresent()) {
+					Skill skill = mybe_skill.get();
+					skill.getConfig().setSave("Cooldown", 0);
+					ItemCaster.core().getSkillManager().loadSkills();
+				}
+			}
 			return ChatPrompt.Response.ACCEPTED;
 		}).thenAcceptSync(in -> new AbilityMenu(item, ctx).open(player));
 	}

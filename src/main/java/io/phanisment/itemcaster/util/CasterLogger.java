@@ -22,6 +22,10 @@ public class CasterLogger {
 
 	private CasterLogger() {
 	}
+
+	public static void log(String message) {
+		Bukkit.getConsoleSender().sendMessage(MM.deserialize(message));
+	}
 	
 	/**
 	 * Sends a message to the console with the plugin prefix.

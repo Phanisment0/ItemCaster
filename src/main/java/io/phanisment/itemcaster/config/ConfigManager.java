@@ -17,7 +17,11 @@ public final class ConfigManager {
 	
 	public static void load() {
 		if (!ItemCaster.inst().getDataFolder().exists()) ItemCaster.inst().getDataFolder().mkdirs();
-		if (!file_location.exists()) ItemCaster.inst().saveResource(file_name, false);
+		if (!file_location.exists()) {
+			ItemCaster.inst().saveResource(file_name, false);
+			save();
+			return;
+		}
 		
 		try (var reader = new FileReader(file_location)) {
 			var load = gson.fromJson(reader, ConfigData.class);

@@ -10,13 +10,16 @@ import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.bukkit.utils.plugin.LuminePlugin;
 import io.lumine.mythic.bukkit.utils.version.ServerVersion;
 import io.phanisment.itemcaster.command.ItemCasterCommand;
+import io.phanisment.itemcaster.command.ItemCasterMenuCommand;
 import io.phanisment.itemcaster.config.ConfigData;
 import io.phanisment.itemcaster.config.ConfigManager;
 import io.phanisment.itemcaster.config.LanguageManager;
+import io.phanisment.itemcaster.hand.HandCaster;
 import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.listener.ActivatorListener;
 import io.phanisment.itemcaster.listener.MythicListener;
 import io.phanisment.itemcaster.listener.PaperListener;
+import io.phanisment.itemcaster.listener.ProfileListener;
 import io.phanisment.itemcaster.menu.MenuManager;
 import io.phanisment.itemcaster.listener.CasterRunnable;
 import io.phanisment.itemcaster.registry.ExternalItemRegistry;
@@ -45,6 +48,8 @@ public final class ItemCaster extends LuminePlugin {
 		new Metrics(this, Storage.id_bstats);
 		core = MythicBukkit.inst();
 		ConfigManager.load();
+		HandCaster.load();
+		Storage.debugging = config().debug_mode;
 		this.lang_manager = new LanguageManager();
 		this.lang_manager.load();
 		
@@ -83,10 +88,12 @@ public final class ItemCaster extends LuminePlugin {
 
 		this.listen(new ActivatorListener());
 		this.listen(new MythicListener());
+		this.listen(new ProfileListener());
 		FastInvManager.register(this);
 
 		new CasterRunnable().runTaskTimer(this, 1L, 1L);
-		new ItemCasterCommand(this);
+		this.registerCommand("itemcaster", new ItemCasterCommand(this));
+		this.registerCommand("itemcastermenu", new ItemCasterMenuCommand(this));
 	}
 
 	@Override
@@ -119,9 +126,12 @@ public final class ItemCaster extends LuminePlugin {
 	public void reload() {
 		ConfigManager.load();
 		this.lang_manager.load();
-
+		Storage.debugging = config().debug_mode;
+		
 		String prefix = config().prefix;
 		if (!prefix.isEmpty()) Storage.prefix = prefix;
+
+		CasterLogger.log("[<gradient:#69DFFF:#5984CF>ItemCaster</gradient>] <color:#23eb73>Plugin has finished reloading!");
 	}
 
 	public static ConfigData config() {

@@ -9,15 +9,15 @@ import io.lumine.mythic.bukkit.utils.commands.Command;
 import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.menu.MenuBrowser;
 
-public class MenuCommand extends Command<ItemCaster> {
+public class ItemCasterMenuCommand extends Command<ItemCaster> {
 
-  public MenuCommand(ItemCaster plugin) {
+  public ItemCasterMenuCommand(ItemCaster plugin) {
     super(plugin);
   }
 
   @Override
   public String getName() {
-    return "menu";
+    return "itemcastermenu";
   }
 
   @Override
@@ -27,7 +27,7 @@ public class MenuCommand extends Command<ItemCaster> {
 
   @Override
   public String[] getAliases() {
-    return new String[]{"m"};
+    return new String[]{"icm"};
   }
 
   @Override
@@ -45,5 +45,4 @@ public class MenuCommand extends Command<ItemCaster> {
   public List<String> onTabComplete(CommandSender arg0, String[] arg1) {
     return null;
   }
-
 }

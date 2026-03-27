@@ -13,6 +13,7 @@ public class ItemCasterCommand extends Command<ItemCaster> {
 	public ItemCasterCommand(ItemCaster plugin) {
 		super(plugin);
 		this.addSubCommands(new MenuCommand(plugin));
+		// this.addSubCommands(new ReloadCommand());
 	}
 
 	@Override
@@ -24,6 +25,11 @@ public class ItemCasterCommand extends Command<ItemCaster> {
 	public String getPermissionNode() {
 		return "itemcaster.command.main";
 	}
+
+	@Override
+  public String[] getAliases() {
+    return new String[]{"ic"};
+  }
 
 	@Override
 	public boolean isConsoleFriendly() {

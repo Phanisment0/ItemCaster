@@ -18,7 +18,7 @@ public class LoreEditorButton implements IEditorButton {
 
 	@Override
 	public ItemBuilder icon(CasterItem item) {
-		return new ItemBuilder(Material.PAPER)
+		return new ItemBuilder(Material.WRITABLE_BOOK)
 			.name(Legacy.serializer("<white>Edit Lore"))
 			.lore(Legacy.serializer(
 				"",

@@ -18,7 +18,7 @@ public class SneakingEditorButton implements IAbilityButton {
 			.name(Legacy.serializer("<white>Sneaking"))
 			.lore(Legacy.serializer(
 				"", 
-				"<gray>Left - Click to toggle (Current: <white>" + (ctx.data().sneaking ? "True" : "False") + "<gray>)",
+				"<gray>Left - Click to toggle (Current: <white>" + (ctx.data().sneaking != null ? ctx.data().sneaking : true) + "<gray>)",
 				"<gray>Right - Click to remove"
 			));
 	}

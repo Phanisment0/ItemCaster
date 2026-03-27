@@ -18,3 +18,8 @@ commands:
     aliases:
     - ic
     permission: op
+  itemcastermenu:
+    aliases:
+    - icm
+    permission: op
+  

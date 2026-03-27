@@ -16,6 +16,7 @@ import io.phanisment.itemcaster.util.Legacy;
 
 import java.util.Optional;
 import java.util.List;
+import java.util.Map;
 
 public class AbilitiesMenu extends PaginatedFastInv {
 	private InventoryScheme scheme = new InventoryScheme()
@@ -51,11 +52,11 @@ public class AbilitiesMenu extends PaginatedFastInv {
 		previousPageItem(52, new ItemBuilder(Material.ARROW).name(Legacy.serializer("<white>Previous")).build());
 		nextPageItem(53, new ItemBuilder(Material.ARROW).name(Legacy.serializer("<white>Next")).build());
 		
-		List<SkillAttribute> abilities = item.getAbilities();
+		List<Map<String, Object>> abilities = item.getAbilities();
 		
 		for (int i = 0; i < abilities.size(); i++) {
 			final int index = i;
-			SkillAttribute data = abilities.get(i);
+			SkillAttribute data = new SkillAttribute(abilities.get(i));
 			var context = new AbilityMenuContext(i, data);
 			List<String> lore = List.of(
 				"<gray>Skill: <white>" + data.skill,

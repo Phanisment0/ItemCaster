@@ -25,8 +25,8 @@ public class SkillExecutor {
 	private final SkillCaster caster;
 	private final Skill skill;
 
-	private float power = 0;
-	private double cooldown = 0;
+	private Float power = 0f;
+	private Double cooldown = 0d;
 	private Map<String, Object> variables = new HashMap<>();
 
 	public SkillExecutor(Skill skill, Player player) {
@@ -35,13 +35,15 @@ public class SkillExecutor {
 		this.skill = skill;
 	}
 
-	public SkillExecutor setPower(float power) {
+	public SkillExecutor setPower(Float power) {
 		this.power = power;
+		if (power == null) power = 0f;
 		return this;
 	}
 
-	public SkillExecutor setCooldown(double cooldown) {
+	public SkillExecutor setCooldown(Double cooldown) {
 		this.cooldown = cooldown;
+		if (cooldown == null) cooldown = 0d;
 		return this;
 	}
 
@@ -67,6 +69,7 @@ public class SkillExecutor {
 			abstract_location.add(BukkitAdapter.adapt(target.getLocation()));
 		}
 
+		if (power == null) power = 0f;
 		var meta = new SkillMetadataImpl(SkillTriggers.API, caster, BukkitAdapter.adapt(player), BukkitAdapter.adapt(player.getLocation()), abstract_entities, abstract_location, this.power);
 
 		if (variables != null) {
@@ -81,6 +84,7 @@ public class SkillExecutor {
 			}
 		}
 
+		if (cooldown == null) cooldown = 0d; 
 		if (skill.isUsable(meta, SkillTriggers.API) && !skill.onCooldown(caster)) {
 			skill.execute(meta);
 			if (cooldown > 0) ((MetaSkill)skill).setCooldown(caster, cooldown);
