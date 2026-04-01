@@ -16,6 +16,7 @@ public class SkillAttribute {
 	public static final String SIGNAL = "signal";
 	public static final String VARIABLES = "variables";
 	public static final String CANCEL_EVENT = "cancel_event";
+	public static final String SHOW_COOLDOWN = "show_cooldown";
 
 	public String skill;
 	public String activator;
@@ -25,6 +26,7 @@ public class SkillAttribute {
 	public String signal;
 	public Map<String, Object> variables = new HashMap<>();
 	public Boolean cancel_event;
+	public Boolean show_cooldown = false;
 
 	public SkillAttribute() {
 	}
@@ -39,6 +41,7 @@ public class SkillAttribute {
 		if (map.contains(SIGNAL)) this.signal = map.getString(SIGNAL);
 		if (map.contains(VARIABLES)) this.variables = map.getMap(VARIABLES);
 		if (map.contains(CANCEL_EVENT)) this.cancel_event = map.getBoolean(CANCEL_EVENT);
+		if (map.contains(SHOW_COOLDOWN)) this.show_cooldown = map.getBoolean(SHOW_COOLDOWN);
 	}
 
 	public SkillAttribute(ReadableNBT data) {
@@ -49,6 +52,7 @@ public class SkillAttribute {
 		if (data.hasTag(SNEAKING)) this.sneaking = data.getBoolean(SNEAKING);
 		if (data.hasTag(SIGNAL)) this.signal = data.getString(SIGNAL);
 		if (data.hasTag(CANCEL_EVENT)) this.cancel_event = data.getBoolean(CANCEL_EVENT);
+		if (data.hasTag(SHOW_COOLDOWN)) this.show_cooldown = data.getBoolean(SHOW_COOLDOWN);
 		
 		if (data.hasTag(VARIABLES)) {
 			ReadableNBT variables_nbt = data.getCompound(VARIABLES);
@@ -73,18 +77,19 @@ public class SkillAttribute {
 		if (this.sneaking != null) map.put(SNEAKING, this.sneaking);
 		if (this.signal != null) map.put(SIGNAL, this.signal);
 		if (!this.variables.isEmpty()) map.put(VARIABLES, this.variables);
+		if (this.show_cooldown != null) map.put(SHOW_COOLDOWN, this.show_cooldown);
 		return map;
 	}
 
 	public void setNBT(ReadWriteNBT compound) {
 		if (skill != null) compound.setString(SKILL, skill);
 		if (activator != null) compound.setString(ACTIVATOR, activator);
-
 		if (power != null) compound.setFloat(POWER, power);
 		if (cooldown != null) compound.setDouble(COOLDOWN, cooldown);
 		if (sneaking != null) compound.setBoolean(SNEAKING, sneaking);
 		if (signal != null) compound.setString(SIGNAL, signal);
 		if (cancel_event != null) compound.setBoolean(CANCEL_EVENT, cancel_event);
+		if (show_cooldown != null) compound.setBoolean(SHOW_COOLDOWN, show_cooldown);
 
 		if (!variables.isEmpty()) {
 			ReadWriteNBT variable_compound = compound.getOrCreateCompound(VARIABLES);

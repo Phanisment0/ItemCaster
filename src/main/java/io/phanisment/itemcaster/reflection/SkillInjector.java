@@ -1,4 +1,4 @@
-package io.phanisment.itemcaster.skill;
+package io.phanisment.itemcaster.reflection;
 
 import io.lumine.mythic.core.skills.SkillExecutor;
 import io.lumine.mythic.core.skills.SkillCondition;

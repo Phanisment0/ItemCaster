@@ -22,13 +22,13 @@ import io.phanisment.itemcaster.listener.ProfileListener;
 import io.phanisment.itemcaster.listener.ProfileRunnable;
 import io.phanisment.itemcaster.menu.MenuManager;
 import io.phanisment.itemcaster.profile.ProfileManager;
+import io.phanisment.itemcaster.reflection.SkillInjector;
 import io.phanisment.itemcaster.listener.CasterRunnable;
 import io.phanisment.itemcaster.registry.ExternalItemRegistry;
 import io.phanisment.itemcaster.item.external.CraftEngineExternalItem;
 import io.phanisment.itemcaster.item.external.ItemsAdderExternalItem;
 import io.phanisment.itemcaster.item.external.NexoExternalItem;
 import io.phanisment.itemcaster.item.external.OraxenExternalItem;
-import io.phanisment.itemcaster.skill.SkillInjector;
 
 public final class ItemCaster extends LuminePlugin {
 	private static ItemCaster inst;

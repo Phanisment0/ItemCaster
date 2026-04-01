@@ -6,12 +6,15 @@ import org.bukkit.entity.Player;
 import io.lumine.mythic.api.skills.Skill;
 import io.lumine.mythic.api.skills.SkillCaster;
 import io.lumine.mythic.core.utils.MythicUtil;
+import io.phanisment.itemcaster.parser.ProgressBarParse;
+import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.util.MythicMobsUtil;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.adapters.AbstractLocation;
 import io.lumine.mythic.core.skills.SkillMetadataImpl;
 import io.lumine.mythic.core.skills.SkillTriggers;
+import io.lumine.mythic.core.skills.AbstractSkill;
 import io.lumine.mythic.core.skills.MetaSkill;
 import io.lumine.mythic.core.skills.variables.VariableRegistry;
 
@@ -62,6 +65,7 @@ public class SkillExecutor {
 		this.power = attributes.power;
 		this.cooldown = attributes.cooldown;
 		this.variables = attributes.variables;
+		this.show_cooldown = attributes.show_cooldown;
 		return this;
 	}
 
@@ -90,10 +94,21 @@ public class SkillExecutor {
 			}
 		}
 
+		float cd = ((AbstractSkill)skill).getCooldown(caster);
+
 		if (cooldown == null) cooldown = 0d; // this too ;v
-		if (skill.isUsable(meta, SkillTriggers.API) && !skill.onCooldown(caster)) {
-			skill.execute(meta);
-			if (cooldown > 0) ((MetaSkill)skill).setCooldown(caster, cooldown);
+		var progress_bar = new ProgressBarParse(cd, cooldown.floatValue());
+		if (skill.onCooldown(caster)) {
+			if (show_cooldown) player.sendActionBar(CasterLogger.MM.deserialize(progress_bar.parse() + " " + progress_bar.formatedTime()));
+			return;
+		}
+
+		if (!skill.isUsable(meta, SkillTriggers.API)) return;
+
+		skill.execute(meta);
+		if (cooldown > 0) {
+			((MetaSkill)skill).setCooldown(caster, cooldown);
+			if (show_cooldown) player.sendActionBar(CasterLogger.MM.deserialize(progress_bar.parse() + " " + progress_bar.formatedTime()));
 		}
 	}
 }

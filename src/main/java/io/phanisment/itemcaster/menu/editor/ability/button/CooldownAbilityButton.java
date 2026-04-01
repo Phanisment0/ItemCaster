@@ -3,8 +3,6 @@ package io.phanisment.itemcaster.menu.editor.ability.button;
 import java.util.Optional;
 
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 

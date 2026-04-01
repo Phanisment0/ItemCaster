@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * with built-in support for prefixing and debug-level logging.
  */
 public class CasterLogger {
-	private static final MiniMessage MM = MiniMessage.miniMessage();
+	public static final MiniMessage MM = MiniMessage.miniMessage();
 	private static final Logger LOGGER = ItemCaster.inst().getLogger();
 
 	private CasterLogger() {
