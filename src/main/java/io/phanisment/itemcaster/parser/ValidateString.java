@@ -9,8 +9,8 @@ public final class ValidateString {
 
 	public static boolean containsSpecial(String text) {
 		if (text == null || text.isEmpty()) return false;
-		for (int i = 0; i < text.length(); i++) if (!allowedChar(text.charAt(i))) return true;
-		return false;
+		for (int i = 0; i < text.length(); i++) if (!allowedChar(text.charAt(i))) return false;
+		return true;
 	}
 
 	private static boolean allowedChar(char c) {

@@ -35,6 +35,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 
 import io.phanisment.itemcaster.skill.SkillActivator;
+import io.phanisment.itemcaster.hand.HandActivator;
 import io.phanisment.itemcaster.skill.Activator;
 import io.phanisment.itemcaster.util.ItemUtil;
 
@@ -54,6 +55,7 @@ public class ActivatorListener implements Listener {
 	@EventHandler
 	public void onPlayerSwing(PlayerAnimationEvent e) {
 		Player player = e.getPlayer();
+		new HandActivator(player, Activator.LEFT_CLICK).execute();
 		switch (e.getAnimationType()) {
 			case ARM_SWING:
 				ItemStack main = player.getInventory().getItemInMainHand();
@@ -69,6 +71,7 @@ public class ActivatorListener implements Listener {
 	@EventHandler
 	public void onPlayerDrop(PlayerDropItemEvent e) {
 		Player player = e.getPlayer();
+		new HandActivator(player, Activator.DROP).execute();
 		ItemStack item = e.getItemDrop().getItemStack();
 		if (ItemUtil.validateItem(item)) new SkillActivator(player, Activator.DROP, item).execute();;
 	}
@@ -76,6 +79,7 @@ public class ActivatorListener implements Listener {
 	@EventHandler
 	public void onPlayerPickUp(EntityPickupItemEvent e) {
 		if (!(e.getEntity() instanceof Player player)) return;
+		new HandActivator(player, Activator.PICKUP).execute();
 		ItemStack item = e.getItem().getItemStack();
 		if (ItemUtil.validateItem(item)) new SkillActivator(player, Activator.PICKUP, item).execute();;
 	}
@@ -84,7 +88,6 @@ public class ActivatorListener implements Listener {
 	public void onPlayerDamaged(EntityDamageEvent e) {
 		if (e.getEntity() instanceof Player player) {
 			ItemUtil.runSkill(player, Activator.DAMAGED);
-
 			switch (e.getCause()) {
 				case BLOCK_EXPLOSION:
 					ItemUtil.runSkill(player, Activator.DAMAGED_BY_BLOCK_EXPLOSION);
@@ -209,13 +212,13 @@ public class ActivatorListener implements Listener {
 
 	@EventHandler
 	public void onPlayerShoot(EntityShootBowEvent e) {
-		if (e.getEntity() instanceof Player player) {
-			ItemStack item = e.getBow();
-			if (ItemUtil.validateItem(item)) {
-				var skill = new SkillActivator(player, Activator.BOW_SHOOT, item);
-				skill.execute();
-				if (skill.CANCEL_EVENT) e.setCancelled(true);
-			}
+		if (!(e.getEntity() instanceof Player player)) return;
+		new HandActivator(player, Activator.BOW_SHOOT).execute();
+		ItemStack item = e.getBow();
+		if (ItemUtil.validateItem(item)) {
+			var skill = new SkillActivator(player, Activator.BOW_SHOOT, item);
+			skill.execute();
+			if (skill.CANCEL_EVENT) e.setCancelled(true);
 		}
 	}
 
@@ -246,6 +249,7 @@ public class ActivatorListener implements Listener {
 	@EventHandler
 	public void onItemBreak(PlayerItemBreakEvent e) {
 		Player player = e.getPlayer();
+		new HandActivator(player, Activator.ITEM_BREAK).execute();;
 		ItemStack item = e.getBrokenItem();
 		if (ItemUtil.validateItem(item)) new SkillActivator(player, Activator.ITEM_BREAK, item).execute();
 	}
@@ -297,6 +301,7 @@ public class ActivatorListener implements Listener {
 	@EventHandler
 	public void onPlace(BlockPlaceEvent e) {
 		Player player = e.getPlayer();
+		new HandActivator(player, Activator.BLOCK_PLACE).execute();
 		ItemStack item = e.getItemInHand();
 		if (ItemUtil.validateItem(item)) {
 			var skill = new SkillActivator(player, Activator.BLOCK_PLACE, item);
@@ -314,6 +319,7 @@ public class ActivatorListener implements Listener {
 	@EventHandler
 	public void onBlockDamaged(BlockDamageEvent e) {
 		Player player = e.getPlayer();
+		new HandActivator(player, Activator.BLOCK_DAMAGED).execute();
 		ItemStack item = e.getItemInHand();
 		if (ItemUtil.validateItem(item)) new SkillActivator(player, Activator.BLOCK_DAMAGED, item).execute();
 	}
@@ -321,6 +327,7 @@ public class ActivatorListener implements Listener {
 	@EventHandler
 	public void onBlockStopDamaged(BlockDamageAbortEvent e) {
 		Player player = e.getPlayer();
+		new HandActivator(player, Activator.BLOCK_STOP_DAMAGED).execute();
 		ItemStack item = e.getItemInHand();
 		if (ItemUtil.validateItem(item)) new SkillActivator(player, Activator.BLOCK_STOP_DAMAGED, item).execute();
 	}
@@ -375,6 +382,7 @@ public class ActivatorListener implements Listener {
 	@EventHandler
 	public void onSwapHand(PlayerSwapHandItemsEvent e) {
 		Player player = e.getPlayer();
+		new HandActivator(player, Activator.SWAP_HAND).execute();
 		ItemStack main = e.getMainHandItem();
 		ItemStack off = e.getOffHandItem();
 		if (ItemUtil.validateItem(main)) new SkillActivator(player, Activator.SWAP_HAND, main).execute();

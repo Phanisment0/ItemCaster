@@ -3,15 +3,13 @@ package io.phanisment.itemcaster.command;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import io.lumine.mythic.bukkit.utils.commands.Command;
 import io.phanisment.itemcaster.ItemCaster;
-import io.phanisment.itemcaster.menu.MenuBrowser;
 
-public class MenuCommand extends Command<ItemCaster> {
+public class HandCasterToggle extends Command<ItemCaster> {
 
-	public MenuCommand(ItemCaster plugin) {
+	public HandCasterToggle(ItemCaster plugin) {
 		super(plugin);
 	}
 
@@ -22,22 +20,21 @@ public class MenuCommand extends Command<ItemCaster> {
 
 	@Override
 	public String getPermissionNode() {
-		return "itemcaster.command.menu";
+		return "itemcaster.command.handcastertoggle";
 	}
 
 	@Override
 	public String[] getAliases() {
-		return new String[]{"m"};
+		return new String[]{"hct"};
 	}
 
 	@Override
 	public boolean isConsoleFriendly() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
-		new MenuBrowser().open((Player)sender);
 		return true;
 	}
 

@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import io.lumine.mythic.bukkit.utils.commands.Command;
 import io.phanisment.itemcaster.ItemCaster;
+import io.phanisment.itemcaster.command.hand.HandCasterCommand;
 import io.phanisment.itemcaster.util.CasterLogger;
 
 public class ItemCasterCommand extends Command<ItemCaster> {
@@ -13,7 +14,7 @@ public class ItemCasterCommand extends Command<ItemCaster> {
 	public ItemCasterCommand(ItemCaster plugin) {
 		super(plugin);
 		this.addSubCommands(new MenuCommand(plugin));
-		// this.addSubCommands(new ReloadCommand());
+		this.addSubCommands(new HandCasterCommand(plugin));
 	}
 
 	@Override
@@ -27,9 +28,9 @@ public class ItemCasterCommand extends Command<ItemCaster> {
 	}
 
 	@Override
-  public String[] getAliases() {
-    return new String[]{"ic"};
-  }
+	public String[] getAliases() {
+		return new String[]{"ic"};
+	}
 
 	@Override
 	public boolean isConsoleFriendly() {

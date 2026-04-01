@@ -8,10 +8,13 @@ import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.Storage;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
+import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * WARNING: Do not use this class if the feature is contains user input.
+ * 
  * Utility class for logging and messaging in the ItemCaster plugin.
  * Provides methods to send messages to players, the console, or other command senders,
  * with built-in support for prefixing and debug-level logging.
@@ -26,6 +29,10 @@ public class CasterLogger {
 	public static void log(String message) {
 		Bukkit.getConsoleSender().sendMessage(MM.deserialize(message));
 	}
+
+	public static void log(String message, Object... params) {
+		Bukkit.getConsoleSender().sendMessage(MM.deserialize(MessageFormat.format(message, params)));
+	}
 	
 	/**
 	 * Sends a message to the console with the plugin prefix.
@@ -34,6 +41,10 @@ public class CasterLogger {
 	 */
 	public static void send(String message) {
 		Bukkit.getConsoleSender().sendMessage(MM.deserialize(Storage.prefix + message));
+	}
+
+	public static void send(String message, Object... params) {
+		Bukkit.getConsoleSender().sendMessage(MM.deserialize(MessageFormat.format(Storage.prefix + message, params)));
 	}
 	
 	/**
@@ -45,7 +56,11 @@ public class CasterLogger {
 	public static void send(Player player, String message) {
 		player.sendMessage(MM.deserialize(Storage.prefix + message));
 	}
-	
+
+	public static void send(Player player, String message, Object... params) {
+		player.sendMessage(MM.deserialize(MessageFormat.format(Storage.prefix + message, params)));
+	}
+
 	/**
 	 * Sends a message to a command sender (player, console, etc.) with the plugin prefix.
 	 *
@@ -55,7 +70,11 @@ public class CasterLogger {
 	public static void send(CommandSender sender, String message) {
 		sender.sendMessage(MM.deserialize(Storage.prefix + message));
 	}
-	
+
+	public static void send(CommandSender sender, String message, Object... params) {
+		sender.sendMessage(MM.deserialize(MessageFormat.format(Storage.prefix + message, params)));
+	}
+
 	/**
 	 * Logs a message with SEVERE level if debug mode is enabled.
 	 * Uses Java's default logger formatting placeholders: {0}, {1}, ...

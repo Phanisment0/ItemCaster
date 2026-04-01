@@ -14,20 +14,20 @@ import io.lumine.mythic.core.players.PlayerData;
 import io.phanisment.itemcaster.ItemCaster;
 
 public final class MythicMobsUtil {
-  public static SkillCaster toCaster(Entity target) {
-    if (target == null) {
-      var virtual_entity = new VirtualEntity(new AbstractLocation());
-      return new GenericCaster(virtual_entity);
-    }
+	public static SkillCaster toCaster(Entity target) {
+		if (target == null) {
+			var virtual_entity = new VirtualEntity(new AbstractLocation());
+			return new GenericCaster(virtual_entity);
+		}
 
-    if (ItemCaster.core().getMobManager().isActiveMob(target.getUniqueId())) return ItemCaster.core().getMobManager().getMythicMobInstance(target);
+		if (ItemCaster.core().getMobManager().isActiveMob(target.getUniqueId())) return ItemCaster.core().getMobManager().getMythicMobInstance(target);
 
-    Optional<PlayerData> player_data = ItemCaster.core().getPlayerManager().getProfile(target.getUniqueId());
-    if (player_data.isPresent()) return player_data.get();
-    return new GenericCaster(BukkitAdapter.adapt(target));
-  }
+		Optional<PlayerData> player_data = ItemCaster.core().getPlayerManager().getProfile(target.getUniqueId());
+		if (player_data.isPresent()) return player_data.get();
+		return new GenericCaster(BukkitAdapter.adapt(target));
+	}
 
-  public static Optional<Skill> toSkill(String skill) {
-    return ItemCaster.core().getSkillManager().getSkill(skill);
-  }
+	public static Optional<Skill> toSkill(String skill) {
+		return ItemCaster.core().getSkillManager().getSkill(skill);
+	}
 }

@@ -8,13 +8,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import io.phanisment.itemcaster.profile.ProfileManager;
 
 public class ProfileListener implements Listener {
-  @EventHandler
-  public void onJoin(PlayerJoinEvent e) {
-    ProfileManager.load(e.getPlayer());
-  }
+	@EventHandler
+	public void onJoin(PlayerJoinEvent e) {
+		ProfileManager.load(e.getPlayer());
+	}
 
-  @EventHandler
-  public void onLeave(PlayerQuitEvent e) {
-    ProfileManager.remove(e.getPlayer());
-  }
+	@EventHandler
+	public void onLeave(PlayerQuitEvent e) {
+		ProfileManager.remove(e.getPlayer());
+	}
 }

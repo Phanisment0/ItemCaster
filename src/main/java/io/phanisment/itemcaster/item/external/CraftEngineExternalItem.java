@@ -26,5 +26,4 @@ public class CraftEngineExternalItem implements IExternalItem {
 		}
 		return Optional.of(ci.buildItemStack(1));
 	}
-
 }

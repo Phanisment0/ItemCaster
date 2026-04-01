@@ -2,12 +2,14 @@ package io.phanisment.itemcaster.profile;
 
 import java.util.UUID;
 
-import org.bukkit.NamespacedKey;
+import io.phanisment.itemcaster.util.Identifier;
 
 public class ProfileData {
-  public transient UUID uuid;
-  public NamespacedKey hand_ability;
-  public ProfileData(UUID uuid) {
-    this.uuid = uuid;
-  }
+	public transient UUID uuid;
+	
+	public Identifier hand_ability;
+	public boolean hand_toggle = true;
+	public ProfileData(UUID uuid) {
+		this.uuid = uuid;
+	}
 }

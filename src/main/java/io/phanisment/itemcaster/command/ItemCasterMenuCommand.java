@@ -11,38 +11,38 @@ import io.phanisment.itemcaster.menu.MenuBrowser;
 
 public class ItemCasterMenuCommand extends Command<ItemCaster> {
 
-  public ItemCasterMenuCommand(ItemCaster plugin) {
-    super(plugin);
-  }
+	public ItemCasterMenuCommand(ItemCaster plugin) {
+		super(plugin);
+	}
 
-  @Override
-  public String getName() {
-    return "itemcastermenu";
-  }
+	@Override
+	public String getName() {
+		return "itemcastermenu";
+	}
 
-  @Override
-  public String getPermissionNode() {
-    return "itemcaster.command.menu";
-  }
+	@Override
+	public String getPermissionNode() {
+		return "itemcaster.command.menu";
+	}
 
-  @Override
-  public String[] getAliases() {
-    return new String[]{"icm"};
-  }
+	@Override
+	public String[] getAliases() {
+		return new String[]{"icm"};
+	}
 
-  @Override
-  public boolean isConsoleFriendly() {
-    return false;
-  }
+	@Override
+	public boolean isConsoleFriendly() {
+		return false;
+	}
 
-  @Override
-  public boolean onCommand(CommandSender sender, String[] args) {
-    new MenuBrowser().open((Player)sender);
-    return true;
-  }
+	@Override
+	public boolean onCommand(CommandSender sender, String[] args) {
+		new MenuBrowser().open((Player)sender);
+		return true;
+	}
 
-  @Override
-  public List<String> onTabComplete(CommandSender arg0, String[] arg1) {
-    return null;
-  }
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, String[] arg1) {
+		return null;
+	}
 }

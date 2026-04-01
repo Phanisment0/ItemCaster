@@ -25,8 +25,9 @@ public class SkillExecutor {
 	private final SkillCaster caster;
 	private final Skill skill;
 
-	private Float power = 0f;
-	private Double cooldown = 0d;
+	private Float power;
+	private Double cooldown;
+	private boolean show_cooldown = false;
 	private Map<String, Object> variables = new HashMap<>();
 
 	public SkillExecutor(Skill skill, Player player) {
@@ -44,6 +45,11 @@ public class SkillExecutor {
 	public SkillExecutor setCooldown(Double cooldown) {
 		this.cooldown = cooldown;
 		if (cooldown == null) cooldown = 0d;
+		return this;
+	}
+
+	public SkillExecutor setShowCooldown(boolean show) {
+		this.show_cooldown = show;
 		return this;
 	}
 
@@ -69,7 +75,7 @@ public class SkillExecutor {
 			abstract_location.add(BukkitAdapter.adapt(target.getLocation()));
 		}
 
-		if (power == null) power = 0f;
+		if (power == null) power = 0f; // Im worried about null exception so i check 2 times lol
 		var meta = new SkillMetadataImpl(SkillTriggers.API, caster, BukkitAdapter.adapt(player), BukkitAdapter.adapt(player.getLocation()), abstract_entities, abstract_location, this.power);
 
 		if (variables != null) {
@@ -84,7 +90,7 @@ public class SkillExecutor {
 			}
 		}
 
-		if (cooldown == null) cooldown = 0d; 
+		if (cooldown == null) cooldown = 0d; // this too ;v
 		if (skill.isUsable(meta, SkillTriggers.API) && !skill.onCooldown(caster)) {
 			skill.execute(meta);
 			if (cooldown > 0) ((MetaSkill)skill).setCooldown(caster, cooldown);

@@ -12,6 +12,7 @@ import io.lumine.mythic.core.items.MythicItem;
 import io.phanisment.itemcaster.skill.SkillActivator;
 import io.phanisment.itemcaster.skill.Activator;
 import io.phanisment.itemcaster.registry.ExternalItemRegistry;
+import io.phanisment.itemcaster.hand.HandActivator;
 import io.phanisment.itemcaster.item.external.IExternalItem;
 
 import java.util.Optional;
@@ -56,6 +57,8 @@ public class ItemUtil {
 	}
 	
 	public static void runSkill(Player player, Activator type) {
+		new HandActivator(player, type).execute();
+		
 		PlayerInventory inv = player.getInventory();
 		
 		ItemStack main_hand = inv.getItemInMainHand();

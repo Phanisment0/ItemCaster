@@ -22,4 +22,7 @@ commands:
     aliases:
     - icm
     permission: op
-  
+  handcastertoggle:
+    aliases:
+    - hct
+    permission: default

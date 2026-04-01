@@ -45,4 +45,12 @@ public final class ProfileManager {
 		get(uuid).save();
 		return profile_cache.remove(uuid);
 	}
+
+	public static void loadAll() {
+		Bukkit.getOnlinePlayers().forEach(player -> get(player).load());	
+	}
+
+	public static void saveAll() {
+		Bukkit.getOnlinePlayers().forEach(player -> get(player).save());
+	}
 }

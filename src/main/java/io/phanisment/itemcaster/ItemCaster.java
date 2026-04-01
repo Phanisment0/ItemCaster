@@ -13,14 +13,15 @@ import io.phanisment.itemcaster.command.ItemCasterCommand;
 import io.phanisment.itemcaster.command.ItemCasterMenuCommand;
 import io.phanisment.itemcaster.config.ConfigData;
 import io.phanisment.itemcaster.config.ConfigManager;
-import io.phanisment.itemcaster.config.LanguageManager;
 import io.phanisment.itemcaster.hand.HandCaster;
 import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.listener.ActivatorListener;
 import io.phanisment.itemcaster.listener.MythicListener;
 import io.phanisment.itemcaster.listener.PaperListener;
 import io.phanisment.itemcaster.listener.ProfileListener;
+import io.phanisment.itemcaster.listener.ProfileRunnable;
 import io.phanisment.itemcaster.menu.MenuManager;
+import io.phanisment.itemcaster.profile.ProfileManager;
 import io.phanisment.itemcaster.listener.CasterRunnable;
 import io.phanisment.itemcaster.registry.ExternalItemRegistry;
 import io.phanisment.itemcaster.item.external.CraftEngineExternalItem;
@@ -32,7 +33,6 @@ import io.phanisment.itemcaster.skill.SkillInjector;
 public final class ItemCaster extends LuminePlugin {
 	private static ItemCaster inst;
 	private static MythicBukkit core;
-	private LanguageManager lang_manager;
 
 	public ItemCaster() {
 		inst = this;
@@ -50,36 +50,33 @@ public final class ItemCaster extends LuminePlugin {
 		ConfigManager.load();
 		HandCaster.load();
 		Storage.debugging = config().debug_mode;
-		this.lang_manager = new LanguageManager();
-		this.lang_manager.load();
-		
 
 		String prefix = config().prefix;
 		if (!prefix.isEmpty()) Storage.prefix = prefix;
 
 		if (hasPlugin("PlaceholderAPI")) {
 			Storage.has_papi = true;
-			CasterLogger.send(LanguageManager.getString("has_plugin_placeholderapi"));
+			CasterLogger.send("PlaceholderAPI detected, Enabling the PlaceholderAPI features");
 			new ItemCasterPlaceholderExpansion().register();
 		}
 		if (hasPlugin("ItemsAdder")) {
 			Storage.has_itemsadder = true;
-			CasterLogger.send(LanguageManager.getString("has_plugin_itemsadder"));
+			CasterLogger.send("ItemsAdder detected, Enabling the ItemsAdder features");
 			ExternalItemRegistry.register(new ItemsAdderExternalItem());
 		}
 		if (hasPlugin("Nexo")) {
 			Storage.has_nexo = true;
-			CasterLogger.send(LanguageManager.getString("has_plugin_nexo"));
+			CasterLogger.send("Nexo detected, Enabling the Nexo features");
 			ExternalItemRegistry.register(new NexoExternalItem());
 		}
 		if (hasPlugin("Oraxen")) {
 			Storage.has_oraxen = true;
-			CasterLogger.send(LanguageManager.getString("has_plugin_oraxen"));
+			CasterLogger.send("Oraxen detected, Enabling the Oraxen features");
 			ExternalItemRegistry.register(new OraxenExternalItem());
 		}
 		if (hasPlugin("CraftEngine")) {
 			Storage.has_craftengine = true;
-			CasterLogger.send(LanguageManager.getString("has_plugin_craftengine"));
+			CasterLogger.send("CraftEngine detected, Enabling the CraftEngine features");
 			ExternalItemRegistry.register(new CraftEngineExternalItem());
 		}
 		if (ServerVersion.isPaper()) this.listen(new PaperListener());
@@ -91,7 +88,8 @@ public final class ItemCaster extends LuminePlugin {
 		this.listen(new ProfileListener());
 		FastInvManager.register(this);
 
-		new CasterRunnable().runTaskTimer(this, 1L, 1L);
+		new CasterRunnable().runTaskTimer(this, 1, 1);
+		new ProfileRunnable().runTaskTimer(this, 1, 12000);
 		this.registerCommand("itemcaster", new ItemCasterCommand(this));
 		this.registerCommand("itemcastermenu", new ItemCasterMenuCommand(this));
 	}
@@ -99,6 +97,7 @@ public final class ItemCaster extends LuminePlugin {
 	@Override
 	public void disable() {
 		ConfigManager.save();
+		ProfileManager.saveAll();
 	}
 
 	/**
@@ -125,7 +124,6 @@ public final class ItemCaster extends LuminePlugin {
 	 */
 	public void reload() {
 		ConfigManager.load();
-		this.lang_manager.load();
 		Storage.debugging = config().debug_mode;
 		
 		String prefix = config().prefix;
