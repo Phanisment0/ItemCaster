@@ -13,17 +13,21 @@ import java.io.IOException;
 public final class ConfigManager {
 	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	private static final String file_name = "configs.json";
-	private static final File file_location = new File(ItemCaster.inst().getDataFolder(), file_name);
+	
+	private static File file() {
+		return new File(ItemCaster.inst().getDataFolder(), file_name);
+	}
 	
 	public static void load() {
-		if (!ItemCaster.inst().getDataFolder().exists()) ItemCaster.inst().getDataFolder().mkdirs();
-		if (!file_location.exists()) {
+		var config_file = file();
+		if (!config_file.getParentFile().exists()) config_file.getParentFile().mkdirs();
+		if (!config_file.exists()) {
 			ItemCaster.inst().saveResource(file_name, false);
 			save();
 			return;
 		}
 		
-		try (var reader = new FileReader(file_location)) {
+		try (var reader = new FileReader(config_file)) {
 			var load = gson.fromJson(reader, ConfigData.class);
 			if (load != null) ConfigData.handler = load;
 		} catch (IOException e) {
@@ -32,7 +36,7 @@ public final class ConfigManager {
 	}
 	
 	public static void save() {
-		try (var writer = new FileWriter(file_location)) {
+		try (var writer = new FileWriter(file())) {
 			gson.toJson(ConfigData.handler, writer);
 		} catch (IOException e) {
 			e.printStackTrace();
