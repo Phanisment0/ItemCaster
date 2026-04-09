@@ -94,7 +94,7 @@ public class SkillExecutor {
 			}
 		}
 
-		float cd = ((AbstractSkill)skill).getCooldown(caster);
+		float cd = ((MetaSkill)skill).getCooldown(caster);
 
 		if (cooldown == null) cooldown = 0d; // this too ;v
 		var progress_bar = new ProgressBarParse(cd, cooldown.floatValue());

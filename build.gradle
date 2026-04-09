@@ -58,7 +58,7 @@ tasks.shadowJar {
 		into(".")
 	}
 	
-	destinationDirectory.set(file("../../server/1.21.1/plugins"))
+	//destinationDirectory.set(file("../../server/1.21.1/plugins"))
 }
 
 tasks.processResources {

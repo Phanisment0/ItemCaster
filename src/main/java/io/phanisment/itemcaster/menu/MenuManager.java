@@ -15,6 +15,7 @@ import io.phanisment.itemcaster.menu.editor.ability.button.SneakingEditorButton;
 import io.phanisment.itemcaster.menu.editor.ability.button.VariablesEditorButton;
 import io.phanisment.itemcaster.menu.editor.ability.button.ActivatorAbilityButton;
 import io.phanisment.itemcaster.menu.editor.ability.button.CooldownAbilityButton;
+import io.phanisment.itemcaster.menu.editor.ability.button.ShowCooldownEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.AbilitiesEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.DisplayNameEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.IEditorButton;
@@ -46,6 +47,7 @@ public class MenuManager {
 		registerAbilityButton(new ActivatorAbilityButton());
 		registerAbilityButton(new CooldownAbilityButton());
 		registerAbilityButton(new PowerAbilityButton());
+		registerAbilityButton(new ShowCooldownEditorButton());
 		registerAbilityButton(new SneakingEditorButton());
 		registerAbilityButton(new SignalAbilityButton());
 		registerAbilityButton(new VariablesEditorButton());

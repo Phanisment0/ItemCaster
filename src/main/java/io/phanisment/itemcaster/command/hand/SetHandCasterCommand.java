@@ -42,7 +42,7 @@ public class SetHandCasterCommand extends Command<ItemCaster> {
 
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
-		if (args.length > 0) {
+		if (args.length > 1) {
 			CasterLogger.send(sender, "<red>Can't contains whitespace");
 			return true;
 		}

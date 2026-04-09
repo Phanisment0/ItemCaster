@@ -26,7 +26,7 @@ public class SkillAttribute {
 	public String signal;
 	public Map<String, Object> variables = new HashMap<>();
 	public Boolean cancel_event;
-	public Boolean show_cooldown = false;
+	public Boolean show_cooldown;
 
 	public SkillAttribute() {
 	}

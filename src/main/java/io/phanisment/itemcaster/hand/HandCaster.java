@@ -21,13 +21,14 @@ public final class HandCaster {
 			ItemCaster.inst().saveResource("hand/example.yml", false);
 		}
 		for (File file : FILE_LOCATION.listFiles()) {
-			if (ValidateString.containsSpecial(file.getName())) {
-				CasterLogger.send("<red>File name can't have special character/whitespace:</red> " + file.getName());
+			String file_name = fileName(file.getName());
+			if (ValidateString.containsSpecial(file_name)) {
+				CasterLogger.send("<red>File name can't have special character/whitespace:</red> " + file_name);
 				continue;
 			}
 
 			var yml = YamlConfiguration.loadConfiguration(file);
-			addAllAbility(yml, fileName(file.getName()));
+			addAllAbility(yml, file_name);
 		}
 	}
 

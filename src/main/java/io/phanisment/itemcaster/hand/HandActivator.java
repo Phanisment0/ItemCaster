@@ -30,7 +30,7 @@ public class HandActivator {
 	}
 
 	public void execute() {
-		CasterLogger.send(player, "Ability Id:" + ability_id + " Activator:" + activator);
+		//CasterLogger.send(player, "Ability Id:" + ability_id + " Activator:" + activator);
 		if (ability_id == null) return;
 		HandAbilityAttribute abilities = HandCaster.getAbility(ability_id);
 		var exc = new SkillActivator(player, activator);
