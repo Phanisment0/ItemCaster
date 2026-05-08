@@ -6,6 +6,10 @@ import java.util.Map;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+import io.lumine.mythic.core.skills.SkillCondition;
+import io.lumine.mythic.core.skills.SkillString;
+import io.lumine.mythic.core.skills.conditions.InvalidCondition;
+import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.skill.SkillAttribute;
 import io.phanisment.itemcaster.util.Identifier;
 
@@ -14,18 +18,32 @@ public class HandAbilityAttribute {
 	private final ConfigurationSection config;
 	
 	private String display;
+	private List<SkillCondition> conditions = new ArrayList<>();
 	private List<SkillAttribute> abilities = new ArrayList<>();
 	
-	public HandAbilityAttribute(Identifier id, ConfigurationSection config) {
+	public HandAbilityAttribute(final Identifier id, final ConfigurationSection config) {
 		this.id = id;
 		this.config = config;
 	}
 
 	@SuppressWarnings("unchecked")
 	public void load() {
-		this.display = config.getString("display");
+		this.display = config.getString("Display");
+
 		
-		for (Map<?, ?> map : config.getMapList("abilities")) abilities.add(new SkillAttribute((Map<String, Object>)map));
+		List<String> string_conditions = config.getStringList("Conditions");
+		for (int i = 0; i < string_conditions.size(); i++) {
+			String string_condition = string_conditions.get(i);
+			if (string_condition.contains("\"")) {
+				final String[] s = string_condition.split("\"");
+				String new_string = null;
+				for (String s_v : s) new_string = i % 2 == 1 ? new_string.concat("\"" + SkillString.unparseMessageSpecialChars(s_v) + "\"") : new_string.concat(s_v);
+				SkillCondition sc;
+				if ((sc = ItemCaster.core().getSkillManager().getCondition(string_condition)) instanceof InvalidCondition) continue;
+				conditions.add(sc);
+			}
+		}
+		for (Map<?, ?> map : config.getMapList("Abilities")) abilities.add(new SkillAttribute((Map<String, Object>)map));
 	}
 
 	public Identifier getId() {
@@ -36,7 +54,16 @@ public class HandAbilityAttribute {
 		return display;
 	}
 
+	public List<SkillCondition> getConditions() {
+		return conditions;
+	}
+
 	public List<SkillAttribute> getAttributes() {
 		return abilities;
+	}
+
+	@Override
+	public String toString() {
+		return "HandAbilityAttribute(id=" + id + ", display=" + display + ", abilites=" + abilities + ")";
 	}
 }

@@ -19,8 +19,7 @@ public class AttackCooldownCondition extends SkillCondition implements IEntityCo
 	@Override
 	public boolean check(AbstractEntity e) {
 		Entity entity = e.getBukkitEntity();
-		if (entity instanceof Player player)
-			return player.getAttackCooldown() < 1.0;
+		if (entity instanceof Player player) return player.getAttackCooldown() < 1.0;
 		return false;
 	}
 }

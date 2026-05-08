@@ -1,7 +1,6 @@
 plugins {
 	id "com.gradleup.shadow" version "9.1.0"
 	id "java-library"
-	id "java"
 }
 
 group = project.group
@@ -16,7 +15,7 @@ repositories {
 	maven { url "https://hub.spigotmc.org/nexus/content/groups/public/" }
 	maven { url "https://repo.papermc.io/repository/maven-public/" }
 	maven { url "https://repo.codemc.io/repository/maven-public/" }
-	maven { url "https://mvn.lumine.io/repository/maven-public/" }
+	maven { url 'https://mvn.lumine.io/repository/maven-public/' }
 	maven { url "https://repo.extendedclip.com/releases/" }
 	maven { url "https://repo.momirealms.net/releases/" }
 	maven { url "https://repo.oraxen.com/releases" }
@@ -26,26 +25,21 @@ repositories {
 }
 
 dependencies {
+	// Core
+	compileOnly "io.papermc.paper:paper-api:${project.api_version}"
+	compileOnly "io.lumine:Mythic-Dist:${project.mythicmobs_version}"
+
+	// Libraries
 	implementation "org.bstats:bstats-bukkit:${project.bstats_version}"
 	implementation "fr.mrmicky:fastinv:${project.fastinv_version}"
-	compileOnly "io.papermc.paper:paper-api:${project.api_version}"
-
-	// Libraries...
 	compileOnly "com.google.code.gson:gson:${project.gson_version}"
 	compileOnly "me.clip:placeholderapi:${project.placeholder_api_version}"
-	compileOnly "io.lumine:Mythic-Dist:${project.mythicmobs_version}"
 	compileOnly "de.tr7zw:item-nbt-api-plugin:${project.nbt_api_version}"
 
-	// ItemsAdder Plugin
+	// Other plugins Compactbility
 	compileOnly "dev.lone:api-itemsadder:${project.itemsadder_version}"
-
-	// Oraxen Plugin
 	compileOnly "io.th0rgal:oraxen:${project.oraxen_version}"
-
-	// Nexo Plugin
 	compileOnly "com.nexomc:nexo:${project.nexo_version}"
-
-	// CraftEngine Plugin
 	compileOnly "net.momirealms:craft-engine-core:${project.craftengine_version}"
 	compileOnly "net.momirealms:craft-engine-bukkit:${project.craftengine_version}"
 }
@@ -57,8 +51,7 @@ tasks.shadowJar {
 	from("LICENSE") {
 		into(".")
 	}
-	
-	//destinationDirectory.set(file("../../server/1.21.1/plugins"))
+	destinationDirectory.set(file("../../server/1.21.1/plugins"))
 }
 
 tasks.processResources {

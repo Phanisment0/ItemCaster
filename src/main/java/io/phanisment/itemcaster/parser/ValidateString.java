@@ -7,6 +7,13 @@ public final class ValidateString {
 	private static final int MAX_VALID_CHAR = 128;
 	private static final boolean[] VALID_CHAR = new boolean[MAX_VALID_CHAR];
 
+	/**
+	 * Only validate string with this pattern (A-Z, a-z, 0-9, _).
+	 * Use bollean array lookup for O(1) character validation.
+	 * 
+	 * @param text input string to validate (can be null)
+	 * @return     true if `text` contains special character
+	 */
 	public static boolean containsSpecial(String text) {
 		if (text == null || text.isEmpty()) return false;
 		for (int i = 0; i < text.length(); i++) if (!allowedChar(text.charAt(i))) return true;
@@ -22,6 +29,5 @@ public final class ValidateString {
 		for (char c = 'a'; c <= 'z'; c++) VALID_CHAR[c] = true;
 		for (char c = '0'; c <= '9'; c++) VALID_CHAR[c] = true;
 		VALID_CHAR['_'] = true;
-		VALID_CHAR['.'] = true;
 	}
 }

@@ -48,7 +48,7 @@ public final class ItemCaster extends LuminePlugin {
 		new Metrics(this, Storage.id_bstats);
 		core = MythicBukkit.inst();
 		ConfigManager.load();
-		HandCaster.load();
+		//HandCaster.load();
 		Storage.debugging = config().debug_mode;
 
 		String prefix = config().prefix;
@@ -124,6 +124,7 @@ public final class ItemCaster extends LuminePlugin {
 	 */
 	public void reload() {
 		ConfigManager.load();
+		HandCaster.load();
 		Storage.debugging = config().debug_mode;
 		
 		String prefix = config().prefix;

@@ -14,13 +14,15 @@ public final class ProfileManager {
 	public static Profile load(Player player) {
 		var profile = new Profile(player);
 		profile.load();
-		return profile_cache.put(player.getUniqueId(), profile);
+		profile_cache.put(player.getUniqueId(), profile);
+		return profile;
 	}
 
 	public static Profile get(Player player) {
+		if (!player.isOnline()) return getOffline(player);	
 		var profile = get(player.getUniqueId());
-		if (!player.isOnline()) return getOffline(player);
-		return profile == null ? load(player) : profile;
+		if (profile == null) profile = load(player);
+		return profile;
 	}
 
 	public static Profile get(UUID uuid) {

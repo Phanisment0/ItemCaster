@@ -14,12 +14,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import io.phanisment.itemcaster.ItemCaster;
-import io.phanisment.itemcaster.adapter.IdentiferAdapter;
+import io.phanisment.itemcaster.adapter.IdentifierAdapter;
 import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.util.Identifier;
 
 public class Profile {
-	private static final Gson GSON = new GsonBuilder().registerTypeAdapter(Identifier.class, new IdentiferAdapter()).create();
+	private static final Gson GSON = new GsonBuilder().registerTypeAdapter(Identifier.class, new IdentifierAdapter()).create();
 	private static final File SAVE_PATH_FILE = new File(ItemCaster.inst().getDataFolder(), ".data/players");
 	private final UUID uuid;
 
@@ -39,6 +39,7 @@ public class Profile {
 	}
 
 	public void setAbility(Identifier id) {
+		if (id == null) return;
 		this.data.hand_ability = id;
 		save();
 	}

@@ -9,7 +9,7 @@ import com.google.gson.stream.JsonWriter;
 
 import io.phanisment.itemcaster.util.Identifier;
 
-public class IdentiferAdapter extends TypeAdapter<Identifier> {
+public class IdentifierAdapter extends TypeAdapter<Identifier> {
 	@Override
 	public void write(JsonWriter out, Identifier value) throws IOException {
 		if (value == null) out.nullValue();

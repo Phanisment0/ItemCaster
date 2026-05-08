@@ -106,4 +106,10 @@ public class SkillAttribute {
 			}
 		}
 	}
+
+
+	@Override
+	public String toString() {
+		return "SkillAttribute(skill=" + skill + "\n  activator=" + activator + "\n  power" + power + "\n  cooldown=" + cooldown + "\n  sneaking=" + sneaking + "\n  signal="  + signal + "\n  cancel_event=" + cancel_event + "\n  show_cooldown=" + show_cooldown + "\n)";
+	}
 }

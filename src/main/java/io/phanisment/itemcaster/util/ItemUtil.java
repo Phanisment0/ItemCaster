@@ -71,6 +71,8 @@ public class ItemUtil {
 	}
 	
 	public static void runSkill(Player player, Activator type, String signal) {
+		new HandActivator(player, type).setSignal(signal).execute();
+		
 		PlayerInventory inv = player.getInventory();
 		
 		ItemStack main_hand = inv.getItemInMainHand();

@@ -13,8 +13,7 @@ import io.lumine.mythic.core.utils.annotations.MythicCondition;
 
 @MythicCondition(author = "Phanisment", name = "hasfoodsaturationlevel", aliases = { "foodsaturationlevel",
 		"hasfoodsaturation" }, description = "If target attack is cooldown")
-public class HasFoodSaturationLevelCondition extends SkillCondition
-		implements IEntityCondition, ISkillMetaComparisonCondition {
+public class HasFoodSaturationLevelCondition extends SkillCondition implements IEntityCondition, ISkillMetaComparisonCondition {
 	private PlaceholderString amount;
 
 	public HasFoodSaturationLevelCondition(String line, MythicLineConfig mlc) {
@@ -33,8 +32,7 @@ public class HasFoodSaturationLevelCondition extends SkillCondition
 	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public boolean check(SkillMetadata meta, AbstractEntity e) {
-		if (!e.isPlayer())
-			return false;
+		if (!e.isPlayer()) return false;
 		return new RangedInt(this.amount.get((PlaceholderMeta) meta, e)).equals(e.asPlayer().getFoodSaturation());
 	}
 }

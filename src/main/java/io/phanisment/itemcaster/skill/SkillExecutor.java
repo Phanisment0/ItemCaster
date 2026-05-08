@@ -88,7 +88,6 @@ public class SkillExecutor {
 				String key = map.getKey();
 				Object value = map.getValue();
 				if (value instanceof Float value_float) skill_var.putFloat(key, value_float);
-				else if (value instanceof Double value_double) skill_var.putDouble(key, value_double);
 				else if (value instanceof Integer value_integer) skill_var.putInt(key, value_integer);
 				else skill_var.putString(key, (String)value);
 			}
@@ -103,8 +102,9 @@ public class SkillExecutor {
 			return;
 		}
 
+		// If skill is useable/can be casted, like pass the condition and cooldown
+		// then cast skill and set the cooldown if not in cooldown.
 		if (!skill.isUsable(meta, SkillTriggers.API)) return;
-
 		skill.execute(meta);
 		if (cooldown > 0) {
 			((MetaSkill)skill).setCooldown(caster, cooldown);

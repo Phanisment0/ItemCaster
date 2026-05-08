@@ -6,7 +6,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import io.lumine.mythic.bukkit.BukkitAdapter;
-import io.lumine.mythic.api.adapters.AbstractItemStackRarity;
 import io.lumine.mythic.api.config.MythicConfig;
 import io.lumine.mythic.api.skills.placeholders.PlaceholderString;
 import io.lumine.mythic.core.items.MythicItem;
@@ -122,10 +121,6 @@ public class CasterItem {
 
 	public void setDurability(int value) {
 		save("Durability", value);
-	}
-
-	public void setRarity(AbstractItemStackRarity value) {
-		save("Rarity", value.toString());
 	}
 
 	public void setTemplate(String value) {

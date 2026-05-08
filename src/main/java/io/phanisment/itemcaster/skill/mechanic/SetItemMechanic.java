@@ -12,8 +12,7 @@ import io.phanisment.itemcaster.util.ItemUtil;
 import java.io.File;
 import java.util.Optional;
 
-@MythicMechanic(author = "Phanisment", name = "setitem", aliases = { "itemcaster:setitem", "itemcaster:replaceitem",
-		"replaceitem" }, description = "Set slot with external item that support in ItemCaster")
+@MythicMechanic(author = "Phanisment", name = "setitem", aliases = { "itemcaster:setitem", "itemcaster:replaceitem", "replaceitem" }, description = "Set slot with external item that support in ItemCaster")
 public class SetItemMechanic extends ItemMechanic {
 	private String type = "stone";
 	private int amount = 0;

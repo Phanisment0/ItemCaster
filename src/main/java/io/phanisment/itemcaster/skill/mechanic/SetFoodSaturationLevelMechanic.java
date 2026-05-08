@@ -12,8 +12,7 @@ import io.lumine.mythic.api.adapters.AbstractPlayer;
 
 import java.io.File;
 
-@MythicMechanic(author = "Phanisment", name = "setfoodsaturationlevel", aliases = {
-		"setfoodsaturation" }, description = "Set player food saturation level")
+@MythicMechanic(author = "Phanisment", name = "setfoodsaturationlevel", aliases = { "setfoodsaturation" }, description = "Set player food saturation level")
 public class SetFoodSaturationLevelMechanic extends SkillMechanic implements ITargetedEntitySkill {
 	private float amount;
 

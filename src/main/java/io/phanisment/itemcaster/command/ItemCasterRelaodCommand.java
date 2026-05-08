@@ -1,37 +1,32 @@
 package io.phanisment.itemcaster.command;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import io.lumine.mythic.bukkit.utils.commands.Command;
 import io.phanisment.itemcaster.ItemCaster;
-import io.phanisment.itemcaster.profile.Profile;
-import io.phanisment.itemcaster.profile.ProfileData;
-import io.phanisment.itemcaster.profile.ProfileManager;
 import io.phanisment.itemcaster.util.CasterLogger;
 
-public class HandCasterToggle extends Command<ItemCaster> {
+public class ItemCasterRelaodCommand extends Command<ItemCaster> {
 
-	public HandCasterToggle(ItemCaster plugin) {
+	public ItemCasterRelaodCommand(ItemCaster plugin) {
 		super(plugin);
 	}
 
 	@Override
 	public String getName() {
-		return "menu";
+		return "reload";
 	}
 
 	@Override
 	public String getPermissionNode() {
-		return "itemcaster.command.handcastertoggle";
+		return "itemcaster.command.reload";
 	}
 
 	@Override
 	public String[] getAliases() {
-		return new String[]{"hct"};
+		return new String[]{"r"};
 	}
 
 	@Override
@@ -41,10 +36,7 @@ public class HandCasterToggle extends Command<ItemCaster> {
 
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
-		Profile profile = ProfileManager.get((Player)sender);
-		Optional<ProfileData> data = profile.getData();
-		if (data.isPresent()) data.get().hand_toggle = !data.get().hand_toggle;
-		CasterLogger.send(sender, "Toggled Hand Activator to: " + data.get().hand_toggle);
+		CasterLogger.send(sender, "Use mythicmobs reload command to reload this plugin.");
 		return true;
 	}
 
@@ -52,5 +44,4 @@ public class HandCasterToggle extends Command<ItemCaster> {
 	public List<String> onTabComplete(CommandSender arg0, String[] arg1) {
 		return null;
 	}
-
 }

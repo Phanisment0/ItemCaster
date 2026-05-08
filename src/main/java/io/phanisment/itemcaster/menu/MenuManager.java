@@ -9,6 +9,7 @@ import io.phanisment.itemcaster.menu.editor.MenuEditor;
 import io.phanisment.itemcaster.menu.editor.ability.AbilityMenu;
 import io.phanisment.itemcaster.menu.editor.ability.button.IAbilityButton;
 import io.phanisment.itemcaster.menu.editor.ability.button.PowerAbilityButton;
+import io.phanisment.itemcaster.menu.editor.ability.button.ShowCooldownAbilityButton;
 import io.phanisment.itemcaster.menu.editor.ability.button.SignalAbilityButton;
 import io.phanisment.itemcaster.menu.editor.ability.button.SkillAbilityButton;
 import io.phanisment.itemcaster.menu.editor.ability.button.SneakingEditorButton;
@@ -22,7 +23,6 @@ import io.phanisment.itemcaster.menu.editor.button.IEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.LoreEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.ModelItemEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.PreventAnvilEditorButton;
-import io.phanisment.itemcaster.menu.editor.button.RarityEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.TemplateEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.MaterialEditorButton;
 import io.phanisment.itemcaster.menu.editor.button.ModelEditorButton;
@@ -39,13 +39,13 @@ public class MenuManager {
 		registerEditorButton(new ModelItemEditorButton());
 		registerEditorButton(new UnbreakableEditorButton());
 		registerEditorButton(new AbilitiesEditorButton());
-		registerEditorButton(new RarityEditorButton());
 		registerEditorButton(new PreventAnvilEditorButton());
 
 		// Ability Editor
 		registerAbilityButton(new SkillAbilityButton());
 		registerAbilityButton(new ActivatorAbilityButton());
 		registerAbilityButton(new CooldownAbilityButton());
+		registerAbilityButton(new ShowCooldownAbilityButton());
 		registerAbilityButton(new PowerAbilityButton());
 		registerAbilityButton(new ShowCooldownEditorButton());
 		registerAbilityButton(new SneakingEditorButton());

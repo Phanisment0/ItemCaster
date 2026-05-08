@@ -27,11 +27,10 @@ public class DamageItemMechanic extends ItemMechanic {
 	public Optional<ItemStack> resolve(AbstractEntity target, ItemStack item) {
 		if (!validateItem(item)) return Optional.empty();
 		ItemMeta meta = item.getItemMeta();
+
 		if (meta instanceof Damageable dmg) {
 			int new_damage = dmg.getDamage() + amount;
-			int max_damage = dmg.getMaxDamage();
-			
-			if (new_damage >= max_damage) {
+			if (new_damage >= dmg.getMaxDamage()) {
 				item.setAmount(0);
 				return Optional.empty();
 			}

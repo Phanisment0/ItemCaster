@@ -1,5 +1,6 @@
 example_hand_abilities:
-  display: Example
-  abilities:
+  Display: Example
+# ComboActivator: false
+  Abilities:
   - skill: example
     activator: left_click

@@ -11,7 +11,6 @@ import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.hand.HandCaster;
 import io.phanisment.itemcaster.profile.Profile;
 import io.phanisment.itemcaster.profile.ProfileManager;
-import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.util.Identifier;
 
 public class SetHandCasterCommand extends Command<ItemCaster> {
@@ -42,12 +41,8 @@ public class SetHandCasterCommand extends Command<ItemCaster> {
 
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
-		if (args.length > 1) {
-			CasterLogger.send(sender, "<red>Can't contains whitespace");
-			return true;
-		}
 		Profile profile = ProfileManager.get((Player)sender);
-		if (profile.getData().isPresent()) profile.setAbility(new Identifier(args[1]));
+		if (profile.getData().isPresent()) profile.setAbility(new Identifier(args[0]));
 		return true;
 	}
 

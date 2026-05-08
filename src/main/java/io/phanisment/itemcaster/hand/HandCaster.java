@@ -13,17 +13,17 @@ import io.phanisment.itemcaster.util.Identifier;
 
 public final class HandCaster {
 	private static final Map<Identifier, HandAbilityAttribute> cache = new HashMap<>();
-	public static final File FILE_LOCATION = new File(ItemCaster.inst().getDataFolder(), "hand");
 
 	public static void load() {
-		if (!FILE_LOCATION.exists()) {
-			FILE_LOCATION.mkdirs();
+		var parent_file = getFile();
+		if (!parent_file.exists()) {
+			parent_file.mkdirs();
 			ItemCaster.inst().saveResource("hand/example.yml", false);
 		}
-		for (File file : FILE_LOCATION.listFiles()) {
+		for (File file : parent_file.listFiles()) {
 			String file_name = fileName(file.getName());
 			if (ValidateString.containsSpecial(file_name)) {
-				CasterLogger.send("<red>File name can't have special character/whitespace:</red> " + file_name);
+				CasterLogger.send("<red>File name can't have special character/whitespace:</red> " + file.getName());
 				continue;
 			}
 
@@ -46,10 +46,15 @@ public final class HandCaster {
 			}
 
 			var id = new Identifier(file_name, key);
-			var skill = new HandAbilityAttribute(id, yml);
+			var skill = new HandAbilityAttribute(id, yml.getConfigurationSection(key));
 			skill.load();
+			System.out.println(skill.getAttributes());
 			cache.put(id, skill);
 		}
+	}
+
+	private static File getFile() {
+		return new File(ItemCaster.inst().getDataFolder(), "hand");
 	}
 
 	public static Map<Identifier, HandAbilityAttribute> getAbilities() {
