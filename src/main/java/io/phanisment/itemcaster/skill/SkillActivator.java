@@ -56,7 +56,6 @@ public class SkillActivator {
 				if (!mybe_skill.isPresent()) continue;
 				
 				if (attribute.cancel_event != null) this.CANCEL_EVENT = attribute.cancel_event; 
-				if (mybe_skill.get().onCooldown(MythicMobsUtil.toCaster(player))) continue;
 				if ((attribute.sneaking != null ? attribute.sneaking : false) && player.isSneaking()) continue;
 				if (event.equals("SIGNAL") && signal.equals(attribute.signal)) continue;
 

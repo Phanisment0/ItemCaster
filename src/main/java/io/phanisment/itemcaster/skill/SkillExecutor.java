@@ -93,22 +93,19 @@ public class SkillExecutor {
 			}
 		}
 
-		float cd = ((MetaSkill)skill).getCooldown(caster);
-
+		MetaSkill meta_skill = (MetaSkill)skill;
 		if (cooldown == null) cooldown = 0d; // this too ;v
-		var progress_bar = new ProgressBarParse(cd, cooldown.floatValue());
-		if (skill.onCooldown(caster)) {
-			if (show_cooldown) player.sendActionBar(CasterLogger.MM.deserialize(progress_bar.parse() + " " + progress_bar.formatedTime()));
-			return;
+		
+		if (skill.onCooldown(caster) && show_cooldown) {
+			float cd = meta_skill.getCooldown(caster);
+			var progress_bar = new ProgressBarParse(cd, cooldown.floatValue());
+			player.sendActionBar(CasterLogger.MM.deserialize(progress_bar.parse() + " " + progress_bar.formatedTime()));
 		}
 
 		// If skill is useable/can be casted, like pass the condition and cooldown
 		// then cast skill and set the cooldown if not in cooldown.
 		if (!skill.isUsable(meta, SkillTriggers.API)) return;
 		skill.execute(meta);
-		if (cooldown > 0) {
-			((MetaSkill)skill).setCooldown(caster, cooldown);
-			if (show_cooldown) player.sendActionBar(CasterLogger.MM.deserialize(progress_bar.parse() + " " + progress_bar.formatedTime()));
-		}
+		if (cooldown > 0) meta_skill.setCooldown(caster, cooldown);
 	}
 }

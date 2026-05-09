@@ -1,7 +1,7 @@
 package io.phanisment.itemcaster.parser;
 
 public final class ProgressBarParse {
-	private static final int TOTAL_BARS = 100;
+	public static int TOTAL_BARS = 20;
 	private static final char BAR_FONT = '|';
 
 	private float current;

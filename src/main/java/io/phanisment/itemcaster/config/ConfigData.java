@@ -6,6 +6,7 @@ public class ConfigData {
 	public String prefix = "<gradient:#69DFFF:#5984CF>ItemCaster</gradient> | ";
 	public boolean auto_set_skill_cooldown = true;
 	public String language = "en_us";
+	public int cooldown_bar_length = 20;
 
 	public static ConfigData getInst() {
 		return handler;

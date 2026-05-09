@@ -21,6 +21,7 @@ import io.phanisment.itemcaster.listener.PaperListener;
 import io.phanisment.itemcaster.listener.ProfileListener;
 import io.phanisment.itemcaster.listener.ProfileRunnable;
 import io.phanisment.itemcaster.menu.MenuManager;
+import io.phanisment.itemcaster.parser.ProgressBarParse;
 import io.phanisment.itemcaster.profile.ProfileManager;
 import io.phanisment.itemcaster.reflection.SkillInjector;
 import io.phanisment.itemcaster.listener.CasterRunnable;
@@ -122,6 +123,7 @@ public final class ItemCaster extends LuminePlugin {
 		HandCaster.load();
 		
 		Storage.debugging = config().debug_mode;
+		ProgressBarParse.TOTAL_BARS = config().cooldown_bar_length;
 		
 		String prefix = config().prefix;
 		if (!prefix.isEmpty()) Storage.prefix = prefix;
