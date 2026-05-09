@@ -15,6 +15,7 @@ public final class HandCaster {
 	private static final Map<Identifier, HandAbilityAttribute> cache = new HashMap<>();
 
 	public static void load() {
+		cache.clear();
 		var parent_file = getFile();
 		if (!parent_file.exists()) {
 			parent_file.mkdirs();
@@ -48,7 +49,6 @@ public final class HandCaster {
 			var id = new Identifier(file_name, key);
 			var skill = new HandAbilityAttribute(id, yml.getConfigurationSection(key));
 			skill.load();
-			System.out.println(skill.getAttributes());
 			cache.put(id, skill);
 		}
 	}

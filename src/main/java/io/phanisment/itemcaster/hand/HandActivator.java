@@ -43,12 +43,13 @@ public class HandActivator {
 		if (ability_id == null) return;
 		HandAbilityAttribute abilities = HandCaster.getAbility(ability_id);
 		if (abilities == null) return;
-
+		
 		if (!isUsable(abilities, getMeta())) return;
 
 		var exc = new SkillActivator(player, activator);
 		if (signal != null) exc.setSignal(signal);
 		exc.setAttributes(abilities.getAttributes()).execute();
+		
 	}
 
 	private SkillMetadata getMeta() {

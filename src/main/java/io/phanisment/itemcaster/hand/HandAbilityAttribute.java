@@ -7,10 +7,10 @@ import java.util.Map;
 import org.bukkit.configuration.ConfigurationSection;
 
 import io.lumine.mythic.core.skills.SkillCondition;
-import io.lumine.mythic.core.skills.SkillString;
 import io.lumine.mythic.core.skills.conditions.InvalidCondition;
 import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.skill.SkillAttribute;
+import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.util.Identifier;
 
 public class HandAbilityAttribute {
@@ -30,18 +30,12 @@ public class HandAbilityAttribute {
 	public void load() {
 		this.display = config.getString("Display");
 
-		
 		List<String> string_conditions = config.getStringList("Conditions");
 		for (int i = 0; i < string_conditions.size(); i++) {
-			String string_condition = string_conditions.get(i);
-			if (string_condition.contains("\"")) {
-				final String[] s = string_condition.split("\"");
-				String new_string = null;
-				for (String s_v : s) new_string = i % 2 == 1 ? new_string.concat("\"" + SkillString.unparseMessageSpecialChars(s_v) + "\"") : new_string.concat(s_v);
-				SkillCondition sc;
-				if ((sc = ItemCaster.core().getSkillManager().getCondition(string_condition)) instanceof InvalidCondition) continue;
-				conditions.add(sc);
-			}
+			SkillCondition sc = ItemCaster.core().getSkillManager().getCondition(string_conditions.get(i));
+
+			if (sc != null && !(sc instanceof InvalidCondition)) conditions.add(sc);
+			else CasterLogger.send("<red>Invalid Condition");
 		}
 		for (Map<?, ?> map : config.getMapList("Abilities")) abilities.add(new SkillAttribute((Map<String, Object>)map));
 	}

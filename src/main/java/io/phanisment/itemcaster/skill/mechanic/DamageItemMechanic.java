@@ -29,7 +29,8 @@ public class DamageItemMechanic extends ItemMechanic {
 		ItemMeta meta = item.getItemMeta();
 
 		if (meta instanceof Damageable dmg) {
-			int new_damage = dmg.getDamage() + amount;
+			int damage = dmg.hasDamageValue() ? dmg.getDamage() : 0;
+			int new_damage = damage + amount;
 			if (new_damage >= dmg.getMaxDamage()) {
 				item.setAmount(0);
 				return Optional.empty();

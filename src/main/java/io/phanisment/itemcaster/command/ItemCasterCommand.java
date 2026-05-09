@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import io.lumine.mythic.bukkit.utils.commands.Command;
 import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.command.hand.HandCasterCommand;
+import io.phanisment.itemcaster.command.profile.ProfileCommand;
 import io.phanisment.itemcaster.util.CasterLogger;
 
 public class ItemCasterCommand extends Command<ItemCaster> {
@@ -15,6 +16,8 @@ public class ItemCasterCommand extends Command<ItemCaster> {
 		super(plugin);
 		this.addSubCommands(new MenuCommand(plugin));
 		this.addSubCommands(new HandCasterCommand(plugin));
+		this.addSubCommands(new ProfileCommand(plugin));
+		this.addSubCommands(new ItemCasterRelaodCommand(plugin));
 	}
 
 	@Override

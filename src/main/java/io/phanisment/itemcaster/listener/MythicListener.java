@@ -13,6 +13,7 @@ import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.phanisment.itemcaster.item.CasterItem;
 import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.skill.Activator;
+import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.util.ItemUtil;
 
 public class MythicListener implements Listener {
@@ -21,6 +22,7 @@ public class MythicListener implements Listener {
 	public void onReload(MythicPostReloadedEvent e) {
 		CasterItem.clear();
 		ItemCaster.inst().reload();
+		CasterLogger.log("[<gradient:#69DFFF:#5984CF>ItemCaster</gradient>] <color:#23eb73>Plugin has finished reloading!");
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)

@@ -47,12 +47,7 @@ public final class ItemCaster extends LuminePlugin {
 	public void enable() {
 		new Metrics(this, Storage.id_bstats);
 		core = MythicBukkit.inst();
-		ConfigManager.load();
-		//HandCaster.load();
-		Storage.debugging = config().debug_mode;
-
-		String prefix = config().prefix;
-		if (!prefix.isEmpty()) Storage.prefix = prefix;
+		this.reload();
 
 		if (hasPlugin("PlaceholderAPI")) {
 			Storage.has_papi = true;
@@ -125,12 +120,11 @@ public final class ItemCaster extends LuminePlugin {
 	public void reload() {
 		ConfigManager.load();
 		HandCaster.load();
+		
 		Storage.debugging = config().debug_mode;
 		
 		String prefix = config().prefix;
 		if (!prefix.isEmpty()) Storage.prefix = prefix;
-
-		CasterLogger.log("[<gradient:#69DFFF:#5984CF>ItemCaster</gradient>] <color:#23eb73>Plugin has finished reloading!");
 	}
 
 	public static ConfigData config() {

@@ -20,7 +20,7 @@ public class ItemDurabilityCondition extends ItemCondition {
 	}
 
 
-	@SuppressWarnings("unlikely-arg-type")
+	@SuppressWarnings({ "unlikely-arg-type", "null" })
 	@Override
 	public boolean resolve(AbstractEntity target, ItemStack item) {
 		if (item == null && item.getType() == Material.AIR) return true;

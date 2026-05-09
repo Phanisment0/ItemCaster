@@ -1,4 +1,4 @@
-package io.phanisment.itemcaster.command;
+package io.phanisment.itemcaster.command.profile;
 
 import java.util.List;
 
@@ -6,27 +6,27 @@ import org.bukkit.command.CommandSender;
 
 import io.lumine.mythic.bukkit.utils.commands.Command;
 import io.phanisment.itemcaster.ItemCaster;
-import io.phanisment.itemcaster.util.CasterLogger;
+import io.phanisment.itemcaster.profile.ProfileManager;
 
-public class ItemCasterRelaodCommand extends Command<ItemCaster> {
+public class ProfileSaveAllCommand extends Command<ItemCaster> {
 
-	public ItemCasterRelaodCommand(ItemCaster plugin) {
+	public ProfileSaveAllCommand(ItemCaster plugin) {
 		super(plugin);
 	}
 
 	@Override
 	public String getName() {
-		return "reload";
+		return "saveall";
 	}
 
 	@Override
 	public String getPermissionNode() {
-		return "itemcaster.command.reload";
+		return "itemcaster.command.profile.saveall";
 	}
 
 	@Override
 	public String[] getAliases() {
-		return new String[]{"r"};
+		return new String[]{"sa", "sall"};
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class ItemCasterRelaodCommand extends Command<ItemCaster> {
 
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
-		CasterLogger.send(sender, "Use mythicmobs reload command to reload this plugin. <gray>/mm r</gray>");
+		ProfileManager.saveAll();
 		return true;
 	}
 
