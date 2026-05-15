@@ -23,8 +23,7 @@ public class SetFoodSaturationLevelMechanic extends SkillMechanic implements ITa
 
 	@Override
 	public SkillResult castAtEntity(SkillMetadata meta, AbstractEntity entity) {
-		if (!entity.isPlayer())
-			return SkillResult.CONDITION_FAILED;
+		if (!entity.isPlayer()) return SkillResult.CONDITION_FAILED;
 		AbstractPlayer player = entity.asPlayer();
 		player.setFoodSaturation(this.amount);
 		return SkillResult.SUCCESS;

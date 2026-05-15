@@ -11,8 +11,7 @@ import io.lumine.mythic.core.skills.SkillCondition;
 import io.lumine.mythic.core.skills.placeholders.PlaceholderMeta;
 import io.lumine.mythic.core.utils.annotations.MythicCondition;
 
-@MythicCondition(author = "Phanisment", name = "hasfoodlevel", aliases = { "foodlevel",
-		"hasfood" }, description = "If target attack is cooldown")
+@MythicCondition(author = "Phanisment", name = "hasfoodlevel", aliases = { "foodlevel", "hasfood" }, description = "If target attack is cooldown")
 public class HasFoodLevelCondition extends SkillCondition implements IEntityCondition, ISkillMetaComparisonCondition {
 	private PlaceholderString amount;
 
@@ -24,16 +23,14 @@ public class HasFoodLevelCondition extends SkillCondition implements IEntityCond
 	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public boolean check(AbstractEntity e) {
-		if (!e.isPlayer())
-			return false;
+		if (!e.isPlayer()) return false;
 		return new RangedInt(this.amount.get(e)).equals(e.asPlayer().getFoodLevel());
 	}
 
 	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public boolean check(SkillMetadata meta, AbstractEntity e) {
-		if (!e.isPlayer())
-			return false;
+		if (!e.isPlayer()) return false;
 		return new RangedInt(this.amount.get((PlaceholderMeta) meta, e)).equals(e.asPlayer().getFoodLevel());
 	}
 }

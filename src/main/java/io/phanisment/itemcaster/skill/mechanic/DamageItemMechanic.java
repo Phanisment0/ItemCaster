@@ -7,6 +7,7 @@ import org.bukkit.inventory.meta.Damageable;
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.config.MythicLineConfig;
 import io.lumine.mythic.core.utils.annotations.MythicMechanic;
+import io.phanisment.itemcaster.skill.template.ItemMechanic;
 import io.lumine.mythic.core.skills.SkillExecutor;
 
 import static io.phanisment.itemcaster.util.ItemUtil.validateItem;
@@ -29,8 +30,7 @@ public class DamageItemMechanic extends ItemMechanic {
 		ItemMeta meta = item.getItemMeta();
 
 		if (meta instanceof Damageable dmg) {
-			int damage = dmg.hasDamageValue() ? dmg.getDamage() : 0;
-			int new_damage = damage + amount;
+			int new_damage = dmg.getDamage() + amount;
 			if (new_damage >= dmg.getMaxDamage()) {
 				item.setAmount(0);
 				return Optional.empty();

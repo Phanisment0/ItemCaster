@@ -36,7 +36,7 @@ public class ItemCasterRelaodCommand extends Command<ItemCaster> {
 
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
-		CasterLogger.send(sender, "Use mythicmobs reload command to reload this plugin. <gray>/mm r</gray>");
+		CasterLogger.send(sender, "<red>Use mythicmobs reload command to reload this plugin.</red> `/mm r`");
 		return true;
 	}
 

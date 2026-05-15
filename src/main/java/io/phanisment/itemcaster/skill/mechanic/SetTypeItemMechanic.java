@@ -7,6 +7,7 @@ import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.config.MythicLineConfig;
 import io.lumine.mythic.core.logging.MythicLogger;
 import io.lumine.mythic.core.utils.annotations.MythicMechanic;
+import io.phanisment.itemcaster.skill.template.ItemMechanic;
 import io.lumine.mythic.core.skills.SkillExecutor;
 
 import static io.phanisment.itemcaster.util.ItemUtil.validateItem;
@@ -14,8 +15,7 @@ import static io.phanisment.itemcaster.util.ItemUtil.validateItem;
 import java.io.File;
 import java.util.Optional;
 
-@MythicMechanic(author = "Phanisment", name = "settypeitem", aliases = { "setitemtype",
-		"itemtype" }, description = "Change only the material/type item")
+@MythicMechanic(author = "Phanisment", name = "settypeitem", aliases = { "setitemtype", "itemtype" }, description = "Change only the material/type item")
 public class SetTypeItemMechanic extends ItemMechanic {
 	private Material type = Material.STONE;
 
@@ -32,8 +32,7 @@ public class SetTypeItemMechanic extends ItemMechanic {
 	@SuppressWarnings("deprecation")
 	@Override
 	public Optional<ItemStack> resolve(AbstractEntity target, ItemStack item) {
-		if (!validateItem(item))
-			return Optional.empty();
+		if (!validateItem(item)) return Optional.empty();
 		item.setType(this.type);
 		return Optional.of(item);
 	}

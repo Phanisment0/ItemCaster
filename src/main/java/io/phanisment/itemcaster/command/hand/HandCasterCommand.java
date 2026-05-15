@@ -13,6 +13,7 @@ public class HandCasterCommand extends Command<ItemCaster> {
 	public HandCasterCommand(ItemCaster plugin) {
 		super(plugin);
 		this.addSubCommands(new SetHandCasterCommand(plugin));
+		this.addSubCommands(new RemoveHandCasterCommand(plugin));
 	}
 
 	@Override

@@ -11,8 +11,7 @@ import io.lumine.mythic.api.adapters.AbstractEntity;
 
 import java.io.File;
 
-@MythicMechanic(author = "Phanisment", name = "setfoodlevel", aliases = {
-		"setfood" }, description = "Set player food level")
+@MythicMechanic(author = "Phanisment", name = "setfoodlevel", aliases = { "setfood" }, description = "Set player food level")
 public class SetFoodLevelMechanic extends SkillMechanic implements ITargetedEntitySkill {
 	private int amount;
 
@@ -23,8 +22,7 @@ public class SetFoodLevelMechanic extends SkillMechanic implements ITargetedEnti
 
 	@Override
 	public SkillResult castAtEntity(SkillMetadata meta, AbstractEntity entity) {
-		if (!entity.isPlayer())
-			return SkillResult.CONDITION_FAILED;
+		if (!entity.isPlayer()) return SkillResult.CONDITION_FAILED;
 		entity.asPlayer().setFoodLevel(this.amount);
 		return SkillResult.SUCCESS;
 	}

@@ -6,7 +6,7 @@ import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.config.MythicLineConfig;
 import io.lumine.mythic.core.utils.annotations.MythicMechanic;
 import io.lumine.mythic.core.skills.SkillExecutor;
-
+import io.phanisment.itemcaster.skill.template.ItemMechanic;
 import io.phanisment.itemcaster.util.ItemUtil;
 
 import java.io.File;
@@ -25,13 +25,10 @@ public class SetItemMechanic extends ItemMechanic {
 
 	@Override
 	public Optional<ItemStack> resolve(AbstractEntity target, ItemStack item) {
-		if (!ItemUtil.validateItem(item))
-			return Optional.empty();
+		if (!ItemUtil.validateItem(item)) return Optional.empty();
 		ItemStack result = ItemUtil.getItem(type);
-		if (result == null)
-			return Optional.empty();
-		if (amount > 0)
-			result.setAmount(amount);
+		if (result == null) return Optional.empty();
+		if (amount > 0) result.setAmount(amount);
 		return Optional.of(result);
 	}
 }

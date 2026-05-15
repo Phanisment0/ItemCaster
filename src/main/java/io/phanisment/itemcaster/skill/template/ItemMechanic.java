@@ -1,4 +1,4 @@
-package io.phanisment.itemcaster.skill.mechanic;
+package io.phanisment.itemcaster.skill.template;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EquipmentSlot;
@@ -51,5 +51,5 @@ public abstract class ItemMechanic extends SkillMechanic implements ITargetedEnt
 		return this.slot;
 	}
 
-	abstract Optional<ItemStack> resolve(AbstractEntity target, ItemStack item);
+	public abstract Optional<ItemStack> resolve(AbstractEntity target, ItemStack item);
 }

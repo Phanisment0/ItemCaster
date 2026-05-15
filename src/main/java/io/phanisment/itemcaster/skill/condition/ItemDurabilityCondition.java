@@ -9,6 +9,7 @@ import io.lumine.mythic.api.config.MythicLineConfig;
 import io.lumine.mythic.api.skills.placeholders.PlaceholderString;
 import io.lumine.mythic.bukkit.utils.numbers.RangedInt;
 import io.lumine.mythic.core.utils.annotations.MythicCondition;
+import io.phanisment.itemcaster.skill.template.ItemCondition;
 
 @MythicCondition(author = "Phanisment", name = "itemdurability")
 public class ItemDurabilityCondition extends ItemCondition {

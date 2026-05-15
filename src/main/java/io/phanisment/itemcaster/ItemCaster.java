@@ -9,6 +9,7 @@ import fr.mrmicky.fastinv.FastInvManager;
 import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.bukkit.utils.plugin.LuminePlugin;
 import io.lumine.mythic.bukkit.utils.version.ServerVersion;
+import io.phanisment.itemcaster.command.HandCasterToggleCommand;
 import io.phanisment.itemcaster.command.ItemCasterCommand;
 import io.phanisment.itemcaster.command.ItemCasterMenuCommand;
 import io.phanisment.itemcaster.config.ConfigData;
@@ -88,11 +89,11 @@ public final class ItemCaster extends LuminePlugin {
 		new ProfileRunnable().runTaskTimer(this, 1, 12000);
 		this.registerCommand("itemcaster", new ItemCasterCommand(this));
 		this.registerCommand("itemcastermenu", new ItemCasterMenuCommand(this));
+		this.registerCommand("handcastertoggle", new HandCasterToggleCommand(this));
 	}
 
 	@Override
 	public void disable() {
-		ConfigManager.save();
 		ProfileManager.saveAll();
 	}
 

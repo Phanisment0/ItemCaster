@@ -16,8 +16,7 @@ import io.phanisment.itemcaster.util.ItemUtil;
 
 import java.io.File;
 
-@MythicMechanic(author = "Phanisment", name = "itemcaster:giveitem", aliases = { "itemcaster:give",
-		"itemcaster:itemgive" }, description = "Give target external item that support in ItemCaster")
+@MythicMechanic(author = "Phanisment", name = "itemcaster:giveitem", aliases = { "itemcaster:give", "itemcaster:itemgive" }, description = "Give target external item that support in ItemCaster")
 public class GiveItemMechanic extends SkillMechanic implements ITargetedEntitySkill {
 	private String type = "stone";
 	private int amount = 0;
@@ -32,10 +31,8 @@ public class GiveItemMechanic extends SkillMechanic implements ITargetedEntitySk
 	public SkillResult castAtEntity(SkillMetadata meta, AbstractEntity target) {
 		if (target.getBukkitEntity() instanceof Player player) {
 			ItemStack item = ItemUtil.getItem(type);
-			if (!ItemUtil.validateItem(item))
-				return SkillResult.CONDITION_FAILED;
-			if (amount > 0)
-				item.setAmount(amount);
+			if (!ItemUtil.validateItem(item)) return SkillResult.CONDITION_FAILED;
+			if (amount > 0) item.setAmount(amount);
 			player.getInventory().addItem(item);
 		}
 		return SkillResult.CONDITION_FAILED;

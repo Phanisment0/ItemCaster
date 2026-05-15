@@ -1,4 +1,4 @@
-package io.phanisment.itemcaster.skill.condition;
+package io.phanisment.itemcaster.skill.template;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EquipmentSlot;
@@ -33,5 +33,5 @@ public abstract class ItemCondition extends SkillCondition implements IEntityCon
 		return this.resolve(e, item);
 	}
 
-	abstract boolean resolve(AbstractEntity target, ItemStack item);
+	public abstract boolean resolve(AbstractEntity target, ItemStack item);
 }

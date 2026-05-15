@@ -10,6 +10,7 @@ import io.lumine.mythic.core.skills.SkillExecutor;
 
 import io.phanisment.itemcaster.util.ItemUtil;
 import io.phanisment.itemcaster.item.ModelData;
+import io.phanisment.itemcaster.skill.template.ItemMechanic;
 
 import java.io.File;
 import java.util.Optional;
