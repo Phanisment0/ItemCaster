@@ -45,7 +45,7 @@ public class HandCasterToggleCommand extends Command<ItemCaster> {
 		Optional<ProfileData> data = profile.getData();
 		if (data.isPresent()) data.get().hand_toggle = !data.get().hand_toggle;
 		profile.save();
-		CasterLogger.send(sender, "Toggled Hand Activator to: " + (data.get().hand_toggle ? "<green>True" : "<redFalse>"));
+		CasterLogger.send(sender, "Toggled Hand Activator to: " + (data.get().hand_toggle ? "<green>True" : "<red>False"));
 		return true;
 	}
 

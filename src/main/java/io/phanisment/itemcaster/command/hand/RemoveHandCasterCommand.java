@@ -9,6 +9,7 @@ import io.lumine.mythic.bukkit.utils.commands.Command;
 import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.profile.Profile;
 import io.phanisment.itemcaster.profile.ProfileManager;
+import io.phanisment.itemcaster.util.CasterLogger;
 
 public class RemoveHandCasterCommand extends Command<ItemCaster> {
 
@@ -40,6 +41,7 @@ public class RemoveHandCasterCommand extends Command<ItemCaster> {
 	public boolean onCommand(CommandSender sender, String[] args) {
 		Profile profile = ProfileManager.get((Player)sender);
 		if (profile.getData().isPresent()) profile.setAbility(null);
+		CasterLogger.send((Player)sender, "Removed hand ability.");
 		return true;
 	}
 
