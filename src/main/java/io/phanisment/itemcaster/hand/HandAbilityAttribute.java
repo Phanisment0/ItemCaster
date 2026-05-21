@@ -28,16 +28,16 @@ public class HandAbilityAttribute {
 
 	@SuppressWarnings("unchecked")
 	public void load() {
-		this.display = config.getString("Display");
+		this.display = config.getString("display");
 
-		List<String> string_conditions = config.getStringList("Conditions");
+		List<String> string_conditions = config.getStringList("conditions");
 		for (int i = 0; i < string_conditions.size(); i++) {
 			SkillCondition sc = ItemCaster.core().getSkillManager().getCondition(string_conditions.get(i));
 
 			if (sc != null && !(sc instanceof InvalidCondition)) conditions.add(sc);
 			else CasterLogger.send("<red>Invalid Condition");
 		}
-		for (Map<?, ?> map : config.getMapList("Abilities")) abilities.add(new SkillAttribute((Map<String, Object>)map));
+		for (Map<?, ?> map : config.getMapList("abilities")) abilities.add(new SkillAttribute((Map<String, Object>)map));
 	}
 
 	public Identifier getId() {

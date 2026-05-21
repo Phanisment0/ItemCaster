@@ -3,6 +3,7 @@ package io.phanisment.itemcaster.command.hand;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -41,18 +42,42 @@ public class SetHandCasterCommand extends Command<ItemCaster> {
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, String[] args) {
-		Profile profile = ProfileManager.get((Player)sender);
-		var id = new Identifier(args[0]);
-		if (profile.getData().isPresent()) profile.setAbility(id);
-		CasterLogger.send((Player)sender, "Set Hand Abilities to <green>" + id);
+public boolean onCommand(CommandSender sender, String[] args) {
+		if (args == null) return true;
+
+		Identifier id = new Identifier(args[0]);
+		if (!HandCaster.getAbilities().containsKey(id)) {
+			CasterLogger.send(sender, "<red>Unknown ability");
+			return true;
+		}
+
+		Player target;
+		if (args.length == 1) {
+			if (!(sender instanceof Player player)) {
+				CasterLogger.send(sender, "<red>Console must specify a player");
+				return true;
+			}
+
+			target = player;
+		} else {
+			target = Bukkit.getPlayer(args[1]);
+			if (target == null) {
+				CasterLogger.send(sender, "<red>Unknown player");
+				return true;
+			}
+		}
+
+		Profile profile = ProfileManager.get(target);
+		profile.setAbility(id);
+		CasterLogger.send(sender, "Set Hand Ability of <green>" + target.getName() + "</green> to <green>" + id + "</green>");
 		return true;
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, String[] arg1) {
+	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		List<String> list = new ArrayList<>();
-		for (Identifier id : HandCaster.getAbilities().keySet()) list.add(id.toString());
+		if (args.length == 1) for (Identifier id : HandCaster.getAbilities().keySet()) list.add(id.toString());
+		else if (args.length == 2) for (Player player : Bukkit.getOnlinePlayers()) list.add(player.getName());
 		return list;
 	}
 }

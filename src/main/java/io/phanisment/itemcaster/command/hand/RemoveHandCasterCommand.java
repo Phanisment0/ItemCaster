@@ -1,7 +1,9 @@
 package io.phanisment.itemcaster.command.hand;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -39,14 +41,31 @@ public class RemoveHandCasterCommand extends Command<ItemCaster> {
 
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
-		Profile profile = ProfileManager.get((Player)sender);
-		if (profile.getData().isPresent()) profile.setAbility(null);
-		CasterLogger.send((Player)sender, "Removed hand ability.");
+		Player target;
+		if (args != null) {
+			if (!(sender instanceof Player player)) {
+				CasterLogger.send(sender, "Console must specify a player");
+				return true;
+			}
+			target = player;
+		} else {
+			target = Bukkit.getPlayer(args[0]);
+			if (target == null) {
+				CasterLogger.send(sender, "Unknown player");
+				return true;
+			}
+		}
+
+		Profile profile = ProfileManager.get(target);
+		profile.setAbility(null);
+		CasterLogger.send(sender, "Removed Hand Ability of <green>" + target.getName() + "</green>");
 		return true;
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, String[] arg1) {
-		return null;
+	public List<String> onTabComplete(CommandSender sender, String[] args) {
+		List<String> list = new ArrayList<>();
+		if (args.length == 1) for (Player player : Bukkit.getOnlinePlayers()) list.add(player.getName());
+		return list;
 	}
 }

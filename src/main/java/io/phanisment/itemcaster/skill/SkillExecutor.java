@@ -41,7 +41,7 @@ public class SkillExecutor {
 
 	public SkillExecutor setPower(Float power) {
 		this.power = power;
-		if (power == null) power = 0f;
+		if (power == null) power = 1.0f;
 		return this;
 	}
 
@@ -79,7 +79,7 @@ public class SkillExecutor {
 			abstract_location.add(BukkitAdapter.adapt(target.getLocation()));
 		}
 
-		if (power == null) power = 0f; // Im worried about null exception so i check 2 times lol
+		if (power == null) power = 1.0f; // Im worried about null exception so i check 2 times lol
 		var meta = new SkillMetadataImpl(SkillTriggers.API, caster, BukkitAdapter.adapt(player), BukkitAdapter.adapt(player.getLocation()), abstract_entities, abstract_location, this.power);
 
 		if (variables != null) {
