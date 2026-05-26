@@ -1,9 +1,7 @@
-# Script File
-*.sh
-
 # Ignore files
 .gradle
 build/
+libs
 
 # JDTLS files
 .classpath

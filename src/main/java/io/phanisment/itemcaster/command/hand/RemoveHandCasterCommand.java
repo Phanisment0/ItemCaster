@@ -42,7 +42,7 @@ public class RemoveHandCasterCommand extends Command<ItemCaster> {
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
 		Player target;
-		if (args != null) {
+		if (args == null) {
 			if (!(sender instanceof Player player)) {
 				CasterLogger.send(sender, "Console must specify a player");
 				return true;

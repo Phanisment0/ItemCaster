@@ -15,7 +15,7 @@ repositories {
 	maven { url "https://hub.spigotmc.org/nexus/content/groups/public/" }
 	maven { url "https://repo.papermc.io/repository/maven-public/" }
 	maven { url "https://repo.codemc.io/repository/maven-public/" }
-	maven { url 'https://mvn.lumine.io/repository/maven-public/' }
+//maven { url 'https://mvn.lumine.io/repository/maven-public/' }
 	maven { url "https://repo.extendedclip.com/releases/" }
 	maven { url "https://repo.momirealms.net/releases/" }
 	maven { url "https://repo.oraxen.com/releases" }
@@ -27,7 +27,8 @@ repositories {
 dependencies {
 	// Core
 	compileOnly "io.papermc.paper:paper-api:${project.api_version}"
-	compileOnly "io.lumine:Mythic-Dist:${project.mythicmobs_version}"
+	compileOnly(files("libs/MythicMobs-5.11.0-SNAPSHOT.jar"))
+//compileOnly "io.lumine:Mythic-Dist:${project.mythicmobs_version}"
 
 	// Libraries
 	implementation "org.bstats:bstats-bukkit:${project.bstats_version}"

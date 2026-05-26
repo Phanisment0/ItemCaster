@@ -89,7 +89,8 @@ public final class ItemCaster extends LuminePlugin {
 		new ProfileRunnable().runTaskTimer(this, 1, 12000);
 		this.registerCommand("itemcaster", new ItemCasterCommand(this));
 		this.registerCommand("itemcastermenu", new ItemCasterMenuCommand(this));
-		this.registerCommand("handcastertoggle", new HandCasterToggleCommand(this));
+		getCommand("handcastertoggle").setExecutor(new HandCasterToggleCommand());
+		getCommand("handcastertoggle").setTabCompleter(new HandCasterToggleCommand());
 	}
 
 	@Override

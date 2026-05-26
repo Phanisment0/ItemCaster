@@ -24,12 +24,13 @@ public class HandActivator {
 	private final IActivator activator;
 	private Identifier ability_id = null;
 	private String signal = null;
-	
+	private ProfileData data;
+
 	public HandActivator(Player player, IActivator activator) {
 		this.player = player;
 		this.activator = activator;
-		Optional<ProfileData> data = ProfileManager.get(player).getData();
-		if (data.isPresent()) ability_id = data.get().hand_ability;
+		this.data = ProfileManager.get(player).getData();
+		ability_id = data.hand_ability;
 	}
 
 	public HandActivator setSignal(String signal) {
@@ -38,8 +39,7 @@ public class HandActivator {
 	}
 
 	public void execute() {
-		Optional<ProfileData> data = ProfileManager.get(player).getData();
-		if (data.isPresent() && !data.get().hand_toggle) return;
+		if (!data.hand_toggle) return;
 		if (ability_id == null) return;
 		HandAbilityAttribute abilities = HandCaster.getAbility(ability_id);
 		if (abilities == null) return;

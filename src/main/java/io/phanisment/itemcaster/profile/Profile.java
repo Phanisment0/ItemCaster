@@ -34,12 +34,11 @@ public class Profile {
 		this.data = new ProfileData(uuid);
 	}
 
-	public Optional<ProfileData> getData() {
-		return data != null ? Optional.of(data) : Optional.empty();
+	public ProfileData getData() {
+		return data;
 	}
 
 	public void setAbility(Identifier id) {
-		if (id == null) return;
 		this.data.hand_ability = id;
 		save();
 	}

@@ -4,20 +4,20 @@ public final class ProgressBarParse {
 	public static int TOTAL_BARS = 20;
 	private static final char BAR_FONT = '|';
 
-	private float current;
-	private float max;
+	private double current;
+	private double max;
 
 	public String progress_bar;
 
-	public ProgressBarParse(float current, float max) {
+	public ProgressBarParse(double current, double max) {
 		this.current = current;
 		this.max = max;
 	}
 
 	public String parse() {
 		if (current <= 0) return "";
-		float progress = current / max;
-		int filled = Math.round(progress * TOTAL_BARS);
+		double progress = current / max;
+		long filled = Math.round(progress * TOTAL_BARS);
 
 		var builder = new StringBuilder("<gray>[</gray>");
 		for (int i = 0; i < TOTAL_BARS; i++) {

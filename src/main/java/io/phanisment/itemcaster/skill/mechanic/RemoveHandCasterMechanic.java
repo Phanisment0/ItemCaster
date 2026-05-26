@@ -1,7 +1,6 @@
 package io.phanisment.itemcaster.skill.mechanic;
 
 import java.io.File;
-import java.util.Optional;
 
 import org.bukkit.entity.Player;
 
@@ -31,8 +30,8 @@ public class RemoveHandCasterMechanic extends SkillMechanic implements ITargeted
 	@Override
 	public SkillResult castAtEntity(SkillMetadata meta, AbstractEntity target) {
 		if (target.getBukkitEntity() instanceof Player player) {
-			Optional<ProfileData> data = ProfileManager.get(player).getData();
-			if (data.isPresent()) data.get().hand_ability = null;
+			ProfileData data = ProfileManager.get(player).getData();
+			data.hand_ability = null;
 		}
 		return SkillResult.SUCCESS;
 	}

@@ -1,6 +1,5 @@
 package io.phanisment.itemcaster.skill;
 
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import io.phanisment.itemcaster.parser.ProgressBarParse;
@@ -9,18 +8,13 @@ import io.phanisment.itemcaster.util.MythicMobsUtil;
 
 import io.lumine.mythic.api.skills.Skill;
 import io.lumine.mythic.api.skills.SkillCaster;
-import io.lumine.mythic.core.utils.MythicUtil;
 import io.lumine.mythic.bukkit.BukkitAdapter;
-import io.lumine.mythic.api.adapters.AbstractEntity;
-import io.lumine.mythic.api.adapters.AbstractLocation;
 import io.lumine.mythic.core.skills.SkillMetadataImpl;
 import io.lumine.mythic.core.skills.SkillTriggers;
 import io.lumine.mythic.core.skills.MetaSkill;
 import io.lumine.mythic.core.skills.variables.VariableRegistry;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SkillExecutor {
@@ -41,13 +35,11 @@ public class SkillExecutor {
 
 	public SkillExecutor setPower(Float power) {
 		this.power = power;
-		if (power == null) power = 1.0f;
 		return this;
 	}
 
 	public SkillExecutor setCooldown(Double cooldown) {
 		this.cooldown = cooldown;
-		if (cooldown == null) cooldown = 0d;
 		return this;
 	}
 
@@ -70,18 +62,8 @@ public class SkillExecutor {
 	}
 
 	public void execute() {
-		List<AbstractEntity> abstract_entities = new ArrayList<>();
-		List<AbstractLocation> abstract_location = new ArrayList<>();
-
-		LivingEntity target = MythicUtil.getTargetedEntity(player);
-		if (target != null) {
-			abstract_entities.add(BukkitAdapter.adapt(target));
-			abstract_location.add(BukkitAdapter.adapt(target.getLocation()));
-		}
-
-		if (power == null) power = 1.0f; // Im worried about null exception so i check 2 times lol
-		var meta = new SkillMetadataImpl(SkillTriggers.API, caster, BukkitAdapter.adapt(player), BukkitAdapter.adapt(player.getLocation()), abstract_entities, abstract_location, this.power);
-
+		var meta = new SkillMetadataImpl(SkillTriggers.API, caster, BukkitAdapter.adapt(player));
+		if (power != null) meta.setPower(power);
 		if (variables != null) {
 			VariableRegistry skill_var = meta.getVariables();
 			for (var map : variables.entrySet()) {
@@ -89,16 +71,20 @@ public class SkillExecutor {
 				Object value = map.getValue();
 				if (value instanceof Float value_float) skill_var.putFloat(key, value_float);
 				else if (value instanceof Integer value_integer) skill_var.putInt(key, value_integer);
+				else if (value instanceof Double value_double) skill_var.putDouble(key, value_double);
 				else skill_var.putString(key, (String)value);
 			}
 		}
 
 		MetaSkill meta_skill = (MetaSkill)skill;
-		if (cooldown == null) cooldown = 0d; // this too ;v
+		if (cooldown == null) cooldown = 0d;
 		
 		if (skill.onCooldown(caster) && show_cooldown) {
-			float cd = meta_skill.getCooldown(caster);
-			var progress_bar = new ProgressBarParse(cd, cooldown.floatValue());
+			// Don't delete this, beacuse this needed for older version of Mythicmobs,
+			// in older version return value of method getCooldown is `float` and  in
+			// newer version is double.
+			double cd = (double)meta_skill.getCooldown(caster);
+			var progress_bar = new ProgressBarParse(cd, cooldown);
 			player.sendActionBar(CasterLogger.MM.deserialize(progress_bar.parse() + " " + progress_bar.formatedTime()));
 		}
 

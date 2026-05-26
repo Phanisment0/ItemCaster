@@ -1,7 +1,5 @@
 package io.phanisment.itemcaster.skill.condition;
 
-import java.util.Optional;
-
 import org.bukkit.entity.Player;
 
 import io.lumine.mythic.api.adapters.AbstractEntity;
@@ -32,8 +30,8 @@ public class HasHandCasterCondition extends SkillCondition implements IEntityCon
 	@Override
 	public boolean check(AbstractEntity target) {
 		if (target.getBukkitEntity() instanceof Player player) {
-			Optional<ProfileData> data = ProfileManager.get(player).getData();
-			if (data.isPresent()) return data.get().hand_ability == id;
+			ProfileData data = ProfileManager.get(player).getData();
+			return data.hand_ability == id;
 		}
 		return false;
 	}
