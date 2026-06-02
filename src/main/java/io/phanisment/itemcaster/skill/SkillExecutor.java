@@ -85,7 +85,7 @@ public class SkillExecutor {
 			// newer version is double.
 			double cd = (double)meta_skill.getCooldown(caster);
 			var progress_bar = new ProgressBarParse(cd, cooldown);
-			player.sendActionBar(CasterLogger.MM.deserialize(progress_bar.parse() + " " + progress_bar.formatedTime()));
+			player.sendActionBar(CasterLogger.MM.deserialize(skill.getInternalName() + " " + progress_bar.parse() + " " + progress_bar.formatedTime()));
 		}
 
 		// If skill is useable/can be casted, like pass the condition and cooldown

@@ -1,7 +1,6 @@
 package io.phanisment.itemcaster.hand;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.bukkit.entity.Player;
 
