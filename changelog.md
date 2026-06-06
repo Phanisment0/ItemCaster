@@ -15,13 +15,13 @@ Removed Features
 
 2.1.0
 New Features
-- Commands
-- Added menu editor with alot of feature inside it
+- Added Commands
+- Added Menu Editor with alot of feature inside it
 - Add support for plugin CraftEngine
-- New changelog file (agil: i think this will need more effort to make lol)
 - Add Casting skill from hand
 - Add Placeholder(Still in development, some works but some mybe not).
 - Add Support for AuraSkills.
+- New changelog file (agil: i think this will need more effort to make lol)
 
 Changes:
 - Change max cooldown value location to mythicmobs, then when you not set cooldown in ItemCaster but in MythicMobs skill config will use the config instead.

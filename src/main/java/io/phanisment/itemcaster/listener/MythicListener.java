@@ -65,6 +65,9 @@ public class MythicListener implements Listener {
 		var set_food_saturation_level = new SetFoodSaturationLevelMechanic(config);
 		var set_item = new SetItemMechanic(config);
 		var set_type_item = new SetTypeItemMechanic(config);
+		var consume_mana = new ConsumeManaMechanic(config);
+		var set_mana = new SetManaMechanic(config);
+		var increase_mana = new IncreaseManaMechanic(config);
 
 		switch (event.getMechanicName().toLowerCase()) {
 			case "addamountitem" -> event.register(new AddAmountItemMechanic(config));
@@ -141,8 +144,16 @@ public class MythicListener implements Listener {
 			case "setitemtype" -> event.register(set_type_item);
 			case "itemtype" -> event.register(set_type_item);
 
-			case "consumemana" -> event.register(new ConsumeManaMechanic(config));
-			case "setmana" -> event.register(new SetManaMechanic(config));
+			case "itemcaster:consumemana" -> event.register(consume_mana);
+			case "itemcaster:decreasemana" -> event.register(consume_mana);
+			case "consumemana" -> event.register(consume_mana);
+			case "decreasemana" -> event.register(consume_mana);
+			
+			case "itemcaster:setmana" -> event.register(set_mana);
+			case "setmana" -> event.register(set_mana);
+
+			case "itemcaster:increasemana" -> event.register(increase_mana);
+			case "increasemana" -> event.register(increase_mana);
 		}
 	}
 
@@ -153,6 +164,8 @@ public class MythicListener implements Listener {
 		var has_food_level = new HasFoodLevelCondition(config);
 		var has_food_saturation_level = new HasFoodSaturationLevelCondition(config);
 		var is_charged_crossbow_charged = new IsChargedCrossbowCondition(config);
+		var mana = new ManaCondition(config);
+		var max_mana = new MaxManaCondition(config);
 
 		switch (event.getConditionName().toLowerCase()) {
 			case "isattackoncooldown" -> event.register(attack_cooldown);
@@ -175,9 +188,11 @@ public class MythicListener implements Listener {
 
 			case "itemdurability" -> event.register(new ItemDurabilityCondition(config));
 
-			case "mana" -> event.register(new ManaCondition(config));
+			case "itemcaster:mana" -> event.register(mana);
+			case "mana" -> event.register(mana);
 			
-			case "maxmana" -> event.register(new MaxManaCondition(config));
+			case "itemcaster:maxmana" -> event.register(max_mana);
+			case "maxmana" -> event.register(max_mana);
 		}
 	}
 }
