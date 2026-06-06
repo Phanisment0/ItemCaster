@@ -8,4 +8,5 @@ menu_editor:
 cooldown_bar:
   length: 20
 
-mana_engine: AURASKILL
+mana_engine:
+  type: INTERNAL # Still not implemented

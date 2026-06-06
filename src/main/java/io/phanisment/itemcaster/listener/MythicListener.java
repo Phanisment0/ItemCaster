@@ -15,15 +15,9 @@ import io.lumine.mythic.bukkit.BukkitAdapter;
 
 import io.phanisment.itemcaster.item.CasterItem;
 import io.phanisment.itemcaster.ItemCaster;
+import io.phanisment.itemcaster.Storage;
 import io.phanisment.itemcaster.skill.Activator;
-import io.phanisment.itemcaster.skill.condition.AttackCooldownCondition;
-import io.phanisment.itemcaster.skill.condition.HasFoodLevelCondition;
-import io.phanisment.itemcaster.skill.condition.HasFoodSaturationLevelCondition;
-import io.phanisment.itemcaster.skill.condition.HasHandCasterCondition;
-import io.phanisment.itemcaster.skill.condition.IsChargedCrossbowCondition;
-import io.phanisment.itemcaster.skill.condition.ItemDurabilityCondition;
-import io.phanisment.itemcaster.skill.condition.ManaCondition;
-import io.phanisment.itemcaster.skill.condition.MaxManaCondition;
+import io.phanisment.itemcaster.skill.condition.*;
 import io.phanisment.itemcaster.skill.mechanic.*;
 import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.util.ItemUtil;
@@ -193,6 +187,11 @@ public class MythicListener implements Listener {
 			
 			case "itemcaster:maxmana" -> event.register(max_mana);
 			case "maxmana" -> event.register(max_mana);
+		}
+
+		if (Storage.has_auraskills) switch (event.getConditionName().toLowerCase()) {
+			case "aurastatslevel" -> event.register(new AuraStatsLevelCondition(config));
+			case "auraskilllevel" -> event.register(new AuraSkillLevelCondition(config));
 		}
 	}
 }

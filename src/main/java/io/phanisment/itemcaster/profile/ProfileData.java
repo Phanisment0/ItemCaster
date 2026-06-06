@@ -9,6 +9,7 @@ public class ProfileData {
 	
 	public Identifier hand_ability;
 	public boolean hand_toggle = true;
+	
 	public ProfileData(UUID uuid) {
 		this.uuid = uuid;
 	}
