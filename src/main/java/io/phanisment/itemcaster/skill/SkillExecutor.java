@@ -24,7 +24,7 @@ public class SkillExecutor {
 
 	private Float power;
 	private Double cooldown;
-	private boolean show_cooldown = false;
+	private boolean show_cooldown;
 	private Map<String, Object> variables = new HashMap<>();
 
 	public SkillExecutor(Skill skill, Player player) {
@@ -57,7 +57,7 @@ public class SkillExecutor {
 		this.power = attributes.power;
 		this.cooldown = attributes.cooldown;
 		this.variables = attributes.variables;
-		this.show_cooldown = attributes.show_cooldown;
+		this.show_cooldown = attributes.show_cooldown != null ? attributes.show_cooldown : false;
 		return this;
 	}
 
@@ -77,14 +77,16 @@ public class SkillExecutor {
 		}
 
 		MetaSkill meta_skill = (MetaSkill)skill;
-		if (cooldown == null) cooldown = 0d;
 		
 		if (skill.onCooldown(caster) && show_cooldown) {
 			// Don't delete this, beacuse this needed for older version of Mythicmobs,
 			// in older version return value of method getCooldown is `float` and  in
 			// newer version is double.
 			double cd = (double)meta_skill.getCooldown(caster);
-			var progress_bar = new ProgressBarParse(cd, cooldown);
+			double max_cooldown = meta_skill.getCooldown().get(caster);
+			if (this.cooldown != null) max_cooldown = this.cooldown;
+
+			var progress_bar = new ProgressBarParse(cd, max_cooldown);
 			player.sendActionBar(CasterLogger.MM.deserialize(skill.getInternalName() + " " + progress_bar.parse() + " " + progress_bar.formatedTime()));
 		}
 
@@ -92,6 +94,6 @@ public class SkillExecutor {
 		// then cast skill and set the cooldown if not in cooldown.
 		if (!skill.isUsable(meta, SkillTriggers.API)) return;
 		skill.execute(meta);
-		if (cooldown > 0) meta_skill.setCooldown(caster, cooldown);
+		if (cooldown != null) meta_skill.setCooldown(caster, this.cooldown); // This will replace the cooldown value in the config, this doest need to fix.
 	}
 }

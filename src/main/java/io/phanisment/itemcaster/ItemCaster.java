@@ -1,5 +1,8 @@
 package io.phanisment.itemcaster;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -12,8 +15,6 @@ import io.lumine.mythic.bukkit.utils.version.ServerVersion;
 import io.phanisment.itemcaster.command.HandCasterToggleCommand;
 import io.phanisment.itemcaster.command.ItemCasterCommand;
 import io.phanisment.itemcaster.command.ItemCasterMenuCommand;
-import io.phanisment.itemcaster.config.ConfigData;
-import io.phanisment.itemcaster.config.ConfigManager;
 import io.phanisment.itemcaster.hand.HandCaster;
 import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.listener.ActivatorListener;
@@ -21,10 +22,10 @@ import io.phanisment.itemcaster.listener.MythicListener;
 import io.phanisment.itemcaster.listener.PaperListener;
 import io.phanisment.itemcaster.listener.ProfileListener;
 import io.phanisment.itemcaster.listener.ProfileRunnable;
+import io.phanisment.itemcaster.mana_engine.ManaType;
 import io.phanisment.itemcaster.menu.MenuManager;
 import io.phanisment.itemcaster.parser.ProgressBarParse;
 import io.phanisment.itemcaster.profile.ProfileManager;
-import io.phanisment.itemcaster.reflection.SkillInjector;
 import io.phanisment.itemcaster.listener.CasterRunnable;
 import io.phanisment.itemcaster.registry.ExternalItemRegistry;
 import io.phanisment.itemcaster.item.external.CraftEngineExternalItem;
@@ -33,16 +34,12 @@ import io.phanisment.itemcaster.item.external.NexoExternalItem;
 import io.phanisment.itemcaster.item.external.OraxenExternalItem;
 
 public final class ItemCaster extends LuminePlugin {
+	private static final Map<String, Runnable> compact = new HashMap<>();
 	private static ItemCaster inst;
 	private static MythicBukkit core;
-
+	
 	public ItemCaster() {
 		inst = this;
-	}
-
-	@Override
-	public void load() {
-		SkillInjector.register();
 	}
 
 	@Override
@@ -51,39 +48,20 @@ public final class ItemCaster extends LuminePlugin {
 		core = MythicBukkit.inst();
 		this.reload();
 
-		if (hasPlugin("PlaceholderAPI")) {
-			Storage.has_papi = true;
-			CasterLogger.send("PlaceholderAPI detected, Enabling the PlaceholderAPI features");
-			new ItemCasterPlaceholderExpansion().register();
-		}
-		if (hasPlugin("ItemsAdder")) {
-			Storage.has_itemsadder = true;
-			CasterLogger.send("ItemsAdder detected, Enabling the ItemsAdder features");
-			ExternalItemRegistry.register(new ItemsAdderExternalItem());
-		}
-		if (hasPlugin("Nexo")) {
-			Storage.has_nexo = true;
-			CasterLogger.send("Nexo detected, Enabling the Nexo features");
-			ExternalItemRegistry.register(new NexoExternalItem());
-		}
-		if (hasPlugin("Oraxen")) {
-			Storage.has_oraxen = true;
-			CasterLogger.send("Oraxen detected, Enabling the Oraxen features");
-			ExternalItemRegistry.register(new OraxenExternalItem());
-		}
-		if (hasPlugin("CraftEngine")) {
-			Storage.has_craftengine = true;
-			CasterLogger.send("CraftEngine detected, Enabling the CraftEngine features");
-			ExternalItemRegistry.register(new CraftEngineExternalItem());
-		}
+		compact.forEach((plugin, runnable) -> {
+			if (hasPlugin(plugin)) {
+				runnable.run();
+				CasterLogger.send(plugin + " detected, Enabling the " + plugin + " features");
+			}
+		});
 		if (ServerVersion.isPaper()) this.listen(new PaperListener());
-
-		new MenuManager();
 
 		this.listen(new ActivatorListener());
 		this.listen(new MythicListener());
 		this.listen(new ProfileListener());
+
 		FastInvManager.register(this);
+		new MenuManager();
 
 		new CasterRunnable().runTaskTimer(this, 1, 1);
 		new ProfileRunnable().runTaskTimer(this, 1, 12000);
@@ -121,18 +99,14 @@ public final class ItemCaster extends LuminePlugin {
 	 * Method to reload ItemCaster data and configuration.
 	 */
 	public void reload() {
-		ConfigManager.load();
+		this.reloadConfig();
 		HandCaster.load();
 		
-		Storage.debugging = config().debug_mode;
-		ProgressBarParse.TOTAL_BARS = config().cooldown_bar_length;
+		Storage.debugging = this.getConfig().getBoolean("debug");
+		ProgressBarParse.TOTAL_BARS = this.getConfig().getInt("cooldown_bar.length");
 		
-		String prefix = config().prefix;
+		String prefix = this.getConfig().getString("prefix");
 		if (!prefix.isEmpty()) Storage.prefix = prefix;
-	}
-
-	public static ConfigData config() {
-		return ConfigData.handler;
 	}
 
 	/**
@@ -147,5 +121,32 @@ public final class ItemCaster extends LuminePlugin {
 	 */
 	public static MythicBukkit core() {
 		return core;
+	}
+
+	static {
+		compact.put("PlaceholderAPI", () -> {
+			Storage.has_papi = true;
+			new ItemCasterPlaceholderExpansion().register();
+		});
+		compact.put("ItemsAdder", () -> {
+			Storage.has_itemsadder = true;
+			ExternalItemRegistry.register(new ItemsAdderExternalItem());
+		});
+		compact.put("Nexo", () -> {
+			Storage.has_nexo = true;
+			ExternalItemRegistry.register(new NexoExternalItem());
+		});
+		compact.put("Oraxen", () -> {
+			Storage.has_oraxen = true;
+			ExternalItemRegistry.register(new OraxenExternalItem());
+		});
+		compact.put("CraftEngine", () -> {
+			Storage.has_craftengine = true;
+			ExternalItemRegistry.register(new CraftEngineExternalItem());
+		});
+		compact.put("AuraSkills", () -> {
+			Storage.has_auraskills = true;
+			Storage.mana_engine_type = ManaType.AURA_SKILLS;
+		});
 	}
 }

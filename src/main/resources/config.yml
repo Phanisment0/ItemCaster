@@ -1,0 +1,11 @@
+debug: false
+
+prefix: "<gradient:#69DFFF:#5984CF>ItemCaster</gradient> | "
+
+menu_editor:
+  auto_set_cooldown: true
+
+cooldown_bar:
+  length: 20
+
+mana_engine: AURASKILL

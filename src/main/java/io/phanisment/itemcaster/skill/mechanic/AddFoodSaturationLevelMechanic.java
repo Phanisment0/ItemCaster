@@ -1,23 +1,17 @@
 package io.phanisment.itemcaster.skill.mechanic;
 
-import io.lumine.mythic.core.skills.SkillMechanic;
-import io.lumine.mythic.core.skills.SkillExecutor;
-import io.lumine.mythic.core.utils.annotations.MythicMechanic;
 import io.lumine.mythic.api.config.MythicLineConfig;
+import io.lumine.mythic.api.skills.INoTargetSkill;
 import io.lumine.mythic.api.skills.ITargetedEntitySkill;
 import io.lumine.mythic.api.skills.SkillMetadata;
 import io.lumine.mythic.api.skills.SkillResult;
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.adapters.AbstractPlayer;
 
-import java.io.File;
-
-@MythicMechanic(author = "Phanisment", name = "addfoodsaturationlevel", aliases = { "addfoodsaturation" }, description = "Add player food saturation level")
-public class AddFoodSaturationLevelMechanic extends SkillMechanic implements ITargetedEntitySkill {
+public class AddFoodSaturationLevelMechanic implements ITargetedEntitySkill, INoTargetSkill {
 	private float amount;
 
-	public AddFoodSaturationLevelMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
-		super(manager, file, line, mlc);
+	public AddFoodSaturationLevelMechanic(MythicLineConfig mlc) {
 		this.amount = mlc.getFloat(new String[] { "amount", "a" }, 1);
 	}
 
@@ -27,5 +21,10 @@ public class AddFoodSaturationLevelMechanic extends SkillMechanic implements ITa
 		AbstractPlayer player = entity.asPlayer();
 		player.setFoodSaturation(player.getFoodSaturation() + this.amount);
 		return SkillResult.SUCCESS;
+	}
+
+	@Override
+	public SkillResult cast(SkillMetadata meta) {
+		return this.castAtEntity(meta, meta.getCaster().getEntity());
 	}
 }

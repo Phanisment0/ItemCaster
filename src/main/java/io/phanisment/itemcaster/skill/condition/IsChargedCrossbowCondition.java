@@ -10,8 +10,8 @@ import io.phanisment.itemcaster.skill.template.ItemCondition;
 
 @MythicCondition(author = "Phanisment", name = "iscrossbowcharged", aliases = { "crossbowcharged" }, description = "If crossbow is charged")
 public class IsChargedCrossbowCondition extends ItemCondition {
-	public IsChargedCrossbowCondition(String line, MythicLineConfig mlc) {
-		super(line, mlc);
+	public IsChargedCrossbowCondition(MythicLineConfig mlc) {
+		super(mlc);
 	}
 
 	@Override

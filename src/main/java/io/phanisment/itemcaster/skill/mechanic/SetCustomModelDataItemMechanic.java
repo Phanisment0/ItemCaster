@@ -5,30 +5,20 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.config.MythicLineConfig;
-import io.lumine.mythic.core.utils.annotations.MythicMechanic;
-import io.lumine.mythic.core.skills.SkillExecutor;
 
 import io.phanisment.itemcaster.util.ItemUtil;
 import io.phanisment.itemcaster.item.ModelData;
 import io.phanisment.itemcaster.skill.template.ItemMechanic;
 
-import java.io.File;
 import java.util.Optional;
 
-@MythicMechanic(author="Phanisment", name="setcustommodeldataitem", description="Set the custom model data item", aliases={
-	"itemcaster:setcustommodeldataitem",
-	"itemcaster:setmodeldataitem",
-	"itemcaster:modeldataitem",
-	"setmodeldataitem",
-	"modeldataitem"
-})
 public class SetCustomModelDataItemMechanic extends ItemMechanic {
 	private int data;
 	private boolean external;
 	private String type;
 	
-	public SetCustomModelDataItemMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
-		super(manager, file, line, mlc);
+	public SetCustomModelDataItemMechanic(MythicLineConfig mlc) {
+		super(mlc);
 		this.data = mlc.getInteger(new String[]{"model", "m", "data", "d"}, 0);
 		this.external = mlc.getBoolean(new String[]{"external", "ex"}, false);
 		this.type = mlc.getString(new String[]{"type", "t", "id", "i"}, "stone");

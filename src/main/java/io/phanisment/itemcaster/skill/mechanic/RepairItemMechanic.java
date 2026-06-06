@@ -6,22 +6,19 @@ import org.bukkit.inventory.meta.Damageable;
 
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.config.MythicLineConfig;
-import io.lumine.mythic.core.utils.annotations.MythicMechanic;
+import io.lumine.mythic.api.skills.placeholders.PlaceholderInt;
 import io.phanisment.itemcaster.skill.template.ItemMechanic;
-import io.lumine.mythic.core.skills.SkillExecutor;
 
 import static io.phanisment.itemcaster.util.ItemUtil.validateItem;
 
-import java.io.File;
 import java.util.Optional;
 
-@MythicMechanic(author = "Phanisment", name = "repairitem", description = "Repair durability item")
 public class RepairItemMechanic extends ItemMechanic {
-	private int amount;
+	private final PlaceholderInt amount;
 
-	public RepairItemMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
-		super(manager, file, line, mlc);
-		this.amount = mlc.getInteger(new String[] { "amount", "a" }, 1);
+	public RepairItemMechanic(MythicLineConfig mlc) {
+		super(mlc);
+		this.amount = mlc.getPlaceholderInteger(new String[] { "amount", "a" }, 1);
 	}
 
 	@Override
@@ -29,7 +26,7 @@ public class RepairItemMechanic extends ItemMechanic {
 		if (!validateItem(item)) return Optional.empty();
 		ItemMeta meta = item.getItemMeta();
 		if (meta instanceof Damageable dmg) {
-			dmg.setDamage(dmg.getDamage() - amount);
+			dmg.setDamage(dmg.getDamage() - amount.get(target));
 			item.setItemMeta(dmg);
 			return Optional.of(item);
 		}

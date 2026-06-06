@@ -7,22 +7,17 @@ import org.bukkit.inventory.meta.CrossbowMeta;
 
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.config.MythicLineConfig;
-import io.lumine.mythic.core.utils.annotations.MythicMechanic;
 import io.phanisment.itemcaster.skill.template.ItemMechanic;
-import io.lumine.mythic.core.skills.SkillExecutor;
 
 import static io.phanisment.itemcaster.util.ItemUtil.validateItem;
 
-import java.io.File;
 import java.util.Optional;
 
-@MythicMechanic(author = "Phanisment", name = "addcrossbowprojectileitem", aliases = {
-		"crossbowprojectile" }, description = "Add item for projectile in crossbow")
 public class AddCrossbowProjectileItemMechanic extends ItemMechanic {
 	private Material type;
 
-	public AddCrossbowProjectileItemMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
-		super(manager, file, line, mlc);
+	public AddCrossbowProjectileItemMechanic(MythicLineConfig mlc) {
+		super(mlc);
 		try {
 			this.type = Material.valueOf(mlc.getString(new String[] { "material", "m", "type", "t" }, "ARROW").toUpperCase());
 		} catch (IllegalArgumentException e) {

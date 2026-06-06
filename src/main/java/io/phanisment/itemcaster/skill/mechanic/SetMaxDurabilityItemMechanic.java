@@ -6,22 +6,19 @@ import org.bukkit.inventory.meta.Damageable;
 
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.config.MythicLineConfig;
-import io.lumine.mythic.core.utils.annotations.MythicMechanic;
+import io.lumine.mythic.api.skills.placeholders.PlaceholderInt;
 import io.phanisment.itemcaster.skill.template.ItemMechanic;
-import io.lumine.mythic.core.skills.SkillExecutor;
+
+import java.util.Optional;
 
 import static io.phanisment.itemcaster.util.ItemUtil.validateItem;
 
-import java.io.File;
-import java.util.Optional;
-
-@MythicMechanic(author = "Phanisment", name = "setmaxdurabilityitem", description = "Set durability item")
 public class SetMaxDurabilityItemMechanic extends ItemMechanic {
-	private int amount;
+	private PlaceholderInt amount;
 
-	public SetMaxDurabilityItemMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
-		super(manager, file, line, mlc);
-		this.amount = mlc.getInteger(new String[] { "amount", "a" }, 1);
+	public SetMaxDurabilityItemMechanic(MythicLineConfig mlc) {
+		super(mlc);
+		this.amount = mlc.getPlaceholderInteger(new String[] { "amount", "a" }, 1);
 	}
 
 	@Override
@@ -29,7 +26,7 @@ public class SetMaxDurabilityItemMechanic extends ItemMechanic {
 		if (!validateItem(item)) return Optional.empty();
 		ItemMeta meta = item.getItemMeta();
 		if (meta instanceof Damageable dmg) {
-			dmg.setMaxDamage(amount);
+			dmg.setMaxDamage(amount.get(target));
 			item.setItemMeta(dmg);
 			return Optional.of(item);
 		}

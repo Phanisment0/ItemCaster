@@ -5,30 +5,20 @@ import org.bukkit.inventory.ItemStack;
 
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.config.MythicLineConfig;
-import io.lumine.mythic.core.utils.annotations.MythicMechanic;
 import io.phanisment.itemcaster.skill.template.ItemMechanic;
-import io.lumine.mythic.core.skills.SkillExecutor;
 
 import static io.phanisment.itemcaster.util.ItemUtil.validateItem;
 
-import java.io.File;
 import java.util.Optional;
 
-@MythicMechanic(author = "Phanisment", name = "addenchantmentitem", description = "Add amount item", aliases = {
-		"itemcaster:addenchantmentitem",
-		"itemcaster:enchantitem",
-		"itemcaster:enchant",
-		"enchantitem",
-		"enchant"
-})
 public class AddEnchantmentItemMechanic extends ItemMechanic {
 	private Enchantment enchantment;
 	private int level;
 	private boolean ignore_restriction;
 
 	@SuppressWarnings("deprecation")
-	public AddEnchantmentItemMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
-		super(manager, file, line, mlc);
+	public AddEnchantmentItemMechanic(MythicLineConfig mlc) {
+		super(mlc);
 		String string_enc = mlc.getString(new String[] { "enchantment", "en" }, "UNBREAKING").toUpperCase();
 		this.enchantment = Enchantment.getByName(string_enc);
 		this.level = mlc.getInteger(new String[] { "level", "l" }, 1);

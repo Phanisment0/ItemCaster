@@ -65,7 +65,7 @@ public class CooldownAbilityButton implements IAbilityButton {
 	}
 
 	private void save(AbilityMenuContext ctx) {
-		if (!ItemCaster.config().auto_set_skill_cooldown) return;
+		if (!ItemCaster.inst().getConfig().getBoolean("menu_editor.auto_set_cooldown")) return;
 		
 		Optional<Skill> mybe_skill = MythicMobsUtil.toSkill(ctx.data().skill);
 		if (!mybe_skill.isPresent()) return;

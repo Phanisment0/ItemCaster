@@ -5,8 +5,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import io.lumine.mythic.core.logging.MythicLogger;
-import io.lumine.mythic.core.skills.SkillMechanic;
-import io.lumine.mythic.core.skills.SkillExecutor;
 import io.lumine.mythic.api.config.MythicLineConfig;
 import io.lumine.mythic.api.skills.ITargetedEntitySkill;
 import io.lumine.mythic.api.skills.INoTargetSkill;
@@ -14,19 +12,17 @@ import io.lumine.mythic.api.skills.SkillMetadata;
 import io.lumine.mythic.api.skills.SkillResult;
 import io.lumine.mythic.api.adapters.AbstractEntity;
 
-import java.io.File;
 import java.util.Optional;
 
-public abstract class ItemMechanic extends SkillMechanic implements ITargetedEntitySkill, INoTargetSkill {
-	private EquipmentSlot slot;
+public abstract class ItemMechanic implements ITargetedEntitySkill, INoTargetSkill {
+	protected EquipmentSlot slot;
 
-	public ItemMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
-		super(manager, file, line, mlc);
+	public ItemMechanic(MythicLineConfig mlc) {
 		String slot_string = mlc.getString(new String[] { "equipment", "e" }, "HAND").toUpperCase();
 		try {
 			this.slot = EquipmentSlot.valueOf(slot_string);
 		} catch (IllegalArgumentException e) {
-			MythicLogger.errorMechanic(this, "Invalid equipment slot value: " + slot_string, e);
+			MythicLogger.error("Invalid equipment slot value: " + slot_string, e);
 		}
 	}
 

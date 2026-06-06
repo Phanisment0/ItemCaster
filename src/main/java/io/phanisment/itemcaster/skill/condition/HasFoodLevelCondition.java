@@ -7,17 +7,15 @@ import io.lumine.mythic.api.skills.conditions.IEntityCondition;
 import io.lumine.mythic.api.skills.conditions.ISkillMetaComparisonCondition;
 import io.lumine.mythic.api.skills.placeholders.PlaceholderString;
 import io.lumine.mythic.bukkit.utils.numbers.RangedInt;
-import io.lumine.mythic.core.skills.SkillCondition;
 import io.lumine.mythic.core.skills.placeholders.PlaceholderMeta;
 import io.lumine.mythic.core.utils.annotations.MythicCondition;
 
 @MythicCondition(author = "Phanisment", name = "hasfoodlevel", aliases = { "foodlevel", "hasfood" }, description = "If target attack is cooldown")
-public class HasFoodLevelCondition extends SkillCondition implements IEntityCondition, ISkillMetaComparisonCondition {
+public class HasFoodLevelCondition implements IEntityCondition, ISkillMetaComparisonCondition {
 	private PlaceholderString amount;
 
-	public HasFoodLevelCondition(String line, MythicLineConfig mlc) {
-		super(line);
-		this.amount = mlc.getPlaceholderString(new String[] { "amount", "a", "food", "f" }, "0", this.conditionVar);
+	public HasFoodLevelCondition(MythicLineConfig mlc) {
+		this.amount = mlc.getPlaceholderString(new String[] { "amount", "a", "food", "f" }, "0");
 	}
 
 	@SuppressWarnings("unlikely-arg-type")

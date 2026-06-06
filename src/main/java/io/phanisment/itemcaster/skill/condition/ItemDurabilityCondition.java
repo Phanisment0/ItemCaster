@@ -15,8 +15,8 @@ import io.phanisment.itemcaster.skill.template.ItemCondition;
 public class ItemDurabilityCondition extends ItemCondition {
 	private final PlaceholderString amount;
 	
-	public ItemDurabilityCondition(String line, MythicLineConfig mlc) {
-		super(line, mlc);
+	public ItemDurabilityCondition(MythicLineConfig mlc) {
+		super(mlc);
 		amount = mlc.getPlaceholderString(new String[]{"amount", "a"}, "0");
 	}
 

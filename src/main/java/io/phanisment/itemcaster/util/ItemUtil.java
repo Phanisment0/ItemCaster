@@ -1,6 +1,7 @@
 package io.phanisment.itemcaster.util;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import io.lumine.mythic.core.items.MythicItem;
 import io.phanisment.itemcaster.skill.SkillActivator;
 import io.phanisment.itemcaster.skill.Activator;
 import io.phanisment.itemcaster.registry.ExternalItemRegistry;
+import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.hand.HandActivator;
 import io.phanisment.itemcaster.item.external.IExternalItem;
 
@@ -21,6 +23,8 @@ import java.util.Optional;
  * Utility Class for execute skill and get external item.
  */
 public class ItemUtil {
+	private static final NamespacedKey TYPE = new NamespacedKey(ItemCaster.core(), "type");
+
 	/**
 	 * Get external item or basic ItemStack.
 	 * 
@@ -54,6 +58,11 @@ public class ItemUtil {
 	 */
 	public static boolean validateItem(ItemStack item) {
 		return item != null && item.getType() != Material.AIR;
+	}
+
+	public static boolean isMythicItem(ItemStack item) {
+		if (!validateItem(item)) return false;
+		return item.hasItemMeta() && item.getItemMeta().getPersistentDataContainer().has(TYPE);
 	}
 	
 	public static void runSkill(Player player, Activator type) {

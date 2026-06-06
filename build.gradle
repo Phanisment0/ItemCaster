@@ -27,7 +27,7 @@ repositories {
 dependencies {
 	// Core
 	compileOnly "io.papermc.paper:paper-api:${project.api_version}"
-//compileOnly(files("libs/MythicMobs-5.11.0-SNAPSHOT.jar"))
+	// compileOnly(files("libs/MythicMobs-5.11.0-SNAPSHOT.jar"))
 	compileOnly "io.lumine:Mythic-Dist:${project.mythicmobs_version}"
 
 	// Libraries
@@ -43,6 +43,7 @@ dependencies {
 	compileOnly "com.nexomc:nexo:${project.nexo_version}"
 	compileOnly "net.momirealms:craft-engine-core:${project.craftengine_version}"
 	compileOnly "net.momirealms:craft-engine-bukkit:${project.craftengine_version}"
+	compileOnly "dev.aurelium:auraskills-api-bukkit:${project.auraskills_version}"
 }
 
 tasks.shadowJar {
@@ -52,7 +53,7 @@ tasks.shadowJar {
 	from("LICENSE") {
 		into(".")
 	}
-	destinationDirectory.set(file("../../server/1.21.1/plugins"))
+	// destinationDirectory.set(file("../../server/1.21.8/plugins"))
 }
 
 tasks.processResources {

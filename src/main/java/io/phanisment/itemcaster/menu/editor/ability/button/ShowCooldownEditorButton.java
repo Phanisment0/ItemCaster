@@ -18,14 +18,14 @@ public class ShowCooldownEditorButton implements IAbilityButton {
 			.name(Legacy.serializer("<white>Show Cooldown"))
 			.lore(Legacy.serializer(
 				"", 
-				"<gray>Left - Click to toggle (Current: <white>" + (ctx.data().show_cooldown != null ? ctx.data().show_cooldown : true) + "<gray>)",
+				"<gray>Left - Click to toggle (Current: <white>" + (ctx.data().show_cooldown != null ? ctx.data().show_cooldown : false) + "<gray>)",
 				"<gray>Right - Click to remove"
 			));
 	}
 
 	@Override
 	public void left(InventoryClickEvent e, CasterItem item, AbilityMenuContext ctx) {
-		ctx.data().show_cooldown = !ctx.data().show_cooldown;
+		ctx.data().show_cooldown = !(ctx.data().show_cooldown != null ? ctx.data().show_cooldown : false);
 		item.setAbility(ctx.index(), ctx.data());
 		new AbilityMenu(item, ctx).open((Player)e.getWhoClicked());
 	}

@@ -4,30 +4,29 @@ import org.bukkit.inventory.ItemStack;
 
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.config.MythicLineConfig;
-import io.lumine.mythic.core.utils.annotations.MythicMechanic;
-import io.lumine.mythic.core.skills.SkillExecutor;
+import io.lumine.mythic.api.skills.placeholders.PlaceholderInt;
+import io.lumine.mythic.api.skills.placeholders.PlaceholderString;
 import io.phanisment.itemcaster.skill.template.ItemMechanic;
 import io.phanisment.itemcaster.util.ItemUtil;
 
-import java.io.File;
 import java.util.Optional;
 
-@MythicMechanic(author = "Phanisment", name = "setitem", aliases = { "itemcaster:setitem", "itemcaster:replaceitem", "replaceitem" }, description = "Set slot with external item that support in ItemCaster")
 public class SetItemMechanic extends ItemMechanic {
-	private String type = "stone";
-	private int amount = 0;
+	private final PlaceholderString type;
+	private final PlaceholderInt amount;
 
-	public SetItemMechanic(SkillExecutor manager, File file, String line, MythicLineConfig mlc) {
-		super(manager, file, line, mlc);
-		this.type = mlc.getString(new String[] { "id", "i", "type", "t" }, "stone");
-		this.amount = mlc.getInteger(new String[] { "amount", "a" }, 0);
+	public SetItemMechanic(MythicLineConfig mlc) {
+		super(mlc);
+		this.type = mlc.getPlaceholderString(new String[] { "id", "i", "type", "t" }, "stone");
+		this.amount = mlc.getPlaceholderInteger(new String[] { "amount", "a" }, 0);
 	}
 
 	@Override
 	public Optional<ItemStack> resolve(AbstractEntity target, ItemStack item) {
 		if (!ItemUtil.validateItem(item)) return Optional.empty();
-		ItemStack result = ItemUtil.getItem(type);
+		ItemStack result = ItemUtil.getItem(type.get(target));
 		if (result == null) return Optional.empty();
+		int amount = this.amount.get(target);
 		if (amount > 0) result.setAmount(amount);
 		return Optional.of(result);
 	}
