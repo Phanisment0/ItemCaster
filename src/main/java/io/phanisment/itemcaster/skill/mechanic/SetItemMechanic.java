@@ -24,7 +24,7 @@ public class SetItemMechanic extends ItemMechanic {
 	@Override
 	public Optional<ItemStack> resolve(AbstractEntity target, ItemStack item) {
 		if (!ItemUtil.validateItem(item)) return Optional.empty();
-		ItemStack result = ItemUtil.getItem(type.get(target));
+		ItemStack result = ItemUtil.getItem(type.get(target).toLowerCase());
 		if (result == null) return Optional.empty();
 		int amount = this.amount.get(target);
 		if (amount > 0) result.setAmount(amount);

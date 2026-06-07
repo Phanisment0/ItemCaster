@@ -160,6 +160,7 @@ public class MythicListener implements Listener {
 		var is_charged_crossbow_charged = new IsChargedCrossbowCondition(config);
 		var mana = new ManaCondition(config);
 		var max_mana = new MaxManaCondition(config);
+		var consume_mana = new ConsumeManaCondition(config);
 
 		switch (event.getConditionName().toLowerCase()) {
 			case "isattackoncooldown" -> event.register(attack_cooldown);
@@ -187,6 +188,12 @@ public class MythicListener implements Listener {
 			
 			case "itemcaster:maxmana" -> event.register(max_mana);
 			case "maxmana" -> event.register(max_mana);
+
+			case "itemcaster:consumemana" -> event.register(consume_mana);
+			case "itemcaster:decreasemana" -> event.register(consume_mana);
+			case "consumemana" -> event.register(consume_mana);
+			case "decreasemana" -> event.register(consume_mana);
+			case "requiredmana" -> event.register(consume_mana);
 		}
 
 		if (Storage.has_auraskills) switch (event.getConditionName().toLowerCase()) {

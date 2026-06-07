@@ -24,7 +24,7 @@ public class GiveItemMechanic implements ITargetedEntitySkill {
 	@Override
 	public SkillResult castAtEntity(SkillMetadata meta, AbstractEntity target) {
 		if (target.getBukkitEntity() instanceof Player player) {
-			ItemStack item = ItemUtil.getItem(type.get(target));
+			ItemStack item = ItemUtil.getItem(type.get(target).toLowerCase());
 			if (!ItemUtil.validateItem(item)) return SkillResult.CONDITION_FAILED;
 			int amount = this.amount.get(target);
 			if (amount > 0) item.setAmount(amount);

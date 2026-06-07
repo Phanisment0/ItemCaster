@@ -44,33 +44,43 @@ public class ModelData {
 		Optional<ItemStack> item = this.getItem(item_type);
 		if (!item.isPresent()) return;
 
-		if (ServerVersion.isBefore(MinecraftVersion.parse("1.21.3"))) this.type = item.get().getType();
+		this.type = item.get().getType();
 
 		ItemMeta meta = item.get().getItemMeta();
-		if (meta != null) {
-			if (meta.hasCustomModelData()) this.model_index = meta.getCustomModelData();
-			if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.20.5")) && meta.hasTooltipStyle()) this.tooltip_style = meta.getTooltipStyle();
-			if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.21.3"))) {
-				if (meta.hasItemModel()) this.item_model = meta.getItemModel();
-				EquippableComponent armor_model_component = meta.getEquippable();
-				if (armor_model_component != null) this.armor_model = armor_model_component.getModel();
-			}
-			if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.21.4")) && meta.getCustomModelDataComponent() != null) this.model_data_component = meta.getCustomModelDataComponent();
+		if (meta == null) return;
+		
+		if (meta.hasCustomModelData()) this.model_index = meta.getCustomModelData();
+		if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.20.5")) && meta.hasTooltipStyle()) this.tooltip_style = meta.getTooltipStyle();
+		if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.21.3"))) {
+			if (meta.hasItemModel()) this.item_model = meta.getItemModel();
+			EquippableComponent armor_model_component = meta.getEquippable();
+			if (armor_model_component != null) this.armor_model = armor_model_component.getModel();
 		}
 	}
 
 	@SuppressWarnings("deprecation")
 	public void applyModel(ItemStack item) {
-		if (this.hasModelData()) item.getItemMeta().setCustomModelData(this.model_index);
-		if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.20.5")) && this.hasTooltipStyle()) item.getItemMeta().setTooltipStyle(this.tooltip_style);
-		if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.21.3"))) {
-			if (this.hasItemModel()) item.getItemMeta().setItemModel(this.item_model);
-			if (this.hasArmorModel()) item.getItemMeta().getEquippable().setModel(this.armor_model);
-		}
-		if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.21.4")) && this.hasModelDataComponent()) item.getItemMeta().setCustomModelDataComponent(this.model_data_component);
-		if (ServerVersion.isBefore(MinecraftVersion.parse("1.21.4")) && this.hasType()) item.setType(this.type);
-	}
+		if (item == null) return;
 
+		if (hasType()) item.setType(type);
+		if (hasModelData()) mi.setCustomModelData(model_index);
+
+		ItemMeta meta = item.getItemMeta();
+		if (meta == null) return;
+		if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.20.5")) && hasTooltipStyle()) meta.setTooltipStyle(this.tooltip_style);
+
+		if (ServerVersion.isAfterOrEq(MinecraftVersion.parse("1.21.3"))) {
+			// if (hasItemModel()) meta.setItemModel(this.item_model);
+			if (hasArmorModel()) {
+				EquippableComponent equippable = meta.getEquippable();
+				if (equippable != null) {
+					equippable.setModel(this.armor_model);
+					meta.setEquippable(equippable);
+				}
+			}
+		}
+	}
+	
 	public Optional<ItemStack> getItem(String type) {
 		if (type == null || type.isBlank()) return Optional.empty();
 		if (type.contains(":")) {
@@ -90,6 +100,10 @@ public class ModelData {
 				MythicLogger.errorItemConfig(mi, config, "Unknown Material: " + type.toUpperCase());
 			return Optional.empty();
 		}
+	}
+
+	public boolean isEmpty() {
+		return hasType() || hasModelData();
 	}
 
 	public boolean hasType() {

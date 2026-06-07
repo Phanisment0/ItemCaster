@@ -28,6 +28,7 @@ import io.phanisment.itemcaster.parser.ProgressBarParse;
 import io.phanisment.itemcaster.profile.ProfileManager;
 import io.phanisment.itemcaster.listener.CasterRunnable;
 import io.phanisment.itemcaster.registry.ExternalItemRegistry;
+import io.phanisment.itemcaster.registry.MythicPlaceholderRegistery;
 import io.phanisment.itemcaster.item.external.CraftEngineExternalItem;
 import io.phanisment.itemcaster.item.external.ItemsAdderExternalItem;
 import io.phanisment.itemcaster.item.external.NexoExternalItem;
@@ -43,9 +44,14 @@ public final class ItemCaster extends LuminePlugin {
 	}
 
 	@Override
+	public void load() {
+		core = MythicBukkit.inst();
+		MythicPlaceholderRegistery.register();
+	}
+
+	@Override
 	public void enable() {
 		new Metrics(this, Storage.id_bstats);
-		core = MythicBukkit.inst();
 		this.reload();
 
 		compact.forEach((plugin, runnable) -> {

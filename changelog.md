@@ -19,7 +19,8 @@ Removed Features
 - Added Menu Editor (Not Really stable)
 - Add support for plugin CraftEngine
 - Add Casting skill from hand
-- Add Placeholder(Still in development, some works but some mybe not).
+- Add PlaceholderAPI(Still in development, some works but some mybe not).
+- Add Placeholder(NOTE: not placeholder from papi).
 - Add Support for AuraSkills.
 - New changelog file (agil: i think this will need more effort to make lol)
 
