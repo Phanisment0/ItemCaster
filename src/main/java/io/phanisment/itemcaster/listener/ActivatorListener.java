@@ -2,6 +2,7 @@ package io.phanisment.itemcaster.listener;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -57,14 +58,17 @@ public class ActivatorListener implements Listener {
 	public void onPlayerSwing(PlayerAnimationEvent e) {
 		Player player = e.getPlayer();
 		new HandActivator(player, Activator.LEFT_CLICK).execute();
+		PlayerInventory inv = player.getInventory();
 		switch (e.getAnimationType()) {
 			case ARM_SWING:
-				ItemStack main = player.getInventory().getItemInMainHand();
+				ItemStack main = inv.getItemInMainHand();
 				if (ItemUtil.validateItem(main)) new SkillActivator(player, Activator.LEFT_CLICK, main).execute();
+				for (ItemStack armor : inv.getArmorContents()) if (ItemUtil.validateItem(main)) new SkillActivator(player, Activator.LEFT_CLICK, armor).execute();
 				break;
 			case OFF_ARM_SWING:
-				ItemStack off = player.getInventory().getItemInOffHand();
+				ItemStack off = inv.getItemInOffHand();
 				if (ItemUtil.validateItem(off)) new SkillActivator(player, Activator.LEFT_CLICK, off).execute();
+				for (ItemStack armor : inv.getArmorContents()) if (ItemUtil.validateItem(off)) new SkillActivator(player, Activator.LEFT_CLICK, armor).execute();
 				break;
 		}
 	}

@@ -76,7 +76,7 @@ public class ItemUtil {
 		ItemStack off_hand = inv.getItemInOffHand();
 		if (validateItem(off_hand)) new SkillActivator(player, type, off_hand).execute();
 		
-		for (ItemStack armor : inv.getArmorContents()) if (validateItem(armor)) new SkillActivator(player, type, off_hand).execute();
+		for (ItemStack armor : inv.getArmorContents()) if (validateItem(armor)) new SkillActivator(player, type, armor).execute();
 	}
 	
 	public static void runSkill(Player player, Activator type, String signal) {
@@ -90,6 +90,6 @@ public class ItemUtil {
 		ItemStack off_hand = inv.getItemInOffHand();
 		if (validateItem(off_hand)) new SkillActivator(player, type, off_hand).setSignal(signal).execute();
 		
-		for (ItemStack armor : inv.getArmorContents()) if (validateItem(armor)) new SkillActivator(player, type, off_hand).setSignal(signal).execute();
+		for (ItemStack armor : inv.getArmorContents()) if (validateItem(armor)) new SkillActivator(player, type, armor).setSignal(signal).execute();
 	}
 }
