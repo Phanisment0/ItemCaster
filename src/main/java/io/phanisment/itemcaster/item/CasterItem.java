@@ -36,6 +36,7 @@ public class CasterItem {
 	private static final Map<String, CasterItem> items = new HashMap<>();
 	private final MythicItem mi;
 	private final MythicConfig config;
+	private ItemStack icon;
 
 	private boolean hide_tooltips = false;
 	private ModelData model_data;
@@ -49,7 +50,7 @@ public class CasterItem {
 		this.hide_tooltips = config.getBoolean("Options.HideTooltips");
 		this.model_data = new ModelData(config.getString("ModelItem"), mi);
 
-		this.abilities = (List<Map<String, Object>>)(Object)config.getMapList("Abilities");
+		this.abilities = (List<Map<String, Object>>)(Object)new ArrayList<>(config.getMapList("Abilities"));
 
 		items.put(mi.getInternalName(), this);
 	}
@@ -70,6 +71,7 @@ public class CasterItem {
 
 		if (abilities != null && !abilities.isEmpty()) item = this.parseAbilities(item);
 
+		// this.icon = this.generateIcon(item);
 		e.setItemStack(item);
 	}
 
