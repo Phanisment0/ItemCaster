@@ -1,0 +1,31 @@
+Menu:
+  Display: "&lItem Browser"
+  Size: 54
+  Schema:
+   - $ $ $ $ $ $ $ $ $
+   - $ $ $ $ $ $ $ $ $
+   - $ $ $ $ $ $ $ $ $
+   - $ $ $ $ $ $ $ $ $
+   - $ $ $ $ $ $ $ $ $
+   - B 0 0 S C 0 0 P N
+  Icons:
+    NEXT_PAGE:
+      Mapping: N
+      Material: ARROW
+      Display: '&fNext Page'
+    PREVIOUS_PAGE:
+      Mapping: P
+      Material: ARROW
+      Display: '&fPrevious Page'
+    BACK_BUTTON:
+      Mapping: B
+      Material: STRUCTURE_VOID
+      Display: '&fBack'
+    CREATE_BUTTON:
+      Mapping: C
+      Material: WRITABLE_BOOK
+      Display: '&aCreate Item'
+    FILTER_BUTTON:
+      Mapping: S
+      Material: DARK_OAK_SIGN
+      Display: '&9Search / Filter Items'

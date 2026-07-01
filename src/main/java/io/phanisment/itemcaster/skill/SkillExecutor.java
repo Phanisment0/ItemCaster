@@ -3,6 +3,7 @@ package io.phanisment.itemcaster.skill;
 import org.bukkit.entity.Player;
 
 import io.phanisment.itemcaster.parser.ProgressBarParse;
+import io.phanisment.itemcaster.skill.SkillAttribute.AttributeKeys;
 import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.util.MythicMobsUtil;
 
@@ -54,10 +55,10 @@ public class SkillExecutor {
 	}
 
 	public SkillExecutor setAttribute(SkillAttribute attributes) {
-		this.power = attributes.power;
-		this.cooldown = attributes.cooldown;
-		this.variables = attributes.variables;
-		this.show_cooldown = attributes.show_cooldown != null ? attributes.show_cooldown : false;
+		this.power = attributes.get(AttributeKeys.POWER, Float.class, 1.0f);
+		this.cooldown = attributes.get(AttributeKeys.COOLDOWN, Double.class, null);
+		this.variables = attributes.get(AttributeKeys.VARIABLES, Map.class, new HashMap<>());
+		this.show_cooldown = attributes.get(AttributeKeys.SHOW_COOLDOWN, Boolean.class, false);
 		return this;
 	}
 
@@ -79,11 +80,8 @@ public class SkillExecutor {
 		MetaSkill meta_skill = (MetaSkill)skill;
 		
 		if (skill.onCooldown(caster) && show_cooldown) {
-			// Don't delete this, beacuse this needed for older version of Mythicmobs,
-			// in older version return value of method getCooldown is `float` and  in
-			// newer version is double.
 			double cd = (double)meta_skill.getCooldown(caster);
-			double max_cooldown = meta_skill.getCooldown().get(caster);
+			double max_cooldown = meta_skill.getCooldown().get().getMilliseconds();
 			if (this.cooldown != null) max_cooldown = this.cooldown;
 
 			var progress_bar = new ProgressBarParse(cd, max_cooldown);

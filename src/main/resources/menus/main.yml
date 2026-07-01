@@ -1,0 +1,26 @@
+Menu:
+  Display: "ItemCaster Menu"
+  Size: 45
+  Schema:
+   - 0 0 0 0 0 0 0 0 0
+   - 0 0 0 I 0 H 0 0 0
+   - 0 0 0 0 0 0 0 0 0
+  Icons:
+    BUTTON_ITEMBROWSER:
+      Mapping: I
+      Material: IRON_SWORD
+      Display: 'Items Browser'
+      Lore:
+      - ''
+      - '<gray>Browse and Edit Items'
+      - ''
+      - '&e» &aClick to Open'
+    BUTTON_HANDBROWSER:
+      Mapping: H
+      Material: BEACON
+      Display: 'HandCaster Browser'
+      Lore:
+      - ''
+      - '<gray>Browse HandCaster'
+      - ''
+      - '&e» &aClick to Open'

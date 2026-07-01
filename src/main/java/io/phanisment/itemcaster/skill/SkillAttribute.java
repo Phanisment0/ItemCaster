@@ -1,116 +1,172 @@
 package io.phanisment.itemcaster.skill;
 
-import de.tr7zw.nbtapi.iface.ReadWriteNBT;
-import de.tr7zw.nbtapi.iface.ReadableNBT;
-import io.phanisment.itemcaster.util.MapSafe;
-
 import java.util.Map;
+import java.util.function.Function;
+
+import io.lumine.mythic.core.utils.jnbt.Tag;
+import io.lumine.mythic.bukkit.MythicBukkit;
+import io.lumine.mythic.core.utils.jnbt.ByteTag;
+import io.lumine.mythic.core.utils.jnbt.CompoundTag;
+import io.lumine.mythic.core.utils.jnbt.DoubleTag;
+import io.lumine.mythic.core.utils.jnbt.FloatTag;
+import io.lumine.mythic.core.utils.jnbt.IntTag;
+import io.lumine.mythic.core.utils.jnbt.ListTag;
+import io.lumine.mythic.core.utils.jnbt.StringTag;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class SkillAttribute {
-	public static final String SKILL = "skill";
-	public static final String ACTIVATOR = "activator";
-	public static final String POWER = "power";
-	public static final String COOLDOWN = "cooldown";
-	public static final String SNEAKING = "sneaking";
-	public static final String SIGNAL = "signal";
-	public static final String VARIABLES = "variables";
-	public static final String CANCEL_EVENT = "cancel_event";
-	public static final String SHOW_COOLDOWN = "show_cooldown";
+	private static final Map<Class<?>, Function<Object, Tag>> SERIALIZERS = new HashMap<>();
+	private Map<String, Object> data = new HashMap<>();
 
-	public String skill;
-	public String activator;
-	public Float power;
-	public Double cooldown;
-	public Boolean sneaking;
-	public String signal;
-	public Map<String, Object> variables = new HashMap<>();
-	public Boolean cancel_event;
-	public Boolean show_cooldown;
+	public static SkillAttribute of(Map<String, Tag> data) {
+		return new SkillAttribute(fromTagMap(data));
+	}
 
 	public SkillAttribute() {
 	}
 
+	public SkillAttribute(CompoundTag data) {
+		this(fromTagMap(data.getValue()));
+	}
+
 	public SkillAttribute(Map<String, Object> data) {
-		var map = new MapSafe(data);
-		if (map.contains(SKILL)) this.skill = map.getString(SKILL);
-		if (map.contains(ACTIVATOR)) this.activator = map.getString(ACTIVATOR);
-		if (map.contains(POWER)) this.power = map.getFloat(POWER);
-		if (map.contains(COOLDOWN)) this.cooldown = map.getDouble(COOLDOWN);
-		if (map.contains(SNEAKING)) this.sneaking = map.getBoolean(SNEAKING);
-		if (map.contains(SIGNAL)) this.signal = map.getString(SIGNAL);
-		if (map.contains(VARIABLES)) this.variables = map.getMap(VARIABLES);
-		if (map.contains(CANCEL_EVENT)) this.cancel_event = map.getBoolean(CANCEL_EVENT);
-		if (map.contains(SHOW_COOLDOWN)) this.show_cooldown = map.getBoolean(SHOW_COOLDOWN);
+		this.data = data;
 	}
 
-	public SkillAttribute(ReadableNBT data) {
-		if (data.hasTag(SKILL)) this.skill = data.getString(SKILL);
-		if (data.hasTag(ACTIVATOR)) this.activator = data.getString(ACTIVATOR);
-		if (data.hasTag(POWER)) this.power = data.getFloat(POWER);
-		if (data.hasTag(COOLDOWN)) this.cooldown = data.getDouble(COOLDOWN);
-		if (data.hasTag(SNEAKING)) this.sneaking = data.getBoolean(SNEAKING);
-		if (data.hasTag(SIGNAL)) this.signal = data.getString(SIGNAL);
-		if (data.hasTag(CANCEL_EVENT)) this.cancel_event = data.getBoolean(CANCEL_EVENT);
-		if (data.hasTag(SHOW_COOLDOWN)) this.show_cooldown = data.getBoolean(SHOW_COOLDOWN);
-		
-		if (data.hasTag(VARIABLES)) {
-			ReadableNBT variables_nbt = data.getCompound(VARIABLES);
-			for (String key : variables_nbt.getKeys()) {
-				switch (variables_nbt.getType(key)) {
-					case NBTTagFloat -> variables.put(key, variables_nbt.getFloat(key));
-					case NBTTagInt -> variables.put(key, variables_nbt.getInteger(key));
-					case NBTTagString -> variables.put(key, variables_nbt.getString(key));
-					case NBTTagByte -> variables.put(key, variables_nbt.getByte(key));
-					default -> variables.put(key, variables_nbt.getString(key));
-				}
+	public <T> SkillAttribute set(AttributeKeys key, Class<T> type, T value) {
+		this.data.put(key.toString(), value);
+		return this;
+	}
+
+	public <T> T get(AttributeKeys key, Class<T> type, T def) {
+		Object value = data.get(key.toString());
+		if (value == null) return def;
+		return type.isInstance(value) ? type.cast(value) : def;
+	}
+
+	public boolean has(AttributeKeys key) {
+		return data.containsKey(key.toString());
+	}
+
+	public Map<String, Object> getAsMap() {
+		return data;
+	}
+
+	public Map<String, Tag> gatAsMapTag() {
+		Map<String, Tag> tags = new HashMap<>();
+		for (var entry : data.entrySet()) {
+			Tag tag = toTag(entry.getValue());
+			if (tag != null) tags.put(entry.getKey(), tag);
+		}
+		return tags;
+	}
+
+	public CompoundTag getAsCompound() {
+		Map<String, Tag> tags = new HashMap<>();
+		for (var entry : data.entrySet()) {
+			Tag tag = toTag(entry.getValue());
+			if (tag != null) tags.put(entry.getKey(), tag);
+		}
+		return MythicBukkit.inst().getVolatileCodeHandler().createCompoundTag(tags);
+	}
+
+	private static Tag toTag(Object value) {
+		if (value == null) return null;
+		var serializer = findSerializer(value);
+		return serializer == null ? null : serializer.apply(value);
+	}
+
+	private static Function<Object, Tag> findSerializer(Object value) {
+		Class<?> clazz = value.getClass();
+		for (var entry : SERIALIZERS.entrySet()) if (entry.getKey().isAssignableFrom(clazz)) return entry.getValue();
+		return null;
+	}
+
+	private static Object fromTag(Tag tag) {
+		if (tag instanceof StringTag stringTag) return stringTag.getValue();
+		if (tag instanceof IntTag intTag) return intTag.getValue();
+		if (tag instanceof FloatTag floatTag) return floatTag.getValue();
+		if (tag instanceof DoubleTag doubleTag) return doubleTag.getValue();
+		if (tag instanceof ByteTag byteTag) return byteTag.getValue();
+		if (tag instanceof CompoundTag compoundTag) return fromTagMap(compoundTag.getValue());
+		if (tag instanceof ListTag listTag) return fromTagList(listTag);
+		return null;
+	}
+
+	private static Map<String, Object> fromTagMap(Map<String, Tag> tags) {
+		Map<String, Object> result = new HashMap<>();
+		for (var entry : tags.entrySet()) {
+			Object value = fromTag(entry.getValue());
+			if (value != null) result.put(entry.getKey(), value);
+		}
+		return result;
+	}
+
+	private static List<Object> fromTagList(ListTag listTag) {
+		List<Object> result = new ArrayList<>();
+		for (Tag tag : listTag.getValue()) {
+			Object value = fromTag(tag);
+			if (value != null) {
+				result.add(value);
 			}
 		}
+		return result;
 	}
-
-	public Map<String, Object> toMap() {
-		Map<String, Object> map = new HashMap<>();
-		if (this.skill != null) map.put(SKILL, this.skill);
-		if (this.activator != null) map.put(ACTIVATOR, this.activator);
-		if (this.power != null) map.put(POWER, this.power);
-		if (this.cooldown != null) map.put(COOLDOWN, this.cooldown);
-		if (this.sneaking != null) map.put(SNEAKING, this.sneaking);
-		if (this.signal != null) map.put(SIGNAL, this.signal);
-		if (!this.variables.isEmpty()) map.put(VARIABLES, this.variables);
-		if (this.cancel_event != null) map.put(CANCEL_EVENT, this.cancel_event);
-		if (this.show_cooldown != null) map.put(SHOW_COOLDOWN, this.show_cooldown);
-		return map;
-	}
-
-	public void setNBT(ReadWriteNBT compound) {
-		if (skill != null) compound.setString(SKILL, skill);
-		if (activator != null) compound.setString(ACTIVATOR, activator);
-		if (power != null) compound.setFloat(POWER, power);
-		if (cooldown != null) compound.setDouble(COOLDOWN, cooldown);
-		if (sneaking != null) compound.setBoolean(SNEAKING, sneaking);
-		if (signal != null) compound.setString(SIGNAL, signal);
-		if (cancel_event != null) compound.setBoolean(CANCEL_EVENT, cancel_event);
-		if (show_cooldown != null) compound.setBoolean(SHOW_COOLDOWN, show_cooldown);
-
-		if (!variables.isEmpty()) {
-			ReadWriteNBT variable_compound = compound.getOrCreateCompound(VARIABLES);
-			for (Map.Entry<String, Object> entry : variables.entrySet()) {
-				Object value = entry.getValue();
-				String key = entry.getKey();
-
-				if (value instanceof Number) {
-					if (value instanceof Float || value instanceof Double) variable_compound.setFloat(key, ((Number) value).floatValue());
-					else variable_compound.setInteger(key, ((Number) value).intValue());
-				} 
-				else if (value instanceof Boolean) variable_compound.setBoolean(key, (Boolean) value);
-				else variable_compound.setString(key, String.valueOf(value));
-			}
-		}
-	}
-
 
 	@Override
 	public String toString() {
-		return "SkillAttribute(skill=" + skill + "\n  activator=" + activator + "\n  power" + power + "\n  cooldown=" + cooldown + "\n  sneaking=" + sneaking + "\n  signal="  + signal + "\n  cancel_event=" + cancel_event + "\n  show_cooldown=" + show_cooldown + "\n)";
+		return data.toString();
+	}
+
+	public static enum AttributeKeys {
+		SKILL,
+		ACTIVATOR,
+		POWER,
+		COOLDOWN,
+		SNEAKING,
+		SIGNAL,
+		VARIABLES,
+		CANCEL_EVENT,
+		SHOW_COOLDOWN;
+
+		@Override
+		public String toString() {
+			return name().toLowerCase();
+		}
+	}
+
+	static {
+		SERIALIZERS.put(Byte.class, v -> new ByteTag((Byte)v));
+		SERIALIZERS.put(String.class, v -> new StringTag((String)v));
+		SERIALIZERS.put(Integer.class, v -> new IntTag((Integer)v));
+		SERIALIZERS.put(Float.class, v -> new FloatTag((Float)v));
+		SERIALIZERS.put(Double.class, v -> new DoubleTag((Double)v));
+		SERIALIZERS.put(Boolean.class, v -> new ByteTag((byte)((Boolean)v ? 1 : 0)));
+		SERIALIZERS.put(Map.class, v -> {
+			Map<String, Tag> tags = new HashMap<>();
+			Map<?, ?> map = (Map<?, ?>)v;
+			for (var entry : map.entrySet()) {
+				String key = String.valueOf(entry.getKey());
+				Tag tag = toTag(entry.getValue());
+				if (tag != null) tags.put(key, tag);
+			}
+			return MythicBukkit.inst().getVolatileCodeHandler().createCompoundTag(tags);
+		});
+		SERIALIZERS.put(List.class, value -> {
+			List<Tag> tags = new ArrayList<>();
+			Class<? extends Tag> type = null;
+			for (Object element : (List<?>) value) {
+				Tag tag = toTag(element);
+				if (tag == null) continue;
+				if (type == null) type = tag.getClass();
+				else if (!type.equals(tag.getClass())) throw new IllegalArgumentException("NBT List must contain only one tag type. Found " + type.getSimpleName() + " and " + tag.getClass().getSimpleName());
+				tags.add(tag);
+			}
+			if (type == null) type = StringTag.class;
+			return new ListTag(type, tags);
+		});
 	}
 }

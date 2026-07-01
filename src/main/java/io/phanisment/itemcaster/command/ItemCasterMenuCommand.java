@@ -7,7 +7,8 @@ import org.bukkit.entity.Player;
 
 import io.lumine.mythic.bukkit.utils.commands.Command;
 import io.phanisment.itemcaster.ItemCaster;
-import io.phanisment.itemcaster.menu.MenuBrowser;
+import io.phanisment.itemcaster.menu.MainMenu;
+import io.phanisment.itemcaster.menu.MenuManager;
 
 public class ItemCasterMenuCommand extends Command<ItemCaster> {
 
@@ -26,18 +27,14 @@ public class ItemCasterMenuCommand extends Command<ItemCaster> {
 	}
 
 	@Override
-	public String[] getAliases() {
-		return new String[]{"icm"};
-	}
-
-	@Override
 	public boolean isConsoleFriendly() {
 		return false;
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
-		new MenuBrowser().open((Player)sender);
+		var player = (Player)sender;
+		MenuManager.MAIN.open(player, player);
 		return true;
 	}
 

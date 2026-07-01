@@ -10,7 +10,7 @@ import io.phanisment.itemcaster.skill.SkillAttribute;
 public class DataPathParser {
 	private static final Map<String, String[]> PATH_CACHE = new ConcurrentHashMap<>();
 
-	@SuppressWarnings({ "unchecked", "unlikely-arg-type" })
+	@SuppressWarnings("unlikely-arg-type" )
 	public static <T> T parse(Object source, String path) {
 		if (source == null || path == null || path.isEmpty()) return null;
 		String[] tokens = PATH_CACHE.computeIfAbsent(path, DataPathParser::split);
@@ -19,7 +19,7 @@ public class DataPathParser {
 		for (String token : tokens) {
 			if (current instanceof Map map) current = map.get(token);
 			else if (current instanceof List list) current = getFromList(list, token);
-			else if (current instanceof SkillAttribute attribute) current = attribute.toMap().get(tokens);
+			else if (current instanceof SkillAttribute attribute) current = attribute.getAsMap().get(tokens);
 			else return null;
 			if (current == null) return null;
 		}

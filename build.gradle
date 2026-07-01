@@ -32,11 +32,9 @@ dependencies {
 
 	// Libraries
 	implementation "org.bstats:bstats-bukkit:${project.bstats_version}"
-	implementation "fr.mrmicky:fastinv:${project.fastinv_version}"
 	compileOnly "com.google.code.gson:gson:${project.gson_version}"
 	compileOnly "me.clip:placeholderapi:${project.placeholder_api_version}"
-	compileOnly "de.tr7zw:item-nbt-api-plugin:${project.nbt_api_version}"
-
+	
 	// Other plugins Compactbility
 	compileOnly "dev.lone:api-itemsadder:${project.itemsadder_version}"
 	compileOnly "io.th0rgal:oraxen:${project.oraxen_version}"
@@ -48,11 +46,12 @@ dependencies {
 
 tasks.shadowJar {
 	archiveClassifier = ""
-	relocate "fr.mrmicky.fastinv", "io.phanisment.itemcaster.lib.fastinv"
 	relocate "org.bstats", "io.phanisment.itemcaster.lib.bstats"
 	from("LICENSE") {
 		into(".")
 	}
+
+	// destinationDirectory.set(file("../../server/1.21.1/plugins"))
 }
 
 tasks.processResources {

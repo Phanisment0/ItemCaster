@@ -1,0 +1,38 @@
+package io.phanisment.itemcaster.skill.mechanic;
+
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
+
+import io.lumine.mythic.api.adapters.AbstractEntity;
+import io.lumine.mythic.api.config.MythicLineConfig;
+import io.phanisment.itemcaster.skill.template.ItemMechanic;
+
+import static io.phanisment.itemcaster.util.ItemUtil.validateItem;
+
+import java.util.Optional;
+
+public class AddEnchantmentItemMechanic extends ItemMechanic {
+	private Enchantment enchantment;
+	private int level;
+	private boolean ignore_restriction;
+
+	@SuppressWarnings("deprecation")
+	public AddEnchantmentItemMechanic(MythicLineConfig mlc) {
+		super(mlc);
+		String string_enc = mlc.getString(new String[] { "enchantment", "en" }, "UNBREAKING").toUpperCase();
+		this.enchantment = Enchantment.getByName(string_enc);
+		this.level = mlc.getInteger(new String[] { "level", "l" }, 1);
+		this.ignore_restriction = mlc.getBoolean(new String[] { "ignorerestriction", "ir" }, true);
+	}
+
+	@Override
+	public Optional<ItemStack> resolve(AbstractEntity target, ItemStack item) {
+		if (!validateItem(item)) return Optional.empty();
+		if (ignore_restriction) {
+			item.addUnsafeEnchantment(enchantment, level);
+			return Optional.of(item);
+		}
+		item.addEnchantment(enchantment, level);
+		return Optional.empty();
+	}
+}

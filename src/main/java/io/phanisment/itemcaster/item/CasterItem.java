@@ -10,15 +10,20 @@ import io.lumine.mythic.api.config.MythicConfig;
 import io.lumine.mythic.api.skills.placeholders.PlaceholderString;
 import io.lumine.mythic.core.items.MythicItem;
 import io.lumine.mythic.bukkit.events.MythicMobItemGenerateEvent;
+
 import io.lumine.mythic.core.logging.MythicLogger;
 import io.lumine.mythic.core.skills.placeholders.parsers.PlaceholderStringImpl;
+import io.lumine.mythic.core.utils.jnbt.CompoundTag;
+import io.lumine.mythic.core.utils.jnbt.CompoundTagBuilder;
+import io.lumine.mythic.core.utils.jnbt.ListTag;
 import io.lumine.mythic.bukkit.utils.version.MinecraftVersion;
 import io.lumine.mythic.bukkit.utils.version.ServerVersion;
 
 import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.Storage;
-import io.phanisment.itemcaster.util.ItemAbilityUtil;
+import io.phanisment.itemcaster.skill.SkillActivator;
 import io.phanisment.itemcaster.skill.SkillAttribute;
+import io.phanisment.itemcaster.skill.SkillAttribute.AttributeKeys;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -26,6 +31,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static io.phanisment.itemcaster.ItemCaster.core;
 import static io.phanisment.itemcaster.util.ItemUtil.validateItem;
 
 /**
@@ -40,9 +46,8 @@ public class CasterItem {
 
 	private boolean hide_tooltips = false;
 	private ModelData model_data;
-	private List<Map<String, Object>> abilities = new ArrayList<>();
+	private List<SkillAttribute> abilities = new ArrayList<>();
 
-	@SuppressWarnings("unchecked")
 	public CasterItem(MythicItem mi) {
 		this.mi = mi;
 		this.config = mi.getConfig();
@@ -50,7 +55,7 @@ public class CasterItem {
 		this.hide_tooltips = config.getBoolean("Options.HideTooltips");
 		this.model_data = new ModelData(config.getString("ModelItem"), mi);
 
-		this.abilities = (List<Map<String, Object>>)(Object)new ArrayList<>(config.getMapList("Abilities"));
+		for (Map<?, ?> map : config.getMapList("Abilities")) this.abilities.add(new SkillAttribute((Map<String, Object>)map));
 
 		items.put(mi.getInternalName(), this);
 	}
@@ -76,15 +81,23 @@ public class CasterItem {
 	}
 
 	private ItemStack parseAbilities(ItemStack item) {
-		for (Map<String, Object> attribute : abilities) {
-			if (!attribute.containsKey(SkillAttribute.SKILL) || !attribute.containsKey(SkillAttribute.ACTIVATOR)) {
+		if (abilities.isEmpty()) return item;
+
+		CompoundTagBuilder builder = core().getVolatileCodeHandler().getItemHandler().getNBTData(item).createBuilder();
+		List<CompoundTag> tags = new ArrayList<>();
+
+		for (SkillAttribute attribute : abilities) {
+			if (!attribute.has(AttributeKeys.SKILL) || !attribute.has(AttributeKeys.ACTIVATOR)) {
 				MythicLogger.errorItemConfig(mi, config, "Required attributes 'skill' and 'activator' in Abilities component!");
 				continue;
 			}
-
-			item = ItemAbilityUtil.of(item).addAbility(new SkillAttribute(attribute)).orElse(item);
+			tags.add(attribute.getAsCompound());
 		}
-		return item;
+
+		if (tags.isEmpty()) return item;
+		CompoundTag nbt = builder.put(SkillActivator.INSTANE, CompoundTagBuilder.create().put(SkillActivator.ABILITIES, new ListTag(CompoundTag.class, tags)).build()).build();
+
+		return core().getVolatileCodeHandler().getItemHandler().setNBTData(item, nbt);
 	}
 
 	// Has ///////////////////////////////////////
@@ -98,7 +111,7 @@ public class CasterItem {
 
 	// Add /////////////////////////////////////
 	public void addAbility(SkillAttribute attribute) {
-		abilities.add(attribute.toMap());
+		abilities.add(attribute);
 		save("Abilities", abilities);
 	}
 
@@ -152,7 +165,7 @@ public class CasterItem {
 	}
 
 	public void setAbility(int index, SkillAttribute attribute) {
-		abilities.set(index, attribute.toMap());
+		abilities.set(index, attribute);
 		save("Abilities", abilities);
 	}
 
@@ -253,10 +266,10 @@ public class CasterItem {
 	}
 
 	public SkillAttribute getAbility(int index) {
-		return new SkillAttribute(this.abilities.get(index));
+		return this.abilities.get(index);
 	}
 
-	public List<Map<String, Object>> getAbilities() {
+	public List<SkillAttribute> getAbilities() {
 		return this.abilities;
 	}
 

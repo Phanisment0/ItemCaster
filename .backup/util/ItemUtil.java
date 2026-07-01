@@ -1,0 +1,95 @@
+package io.phanisment.itemcaster.util;
+
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.entity.Player;
+
+import io.lumine.mythic.bukkit.BukkitAdapter;
+import io.lumine.mythic.bukkit.MythicBukkit;
+import io.lumine.mythic.core.items.MythicItem;
+
+import io.phanisment.itemcaster.skill.SkillActivator;
+import io.phanisment.itemcaster.skill.Activator;
+import io.phanisment.itemcaster.registry.ExternalItemRegistry;
+import io.phanisment.itemcaster.ItemCaster;
+import io.phanisment.itemcaster.hand.HandActivator;
+import io.phanisment.itemcaster.item.external.IExternalItem;
+
+import java.util.Optional;
+
+/**
+ * Utility Class for execute skill and get external item.
+ */
+public class ItemUtil {
+	private static final NamespacedKey TYPE = new NamespacedKey(ItemCaster.core(), "type");
+
+	/**
+	 * Get external item or basic ItemStack.
+	 * 
+	 * @param type id/type the item. if you want use external item, you must use like this `pluginname:itemid`.
+	 * @return     the item or external item if the type is from external.
+	 */
+	public static ItemStack getItem(String type) {
+		if (type == null || type.isBlank()) return new ItemStack(Material.STONE);
+		if (type.contains(":")) {
+			String[] parts = type.split(":");
+			if (parts[0].toLowerCase().equalsIgnoreCase("mythicmobs")) {
+				Optional<MythicItem> mi = MythicBukkit.inst().getItemManager().getItem(parts[1]);
+				if (mi.isPresent()) return BukkitAdapter.adapt(mi.get().generateItemStack(1));
+			}
+			IExternalItem ei = ExternalItemRegistry.getRegistered(parts[0].toLowerCase());
+			if (ei != null) return ei.resolve(parts, null).orElse(new ItemStack(Material.STONE));
+		}
+		
+		try {
+			return new ItemStack(Material.valueOf(type.toUpperCase()));
+		} catch(IllegalArgumentException e) {
+			return new ItemStack(Material.STONE);
+		}
+	}
+	
+	/**
+	 * Validate item if not null.
+	 * 
+	 * @param item Item that want to validate.
+	 * @return true if item not null.
+	 */
+	public static boolean validateItem(ItemStack item) {
+		return item != null && item.getType() != Material.AIR;
+	}
+
+	public static boolean isMythicItem(ItemStack item) {
+		if (!validateItem(item)) return false;
+		return item.hasItemMeta() && item.getItemMeta().getPersistentDataContainer().has(TYPE);
+	}
+	
+	public static void runSkill(Player player, Activator type) {
+		new HandActivator(player, type).execute();
+		
+		PlayerInventory inv = player.getInventory();
+		
+		ItemStack main_hand = inv.getItemInMainHand();
+		if (validateItem(main_hand)) new SkillActivator(player, type, main_hand).execute();
+		
+		ItemStack off_hand = inv.getItemInOffHand();
+		if (validateItem(off_hand)) new SkillActivator(player, type, off_hand).execute();
+		
+		for (ItemStack armor : inv.getArmorContents()) if (validateItem(armor)) new SkillActivator(player, type, armor).execute();
+	}
+	
+	public static void runSkill(Player player, Activator type, String signal) {
+		new HandActivator(player, type).setSignal(signal).execute();
+		
+		PlayerInventory inv = player.getInventory();
+		
+		ItemStack main_hand = inv.getItemInMainHand();
+		if (validateItem(main_hand)) new SkillActivator(player, type, main_hand).setSignal(signal).execute();
+		
+		ItemStack off_hand = inv.getItemInOffHand();
+		if (validateItem(off_hand)) new SkillActivator(player, type, off_hand).setSignal(signal).execute();
+		
+		for (ItemStack armor : inv.getArmorContents()) if (validateItem(armor)) new SkillActivator(player, type, armor).setSignal(signal).execute();
+	}
+}

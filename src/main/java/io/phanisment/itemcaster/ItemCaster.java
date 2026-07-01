@@ -7,8 +7,6 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
-import fr.mrmicky.fastinv.FastInvManager;
-
 import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.bukkit.utils.plugin.LuminePlugin;
 import io.lumine.mythic.bukkit.utils.version.ServerVersion;
@@ -52,6 +50,7 @@ public final class ItemCaster extends LuminePlugin {
 	@Override
 	public void enable() {
 		new Metrics(this, Storage.id_bstats);
+		this.saveDefaultConfig();
 		this.reload();
 
 		compact.forEach((plugin, runnable) -> {
@@ -66,8 +65,7 @@ public final class ItemCaster extends LuminePlugin {
 		this.listen(new MythicListener());
 		this.listen(new ProfileListener());
 
-		FastInvManager.register(this);
-		new MenuManager();
+		MenuManager.reload();
 
 		new CasterRunnable().runTaskTimer(this, 1, 1);
 		new ProfileRunnable().runTaskTimer(this, 1, 12000);
