@@ -23,6 +23,7 @@ import java.util.Optional;
  * tooltip styles, and armor models.
  */
 public class ModelData {
+	private String name;
 	private Material type = Material.AIR;
 	private int model_index = 0;
 	private NamespacedKey item_model;
@@ -38,6 +39,7 @@ public class ModelData {
 	}
 
 	public ModelData(String item_type, MythicItem mi) {
+		this.name = item_type;
 		this.mi = mi;
 		this.config = mi.getConfig();
 
@@ -152,5 +154,10 @@ public class ModelData {
 
 	public CustomModelDataComponent getModelDataComponent() {
 		return this.model_data_component;
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 }

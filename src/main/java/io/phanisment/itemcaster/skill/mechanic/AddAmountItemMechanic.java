@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.config.MythicLineConfig;
 import io.lumine.mythic.api.skills.placeholders.PlaceholderInt;
+import io.lumine.mythic.core.skills.placeholders.PlaceholderContext;
 import io.phanisment.itemcaster.skill.template.ItemMechanic;
 
 import static io.phanisment.itemcaster.util.ItemUtil.validateItem;
@@ -22,7 +23,7 @@ public class AddAmountItemMechanic extends ItemMechanic {
 	@Override
 	public Optional<ItemStack> resolve(AbstractEntity target, ItemStack item) {
 		if (!validateItem(item)) return Optional.empty();
-		item.setAmount(item.getAmount() + amount.get(target));
+		item.setAmount(item.getAmount() + amount.get(PlaceholderContext.builder().entity(target).build()));
 		return Optional.empty();
 	}
 }

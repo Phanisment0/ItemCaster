@@ -11,17 +11,22 @@ public class MainMenu extends CasterMenu<Player> {
 		super("menus/main.yml");
 	}
 
+	public void open(Player player) {
+		this.open(player, player);
+	}
+
 	@Override
 	public EditableMenuBuilder<Player> build(EditableMenuBuilder<Player> builder) {
 		builder = this.addPageButtons(builder);
 
-		builder.getIcon("BUTTON_ITEMBROWSER").ifPresent(icon -> icon.getBuilder().click((ctx, p) -> {
-			MenuManager.ITEM_BROWSE.open(p, p);
-			p.playSound(p.getLocation(), Sound.ITEM_BOOK_PUT, 1f, 1f);
-		}));
+		builder.getIcon("BUTTON_ITEMBROWSER").ifPresent(icon -> icon.getBuilder().click(MainMenu::openItemBrowse).rightClick(MainMenu::openItemBrowse));
 		builder.getIcon("BUTTON_HANDBROWSER").ifPresent(icon -> icon.getBuilder().click((ctx, p) -> p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f)));
 
 		return builder;
 	}
 
+	public static void openItemBrowse(Player ctx, Player player) {
+		MenuManager.ITEM_BROWSE.open(player);
+		playMenuClick(player);
+	}
 }

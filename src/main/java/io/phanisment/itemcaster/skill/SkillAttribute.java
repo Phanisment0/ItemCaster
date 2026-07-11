@@ -25,6 +25,10 @@ public class SkillAttribute {
 		return new SkillAttribute(fromTagMap(data));
 	}
 
+	public static SkillAttribute empty() {
+		return new SkillAttribute().skill("empty").activator("empty");
+	}
+
 	public SkillAttribute() {
 	}
 
@@ -36,9 +40,45 @@ public class SkillAttribute {
 		this.data = data;
 	}
 
+	public String skill() {
+		return this.get(AttributeKeys.SKILL, String.class, null);
+	}
+
+	public SkillAttribute skill(String value) {
+		this.set(AttributeKeys.SKILL, String.class, value);
+		return this;
+	}
+
+	public String activator() {
+		return this.get(AttributeKeys.ACTIVATOR, String.class, null);
+	}
+
+	public SkillAttribute activator(String value) {
+		this.set(AttributeKeys.ACTIVATOR, String.class, value);
+		return this;
+	}
+
+	public Map<String, Object> variable() {
+		return this.get(AttributeKeys.VARIABLES, Map.class, new HashMap<>());
+	}
+
+	public SkillAttribute variable(Map<String, Object> value) {
+		this.set(AttributeKeys.VARIABLES, Map.class, value);
+		return this;
+	}
+
+	public SkillAttribute variable(String key, Object value) {
+		variable().put(key, value);
+		return this;
+	}
+
 	public <T> SkillAttribute set(AttributeKeys key, Class<T> type, T value) {
 		this.data.put(key.toString(), value);
 		return this;
+	}
+
+	public void unset(AttributeKeys key) {
+		this.data.remove(key.toString());
 	}
 
 	public <T> T get(AttributeKeys key, Class<T> type, T def) {

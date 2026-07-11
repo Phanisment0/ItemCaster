@@ -2,7 +2,9 @@ package io.phanisment.itemcaster.skill;
 
 public enum Activator implements IActivator {
 	LEFT_CLICK,
+	SHIFT_LEFT_CLICK,
 	RIGHT_CLICK,
+	SHIFT_RIGHT_CLICK,
 	INTERACT_ENTITY,
 
 	DROP,

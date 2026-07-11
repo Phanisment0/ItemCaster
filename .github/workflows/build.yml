@@ -45,17 +45,12 @@ jobs:
         changelog: ${{ github.event.release.body }}
         loaders: |-
           paper
-          spigot
           purpur
         game-versions: |-
-          1.20.x
           1.21.x
         files: build/libs/${{ steps.findjar.outputs.jarname }}
         dependencies: |-
           [{
-              "project_id": "nfGCP9fk",
-              "dependency_type": "required"
-          }, {
-              "project_id": "NLuc7Jjh",
-              "dependency_type": "required"
+            "project_id": "NLuc7Jjh",
+            "dependency_type": "required"
           }]

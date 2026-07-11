@@ -62,7 +62,6 @@ public class SkillActivator {
 				if (!mybe_skill.isPresent()) continue;
 				
 				this.CANCEL_EVENT = attribute.get(AttributeKeys.CANCEL_EVENT, Boolean.class, false); 
-				if (attribute.get(AttributeKeys.SNEAKING, Boolean.class, false) && player.isSneaking()) continue;
 				if (event.equals("SIGNAL") && signal.equals(attribute.get(AttributeKeys.SIGNAL, String.class, ""))) continue;
 
 				new SkillExecutor(mybe_skill.get(), player).setAttribute(attribute).execute();

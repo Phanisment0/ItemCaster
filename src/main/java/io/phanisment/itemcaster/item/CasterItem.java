@@ -16,14 +16,21 @@ import io.lumine.mythic.core.skills.placeholders.parsers.PlaceholderStringImpl;
 import io.lumine.mythic.core.utils.jnbt.CompoundTag;
 import io.lumine.mythic.core.utils.jnbt.CompoundTagBuilder;
 import io.lumine.mythic.core.utils.jnbt.ListTag;
+import io.lumine.mythic.bukkit.utils.menu.Icon;
+import io.lumine.mythic.bukkit.utils.menu.IconBuilder;
+import io.lumine.mythic.bukkit.utils.menu.MenuData;
 import io.lumine.mythic.bukkit.utils.version.MinecraftVersion;
 import io.lumine.mythic.bukkit.utils.version.ServerVersion;
 
 import io.phanisment.itemcaster.ItemCaster;
 import io.phanisment.itemcaster.Storage;
+import io.phanisment.itemcaster.menu.CasterMenu;
+import io.phanisment.itemcaster.menu.MenuManager;
+import io.phanisment.itemcaster.menu.item.ItemBrowseMenuContext;
 import io.phanisment.itemcaster.skill.SkillActivator;
 import io.phanisment.itemcaster.skill.SkillAttribute;
 import io.phanisment.itemcaster.skill.SkillAttribute.AttributeKeys;
+import io.phanisment.itemcaster.util.CasterColorCode;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -37,12 +44,11 @@ import static io.phanisment.itemcaster.util.ItemUtil.validateItem;
 /**
  * MythicItem Wrapper
  */
-public class CasterItem {
+public class CasterItem implements MenuData<ItemBrowseMenuContext> {
 	public static final NamespacedKey TYPE = new NamespacedKey(ItemCaster.core(), "type");
-	private static final Map<String, CasterItem> items = new HashMap<>();
+	public static final Map<String, CasterItem> ITEMS = new HashMap<>();
 	private final MythicItem mi;
 	private final MythicConfig config;
-	private ItemStack icon;
 
 	private boolean hide_tooltips = false;
 	private ModelData model_data;
@@ -55,9 +61,14 @@ public class CasterItem {
 		this.hide_tooltips = config.getBoolean("Options.HideTooltips");
 		this.model_data = new ModelData(config.getString("ModelItem"), mi);
 
-		for (Map<?, ?> map : config.getMapList("Abilities")) this.abilities.add(new SkillAttribute((Map<String, Object>)map));
+		try {
+			var list = config.getMapList("Abilities");
+			for (Map<?, ?> attr : list) this.abilities.add(new SkillAttribute((Map<String, Object>)attr));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-		items.put(mi.getInternalName(), this);
+		ITEMS.put(mi.getInternalName(), this);
 	}
 
 	/**
@@ -76,8 +87,26 @@ public class CasterItem {
 
 		if (abilities != null && !abilities.isEmpty()) item = this.parseAbilities(item);
 
-		// this.icon = this.generateIcon(item);
 		e.setItemStack(item);
+	}
+
+	@Override
+	public Icon<ItemBrowseMenuContext> getIcon() {
+		return IconBuilder.<ItemBrowseMenuContext>create().itemStack(this.getItemStack()).hideFlags().name("<white>" + getId()).lore(List.of(
+			"",
+			CasterColorCode.GREEN + "✉ <gray>L - Get the Item",
+			CasterColorCode.ORANGE + "✎ <gray>R - Edit the Item",
+			CasterColorCode.MAGENTA + "☈ <gray>S+R - " + CasterColorCode.RED + "Remove the Item"
+		)).click((context, player) -> {
+			CasterMenu.playMenuClick(player);
+			player.getInventory().addItem(this.getItemStack());
+		}).rightClick((context, player) -> {
+			CasterMenu.playMenuClick(player);
+			MenuManager.ITEM_EDITOR.open(player, this);
+		}).shiftRightClick((ctx, p) -> {
+			this.delete();
+			ctx.open(p);
+		}).build();
 	}
 
 	private ItemStack parseAbilities(ItemStack item) {
@@ -112,7 +141,9 @@ public class CasterItem {
 	// Add /////////////////////////////////////
 	public void addAbility(SkillAttribute attribute) {
 		abilities.add(attribute);
-		save("Abilities", abilities);
+		List<Map<String, Object>> raw = new ArrayList<>();
+		for (var attr : abilities) raw.add(attr.getAsMap());
+		save("Abilities", raw);
 	}
 
 	// Is //////////////////////////////////////
@@ -130,8 +161,24 @@ public class CasterItem {
 		save(, TYPE);
 	}*/
 
+	public void setGlint(boolean value) {
+		save("Options.Glint", value);
+	}
+
+	public void setFireResistance(boolean value) {
+		save("Options.FireResistant", value);
+	}
+
+	public void setTrim(String value) {
+		save("Trim", value);
+	}
+
 	public void setMaxDurability(int value) {
 		save("MaxDurability", value);
+	}
+
+	public void setMaxStack(int value) {
+		save("Options.StackSize", value);
 	}
 
 	public void setDurability(int value) {
@@ -154,7 +201,7 @@ public class CasterItem {
 	public void setModelData(String model) {
 		if (model != null) model_data = new ModelData(model, mi);
 		else model_data = null;
-		save("ModelItem", model_data);
+		save("ModelItem", model);
 	}
 
 	public void setLore(List<String> lore) {
@@ -166,7 +213,9 @@ public class CasterItem {
 
 	public void setAbility(int index, SkillAttribute attribute) {
 		abilities.set(index, attribute);
-		save("Abilities", abilities);
+		List<Map<String, Object>> raw = new ArrayList<>();
+		for (var attr : abilities) raw.add(attr.getAsMap());
+		save("Abilities", raw);
 	}
 
 	public void setUnbreakable(boolean unbreakable) {
@@ -181,7 +230,20 @@ public class CasterItem {
 		save("Model", id);
 	}
 
+	public void setCustomModelData(int data) {
+		save("CustomModelData", data);
+	}
+
+	public void setGroup(String group) {
+		save("Group", group);
+	}
+
 	// Remove /////////////////////////////
+
+	public void removeGlint() {
+		save("Options.Glint", null);
+	}
+
 	public void removeMaxDurability() {
 		save("MaxDurability", null);
 	}
@@ -199,6 +261,7 @@ public class CasterItem {
 	}
 
 	public void removeAbility(int index) {
+		if (abilities.isEmpty()) removeAbilities();
 		abilities.remove(index);
 		save("Abilities", abilities);
 	}
@@ -223,7 +286,7 @@ public class CasterItem {
 	}
 
 	public void removeLore(int index) {
-		List<PlaceholderString> list = mi.getLoreRaw();
+		List<String> list = mi.getLore();
 		list.remove(index);
 		save("Lore", list);
 	}
@@ -244,9 +307,46 @@ public class CasterItem {
 		save("Options.PreventAnvil", null);
 	}
 
+	public void removeMaxStack() {
+		save("Options.StackSize", null);
+	}
+
+	public void removeGroup() {
+		save("Group", null);
+	}
+
+	public void removeTrim() {
+		save("Trim", null);
+	}
+
+	public void removeFireResistance() {
+		save("Options.FireResistant", null);
+	}
+
 	// Get /////////////////////////////////
+
+	public boolean getGlint() {
+		return mi.getEnchantGlint() == null ? false : mi.getEnchantGlint();
+	}
+
+	public boolean getFireResistance() {
+		return mi.getFireResistant() == null ? false : mi.getFireResistant();
+	}
+
 	public String getId() {
 		return this.mi.getInternalName();
+	}
+
+	public int getMaxStack() {
+		return mi.getMaxStackSize();
+	}
+
+	public int getDurability() {
+		return mi.getDurability().get();
+	}
+
+	public int getMaxDurability() {
+		return mi.getMaxDurability().get();
 	}
 
 	public List<String> getLore() {
@@ -255,6 +355,10 @@ public class CasterItem {
 
 	public MythicConfig getConfig() {
 		return this.config;
+	}
+
+	public String getTrim() {
+		return mi.getArmorTrim() == null ? null : mi.getArmorTrim().get();
 	}
 
 	public boolean getHideTooltips() {
@@ -271,6 +375,10 @@ public class CasterItem {
 
 	public List<SkillAttribute> getAbilities() {
 		return this.abilities;
+	}
+
+	public int getCustomModelData() {
+		return this.mi.getCustomModelData();
 	}
 
 	public MythicItem getItem() {
@@ -295,7 +403,7 @@ public class CasterItem {
 	}
 
 	public static Optional<CasterItem> getCasterItem(String name) {
-		return Optional.of(items.get(name));
+		return Optional.of(ITEMS.get(name));
 	}
 
 	/**
@@ -313,8 +421,13 @@ public class CasterItem {
 		return getCasterItem(name);
 	}
 
+	public void delete() {
+		core().getItemManager().deleteItem(mi);
+		ITEMS.remove(mi.getInternalName());
+	}
+
 	public static void clear() {
-		items.clear();
+		ITEMS.clear();
 	}
 
 	private void save(String key, Object value) {

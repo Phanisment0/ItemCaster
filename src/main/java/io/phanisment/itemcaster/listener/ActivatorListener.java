@@ -36,7 +36,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 
 import io.phanisment.itemcaster.skill.SkillActivator;
-import io.phanisment.itemcaster.hand.AdditonalHandActivator;
+import io.phanisment.itemcaster.hand.SlotActivator;
 import io.phanisment.itemcaster.hand.HandActivator;
 import io.phanisment.itemcaster.skill.Activator;
 import io.phanisment.itemcaster.util.ItemUtil;
@@ -45,7 +45,10 @@ public class ActivatorListener implements Listener {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		Player player = e.getPlayer();
-		if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) ItemUtil.runSkill(player, Activator.RIGHT_CLICK);
+		if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			if (player.isSneaking()) ItemUtil.runSkill(player, Activator.SHIFT_RIGHT_CLICK);
+			ItemUtil.runSkill(player, Activator.RIGHT_CLICK);
+		}
 	}
 
 	@EventHandler
@@ -63,11 +66,13 @@ public class ActivatorListener implements Listener {
 			case ARM_SWING:
 				ItemStack main = inv.getItemInMainHand();
 				if (ItemUtil.validateItem(main)) new SkillActivator(player, Activator.LEFT_CLICK, main).execute();
+				if (ItemUtil.validateItem(main) && player.isSneaking()) new SkillActivator(player, Activator.SHIFT_LEFT_CLICK, main).execute();
 				for (ItemStack armor : inv.getArmorContents()) if (ItemUtil.validateItem(main)) new SkillActivator(player, Activator.LEFT_CLICK, armor).execute();
 				break;
 			case OFF_ARM_SWING:
 				ItemStack off = inv.getItemInOffHand();
 				if (ItemUtil.validateItem(off)) new SkillActivator(player, Activator.LEFT_CLICK, off).execute();
+				if (ItemUtil.validateItem(off) && player.isSneaking()) new SkillActivator(player, Activator.SHIFT_LEFT_CLICK, off).execute();
 				for (ItemStack armor : inv.getArmorContents()) if (ItemUtil.validateItem(off)) new SkillActivator(player, Activator.LEFT_CLICK, armor).execute();
 				break;
 		}
@@ -250,16 +255,16 @@ public class ActivatorListener implements Listener {
 		Player player = e.getPlayer();
 		ItemUtil.runSkill(player, Activator.CHANGE_SLOT);
 		switch (e.getNewSlot()) {
-			case 0 -> new HandActivator(player, AdditonalHandActivator.CHANGE_SLOT_0);
-			case 1 -> new HandActivator(player, AdditonalHandActivator.CHANGE_SLOT_1);
-			case 2 -> new HandActivator(player, AdditonalHandActivator.CHANGE_SLOT_2);
-			case 3 -> new HandActivator(player, AdditonalHandActivator.CHANGE_SLOT_3);
-			case 4 -> new HandActivator(player, AdditonalHandActivator.CHANGE_SLOT_4);
-			case 5 -> new HandActivator(player, AdditonalHandActivator.CHANGE_SLOT_5);
-			case 6 -> new HandActivator(player, AdditonalHandActivator.CHANGE_SLOT_6);
-			case 7 -> new HandActivator(player, AdditonalHandActivator.CHANGE_SLOT_7);
-			case 8 -> new HandActivator(player, AdditonalHandActivator.CHANGE_SLOT_8);
-			case 9 -> new HandActivator(player, AdditonalHandActivator.CHANGE_SLOT_9);
+			case 0 -> new HandActivator(player, SlotActivator.CHANGE_SLOT_0);
+			case 1 -> new HandActivator(player, SlotActivator.CHANGE_SLOT_1);
+			case 2 -> new HandActivator(player, SlotActivator.CHANGE_SLOT_2);
+			case 3 -> new HandActivator(player, SlotActivator.CHANGE_SLOT_3);
+			case 4 -> new HandActivator(player, SlotActivator.CHANGE_SLOT_4);
+			case 5 -> new HandActivator(player, SlotActivator.CHANGE_SLOT_5);
+			case 6 -> new HandActivator(player, SlotActivator.CHANGE_SLOT_6);
+			case 7 -> new HandActivator(player, SlotActivator.CHANGE_SLOT_7);
+			case 8 -> new HandActivator(player, SlotActivator.CHANGE_SLOT_8);
+			case 9 -> new HandActivator(player, SlotActivator.CHANGE_SLOT_9);
 		}
 	}
 

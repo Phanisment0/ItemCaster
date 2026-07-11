@@ -12,6 +12,8 @@ softdepend:
 - ItemsAdder
 - Oraxen
 - Nexo
+# libraries:
+# - org.javassist:javassist:3.32.0-GA
 commands:
   itemcaster:
     aliases:

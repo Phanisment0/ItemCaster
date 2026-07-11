@@ -26,23 +26,27 @@ public abstract class CasterMenu<T> extends ReloadableMenu<T> {
 		super(new MenuProp<T>(inst(), inst().getPropertyFileInternal(inst().getResource(path)), "Menu", (MenuBuilder<T>)null), build_on_open);
 	}
 
+	public void close(Player player, T ctx) {
+		player.closeInventory();
+	}
+
 	public EditableMenuBuilder<T> addPageButtons(EditableMenuBuilder<T> builder) {
 		builder.getIcon("NEXT_PAGE").ifPresent((icon) -> {
 			icon.getBuilder().click((profile, player) -> {
-				player.playSound(player.getLocation(), "item.book.page_turn", 1.0F, 1.0F);
+				playMenuClick(player);
 				this.nextPage(player);
 			});
 		});
 		builder.getIcon("PREVIOUS_PAGE").ifPresent((icon) -> {
 			icon.getBuilder().click((profile, player) -> {
-				player.playSound(player.getLocation(), "item.book.page_turn", 1.0F, 1.0F);
+				playMenuClick(player);
 				this.previousPage(player);
 			});
 		});
 		return builder;
 	}
 
-	public final void playMenuClick(Player player) {
+	public static final void playMenuClick(Player player) {
 		double volume = (Double)MENU_CLICK_VOLUME.get();
 		double pitch = (Double)MENU_CLICK_PITCH.get();
 		player.playSound(player.getLocation(), (String)MENU_CLICK_SOUND.get(), (float)volume, (float)pitch);

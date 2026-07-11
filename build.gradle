@@ -34,6 +34,7 @@ dependencies {
 	implementation "org.bstats:bstats-bukkit:${project.bstats_version}"
 	compileOnly "com.google.code.gson:gson:${project.gson_version}"
 	compileOnly "me.clip:placeholderapi:${project.placeholder_api_version}"
+	compileOnly "org.javassist:javassist:3.32.0-GA"
 	
 	// Other plugins Compactbility
 	compileOnly "dev.lone:api-itemsadder:${project.itemsadder_version}"
@@ -50,8 +51,7 @@ tasks.shadowJar {
 	from("LICENSE") {
 		into(".")
 	}
-
-	// destinationDirectory.set(file("../../server/1.21.1/plugins"))
+	destinationDirectory.set(file("D:\\project\\server\\1.21.8\\plugins"))
 }
 
 tasks.processResources {

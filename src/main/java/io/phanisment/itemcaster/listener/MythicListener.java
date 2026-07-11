@@ -19,6 +19,7 @@ import io.phanisment.itemcaster.Storage;
 import io.phanisment.itemcaster.skill.Activator;
 import io.phanisment.itemcaster.skill.condition.*;
 import io.phanisment.itemcaster.skill.mechanic.*;
+import io.phanisment.itemcaster.util.CasterColorCode;
 import io.phanisment.itemcaster.util.CasterLogger;
 import io.phanisment.itemcaster.util.ItemUtil;
 
@@ -28,7 +29,7 @@ public class MythicListener implements Listener {
 	public void onReload(MythicPostReloadedEvent e) {
 		CasterItem.clear();
 		ItemCaster.inst().reload();
-		CasterLogger.log("[<gradient:#69DFFF:#5984CF>ItemCaster</gradient>] <color:#23eb73>Plugin has finished reloading!");
+		CasterLogger.log("[<gradient:#69DFFF:#5984CF>ItemCaster</gradient>] " + CasterColorCode.GREEN + "Plugin has finished reloading!");
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)

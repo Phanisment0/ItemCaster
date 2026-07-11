@@ -1,0 +1,31 @@
+Menu:
+  Display: "<dark_gray>| <color:#fc5367>Activator List"
+  Size: 54
+  Schema:
+   - $ $ $ $ $ $ $ $ $
+   - $ $ $ $ $ $ $ $ $
+   - $ $ $ $ $ $ $ $ $
+   - $ $ $ $ $ $ $ $ $
+   - $ $ $ $ $ $ $ $ $
+   - B 0 0 0 S 0 0 P N
+  Icons:
+    NEXT_PAGE:
+      Mapping: N
+      Material: ARROW
+      Display: '<white>Next Page'
+    PREVIOUS_PAGE:
+      Mapping: P
+      Material: ARROW
+      Display: '<white>Previous Page'
+    BACK_BUTTON:
+      Mapping: B
+      Material: SPECTRAL_ARROW
+      Display: '<white>Back'
+    FILTER_BUTTON:
+      Mapping: S
+      Material: CAULDRON
+      Display: '<white>Search'
+      Lore:
+      - ''
+      - '<gray>L - Search Items'
+      - '<gray>R - Reset'

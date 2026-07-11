@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import io.lumine.mythic.bukkit.utils.commands.Command;
 import io.phanisment.itemcaster.ItemCaster;
-import io.phanisment.itemcaster.menu.MainMenu;
 import io.phanisment.itemcaster.menu.MenuManager;
 
 public class ItemCasterMenuCommand extends Command<ItemCaster> {

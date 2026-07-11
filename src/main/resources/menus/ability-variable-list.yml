@@ -1,0 +1,34 @@
+Menu:
+  Display: "Item Editor"
+  Size: 54
+  Schema:
+   - 0 0 G 0 I 0 B 0 0
+   - 0 0 0 0 0 0 0 0 0
+   - 0 $ $ $ $ $ $ $ 0
+   - P $ $ $ $ $ $ $ N
+   - 0 $ $ $ $ $ $ $ 0
+   - 0 0 0 0 C 0 0 0 0
+  Icons:
+    NEXT_PAGE:
+      Mapping: N
+      Material: ARROW
+      Display: '<white>Next Page'
+    PREVIOUS_PAGE:
+      Mapping: P
+      Material: ARROW
+      Display: '<white>Previous Page'
+    BACK_BUTTON:
+      Mapping: B
+      Material: SPECTRAL_ARROW
+      Display: '<white>Back'
+    CREATE_BUTTON:
+      Mapping: C
+      Material: WHITE_DYE
+      Display: '<white>Create Variable'
+    GIVE_BUTTON:
+      Mapping: G
+      Material: CAULDRON
+      Display: '<white>Give'
+    ITEM_BUTTON:
+      Mapping: I
+      HideFlags: false

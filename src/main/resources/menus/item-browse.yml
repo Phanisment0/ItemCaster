@@ -1,0 +1,38 @@
+Menu:
+  Display: "<dark_gray>| <color:#fc5367>Item Browser"
+  Size: 54
+  Schema:
+   - $ $ $ $ $ $ $ $ $
+   - $ $ $ $ $ $ $ $ $
+   - $ $ $ $ $ $ $ $ $
+   - $ $ $ $ $ $ $ $ $
+   - $ $ $ $ $ $ $ $ $
+   - B 0 0 C S 0 0 P N
+  Icons:
+    NEXT_PAGE:
+      Mapping: N
+      Material: ARROW
+      Display: '<white>Next Page'
+    PREVIOUS_PAGE:
+      Mapping: P
+      Material: ARROW
+      Display: '<white>Previous Page'
+    BACK_BUTTON:
+      Mapping: B
+      Material: SPECTRAL_ARROW
+      Display: '<white>Back'
+    CREATE_BUTTON:
+      Mapping: C
+      Material: WHITE_DYE
+      Display: '<white>Create Item'
+      Lore:
+      - ''
+      - '<gray>Click to create new item'
+    FILTER_BUTTON:
+      Mapping: S
+      Material: CAULDRON
+      Display: '<white>Search'
+      Lore:
+      - ''
+      - '<gray>L - Search Items'
+      - '<gray>R - Reset'

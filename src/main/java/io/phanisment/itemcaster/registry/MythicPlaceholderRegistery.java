@@ -8,7 +8,7 @@ import io.lumine.mythic.core.utils.annotations.MythicPlaceholder;
 import io.phanisment.itemcaster.ItemCaster;
 
 public class MythicPlaceholderRegistery {
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("deprecation")
 	public static void register() {
 		PlaceholderExecutor placeholder = ItemCaster.core().getPlaceholderManager();
 		for (Class<?> clazz : AnnotationUtil.getAnnotatedClasses(ItemCaster.inst(), "io.phanisment.itemcaster.skill.placeholder", MythicPlaceholder.class)) {

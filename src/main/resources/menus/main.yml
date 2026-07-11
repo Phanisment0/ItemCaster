@@ -1,6 +1,6 @@
 Menu:
-  Display: "ItemCaster Menu"
-  Size: 45
+  Display: "<dark_gray>| <color:#fc5367>ItemCaster Menu"
+  Size: 27
   Schema:
    - 0 0 0 0 0 0 0 0 0
    - 0 0 0 I 0 H 0 0 0
@@ -14,13 +14,13 @@ Menu:
       - ''
       - '<gray>Browse and Edit Items'
       - ''
-      - '&e» &aClick to Open'
+      - '<#fce260>▪ <gray>Click to Open'
     BUTTON_HANDBROWSER:
       Mapping: H
-      Material: BEACON
+      Material: ENDER_CHEST
       Display: 'HandCaster Browser'
       Lore:
       - ''
-      - '<gray>Browse HandCaster'
+      - '<red>Coming Soon?'
       - ''
-      - '&e» &aClick to Open'
+      - '<#fce260>▪ <gray>Click to Open'
