@@ -51,7 +51,7 @@ tasks.shadowJar {
 	from("LICENSE") {
 		into(".")
 	}
-	destinationDirectory.set(file("D:\\project\\server\\1.21.8\\plugins"))
+	// destinationDirectory.set(file("D:\\project\\server\\1.21.8\\plugins"))
 }
 
 tasks.processResources {
